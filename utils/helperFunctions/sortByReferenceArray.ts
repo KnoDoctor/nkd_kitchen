@@ -13,7 +13,7 @@ export default function sortByReferenceArray(
 	const refIndexMap: Map<string, number> = new Map(
 		referenceArray.map((item, index) => [item, index])
 	);
-
+	if (!array) return [];
 	return array.sort((a, b) => {
 		const aIndex: number = refIndexMap.get(a[key] as string) || 0;
 		const bIndex: number = refIndexMap.get(b[key] as string) || 0;

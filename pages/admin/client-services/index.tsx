@@ -3,7 +3,7 @@ import Breadcrumbs from "../../../components/_molecules/Breadcrumbs";
 import ModuleMenu from "../../../components/_molecules/ModuleMenu";
 
 const clientServicesModules = [
-	{ name: "My Clients", anchor: "/admin/client-services/clients" },
+	// { name: "My Clients", anchor: "/admin/client-services/clients" },
 	{ name: "People", anchor: "/admin/client-services/people" },
 ];
 

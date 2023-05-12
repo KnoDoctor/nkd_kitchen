@@ -72,12 +72,12 @@ model users_roles {
   user           User   @relation(fields: [user_id], references: [id])
 }
 
-// model people {
-//   person_id  String      @id @db.Uuid
-//   first_name String?
-//   last_name  String?
-//   leads      prospects[]
-// }
+model people {
+  person_id  String  @id @db.Uuid
+  first_name String?
+  last_name  String?
+  // leads      prospects[]
+}
 
 // model projects {
 //   project_id          String  @id @db.Uuid

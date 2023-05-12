@@ -26,7 +26,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	// We'll pre-render only these paths at build time.
 	// { fallback: false } means other routes should 404.
 	return {
-		paths: [{ params: { identifier: ["5dc04042-6753-4a56-a660-c8b6c542fc99"] } }],
+		paths: [{ params: { identifier: ["fd42735f-49ae-450b-9854-d7633b6d0f08"] } }],
 		fallback: true,
 	};
 };
@@ -35,6 +35,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // It won't be called on client-side, so you can even do
 // direct database queries.
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+	console.log("HERE");
+
 	if (!params)
 		return {
 			notFound: true,

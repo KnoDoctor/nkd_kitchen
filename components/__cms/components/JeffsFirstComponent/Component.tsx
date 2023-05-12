@@ -20,7 +20,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-import usePerson from "../../../../hooks/people/usePerson";
+// import usePerson from "../../../../hooks/people/usePerson";
 //Import Scrollable Anchor
 // import ScrollableAnchor from 'react-scrollable-anchor';
 
@@ -46,7 +46,7 @@ interface JeffsFirstComponentProps {
 const JeffsFirstComponent = ({ section }: JeffsFirstComponentProps) => {
 	console.log(section);
 
-	const person = usePerson(section.author);
+	// const person = usePerson(section.author);
 	//Set Media Query
 	const theme = useTheme();
 	const mobileWidth = useMediaQuery(theme.breakpoints.down("md"));
@@ -57,7 +57,7 @@ const JeffsFirstComponent = ({ section }: JeffsFirstComponentProps) => {
 		setExpanded(!expanded);
 	};
 
-	if (person.isLoading) return <>Loading...</>;
+	// if (person.isLoading) return <>Loading...</>;
 
 	return section.sectionTitle ? (
 		<div
@@ -73,7 +73,7 @@ const JeffsFirstComponent = ({ section }: JeffsFirstComponentProps) => {
 				<CardHeader
 					avatar={
 						<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-							{`${person.data.data.first_name[0]}${person.data.data.last_name[0]}`}
+							{/* {`${person.data.data.first_name[0]}${person.data.data.last_name[0]}`} */}
 						</Avatar>
 					}
 					action={
@@ -82,7 +82,7 @@ const JeffsFirstComponent = ({ section }: JeffsFirstComponentProps) => {
 						</IconButton>
 					}
 					title={section.sectionTitle}
-					subheader={`By: ${person.data.data.first_name} ${person.data.data.last_name}`}
+					// subheader={`By: ${person.data.data.first_name} ${person.data.data.last_name}`}
 				/>
 				<CardMedia
 					component="img"
