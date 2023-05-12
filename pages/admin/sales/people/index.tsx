@@ -1,9 +1,7 @@
-import React from "react";
-
 import PersonListOrganism from "../../../../components/organisms/people/PersonListOrganism";
 
-const Travellers = () => {
+const PersonList = () => {
 	return <PersonListOrganism />;
 };
 
-export default Travellers;
+export default PersonList;
