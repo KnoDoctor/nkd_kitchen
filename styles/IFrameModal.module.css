@@ -1,0 +1,63 @@
+.title {
+    margin-left: 25px;
+    flex: 1;
+}
+
+.iFrame {
+    border: 0;
+    height: 100%;
+}
+
+.previous__page__heading {
+    width: 85%;
+    margin: auto;
+    padding-top: 20px;
+}
+
+.previous__page__button {
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.fullscreen__background .MuiDialog-paperFullScreen {
+    background: #494949 !important;
+}
+
+.close__icon {
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.padding {
+    max-width: 850;
+    margin: auto;
+    border-radius: 8px;
+    padding: 20px 20px 25px 20px;
+}
+
+.no__padding {
+    max-width: 850;
+    margin: auto;
+    border-radius: 8px;
+    padding: 0;
+}
+
+.arrow__right__container {
+    display: flex;
+}
+
+.arrow__right__icon {
+    color: #fff;
+    position: relative;
+    top: 11px;
+    margin-right: 5px;
+    transform: scaleX(-1);
+    cursor: pointer;
+}

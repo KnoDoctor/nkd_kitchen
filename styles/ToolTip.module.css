@@ -1,0 +1,19 @@
+.tool__tip {
+    width: 13px;
+    height: 13px;
+    fill: #a6a6a6;
+    cursor: pointer;
+    position: relative;
+    top: -5px;
+}
+
+.tool__tip:hover {
+    fill: #194666;
+}
+
+@media (max-width: 990px) {
+    .MuiTooltip-tooltip.MuiTooltip-touch, .css-1l70ank-MuiTooltip-tooltip {
+        font-size: 12px !important;
+        text-transform: none !important;
+    }
+}

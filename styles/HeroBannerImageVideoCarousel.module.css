@@ -1,0 +1,229 @@
+.embla {
+    position: relative;
+    width: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.embla__viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.embla__viewport.is-draggable {
+    cursor: move;
+    cursor: grab;
+}
+
+.embla__viewport.is-dragging {
+    cursor: grabbing;
+}
+
+.embla__container {
+    display: flex;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    margin-left: -10px;
+}
+
+.embla__slide {
+    position: relative;
+    min-width: 100%;
+    padding-left: 10px;
+}
+
+.embla__slide__inner {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.embla__slide__img {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    min-height: 100%;
+    min-width: 100%;
+    max-width: none;
+    transform: translate(-50%, -50%);
+}
+
+.embla__button {
+    outline: 0;
+    cursor: pointer;
+    background-color: transparent;
+    touch-action: manipulation;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    fill: #1bcacd;
+    padding: 0;
+}
+
+.embla__button:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+
+.embla__button__svg {
+    width: 100%;
+    height: 100%;
+}
+
+.embla__button--prev {
+    left: 27px;
+}
+
+.embla__button--next {
+    right: 27px;
+}
+
+.embla__dots {
+    display: flex;
+    list-style: none;
+    justify-content: center;
+    padding-top: 10px;
+    position: absolute;
+    bottom: 5%;
+    text-align: center;
+    z-index: 1;
+}
+
+.embla__dot {
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    width: 30px;
+    height: 30px;
+    margin-right: 7.5px;
+    margin-left: 7.5px;
+    display: flex;
+    align-items: center;
+}
+
+button.embla__dot:hover {
+    box-shadow: none !important;
+}
+
+.embla__dot:after {
+    background-color: #494949ff;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    content: "";
+}
+
+.embla__dot.is-selected:after {
+    background-color: #fafafa;
+    opacity: 1;
+}
+
+.hero__video__container {
+    position: relative;
+    width: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.hero__video__container:hover .video-mute-icon {
+    display: block;
+}
+
+.hero__video {
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.video__mute__icon {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    display: none;
+}
+
+.hero__banner__content__center {
+    position: absolute;
+    top: 35%;
+    text-align: center;
+    width: 100%;
+    text-shadow: 1px 1px 2px #494949;
+    z-index: 99;
+    padding: 0px 15px;
+}
+
+.hero__banner__content__left {
+    position: absolute;
+    top: 60%;
+    left: 4%;
+    width: 100%;
+    text-shadow: 1px 1px 2px #494949;
+    z-index: 1;
+    padding: 0px 15px;
+}
+
+.hero__banner__content__right {
+    position: absolute;
+    top: 60%;
+    right: 4%;
+    width: 100%;
+    text-shadow: 1px 1px 2px #494949;
+    z-index: 1;
+    padding: 0px 15px;
+    text-align: right;
+}
+
+.title {
+    font-family: 'adorn-smooth-condensed-sans', sans-serif, serif;
+    font-weight: 300;
+}
+
+
+@media (max-width: 900px) {
+    .hero__banner__content__center__mobile {
+        position: absolute;
+        top: 25%;
+        text-align: center;
+        width: 100%;
+        text-shadow: 1px 1px 2px #494949;
+        z-index: 99;
+        padding: 0px 15px;
+    }
+
+    .hero__banner__content__left__mobile {
+        position: absolute;
+        top: 55%;
+        left: 10px;
+        width: 100%;
+        text-shadow: 1px 1px 2px #494949;
+        z-index: 1;
+        padding: 0px 15px;
+    }
+
+    .hero__banner__content__right__mobile {
+        position: absolute;
+        top: 55%;
+        right: 10px;
+        width: 100%;
+        text-shadow: 1px 1px 2px #494949;
+        z-index: 1;
+        padding: 0px 15px;
+        text-align: right;
+    }
+
+}

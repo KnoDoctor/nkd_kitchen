@@ -1,0 +1,11 @@
+.ck-sticky-panel__content_sticky {
+	top: 64px !important;
+}
+
+.ck-content {
+	border: 1px solid #ccced1 !important;
+	min-height: 420px;
+}
+.ck-content:focus {
+	border: 1px solid rgb(0, 110, 255) !important;
+}

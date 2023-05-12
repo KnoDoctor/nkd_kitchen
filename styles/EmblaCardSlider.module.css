@@ -1,0 +1,237 @@
+.embla {
+	position: relative;
+	background-color: transparent;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.embla__viewport {
+	overflow: hidden;
+	width: 100%;
+	padding: 0;
+}
+
+.embla__viewport.is-draggable {
+	cursor: move;
+	cursor: grab;
+}
+
+.embla__viewport.is-dragging {
+	cursor: grabbing;
+}
+
+.embla__container {
+	display: flex;
+	user-select: none;
+	-webkit-touch-callout: none;
+	-khtml-user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	margin-left: -10px;
+}
+
+.embla__slide {
+	position: relative;
+	min-width: 33%;
+	padding-left: 10px;
+}
+
+.embla__slide__fullwidth {
+	position: relative;
+	min-width: 100%;
+	height: 100%;
+}
+
+.embla__slide__inner {
+	position: relative;
+	overflow: hidden;
+}
+
+.embla__slide__inner__fullwidth {
+	display: flex;
+	justify-content: center;
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+}
+
+.embla__slide__img {
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	width: auto;
+	min-height: 100%;
+	min-width: 100%;
+	max-width: none;
+	transform: translate(-50%, -50%);
+}
+
+.embla__button {
+	outline: 0;
+	cursor: pointer;
+	background-color: transparent;
+	touch-action: manipulation;
+	position: absolute;
+	z-index: 1;
+	top: 50%;
+	transform: translateY(-50%);
+	border: 0;
+	width: 30px;
+	height: 30px;
+	justify-content: center;
+	align-items: center;
+	fill: rgb(150, 175, 142);
+	padding: 0;
+}
+
+.embla__button:disabled {
+	cursor: default;
+	opacity: 0.3;
+}
+
+.embla__button__svg {
+	width: 100%;
+	height: 100%;
+	fill: #fff;
+}
+
+.embla__dots {
+	display: flex;
+	list-style: none;
+	justify-content: center;
+	padding-top: 15px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	bottom: -35px;
+}
+
+.embla__dot {
+	background-color: transparent;
+	cursor: pointer;
+	position: relative;
+	padding: 0;
+	outline: 0;
+	border: 0;
+	width: 6px;
+	height: 30px;
+	margin-right: 7.5px;
+	margin-left: 7.5px;
+	display: flex;
+	align-items: center;
+}
+
+.embla__dot:after {
+	background-color: #c4c4c4;
+	width: 100%;
+	height: 6px;
+	border-radius: 50%;
+	content: "";
+}
+
+.itinerary__nav__button__container {
+	max-width: 900px;
+	margin: auto;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	overflow: visible;
+}
+
+.itinerary__prev__button {
+	left: -45px;
+	position: absolute;
+	top: 50%;
+	height: 30px;
+	width: 30px;
+}
+
+.itinerary__next__button {
+	right: -45px;
+	position: absolute;
+	top: 50%;
+	height: 30px;
+	width: 30px;
+}
+
+.accommodations__prev__button {
+	left: 54%;
+	position: absolute;
+	bottom: 10%;
+}
+
+.accommodations__next__button {
+	right: 8%;
+	position: absolute;
+	bottom: 10%;
+}
+
+@media (max-width: 900px) {
+	.itinerary__nav__button__container {
+		max-width: none;
+	}
+
+	.itinerary__prev__button {
+		left: 3%;
+		position: absolute;
+		bottom: 0;
+		top: unset;
+	}
+
+	.itinerary__next__button {
+		right: 3%;
+		position: absolute;
+		bottom: 0;
+		top: unset;
+	}
+
+	.accommodations__prev__button {
+		left: 3%;
+		position: absolute;
+		bottom: 10%;
+		top: unset;
+	}
+
+	.accommodations__next__button {
+		right: 10%;
+		position: absolute;
+		bottom: 10%;
+		top: unset;
+	}
+
+	.accommodations__embla__dots {
+		left: 50%;
+		bottom: 9%;
+		transform: translate(-50%);
+	}
+}
+
+@media (max-width: 599px) {
+	.embla__slide {
+		min-width: 100%;
+	}
+}
+
+@media (min-width: 600px) {
+	.embla__slide {
+		min-width: 50%;
+	}
+}
+
+@media (min-width: 900px) {
+	.embla__slide {
+		min-width: 33%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.embla__slide {
+		min-width: 33%;
+	}
+}
+/* @media (min-width: 1536px) {
+    .embla__slide {
+        min-width: 25%;
+    }
+ } */
