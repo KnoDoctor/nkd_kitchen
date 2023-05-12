@@ -52,38 +52,23 @@ function ResponsiveAppBar() {
 				backdropFilter: "blur(8px)",
 			}}
 		>
-			<Container maxWidth="xl">
+			<Container maxWidth="lg">
 				<Toolbar disableGutters>
-					<Link href="/" sx={{ textDecoration: "none", color: "#fff" }}>
-						<Box
-							sx={{
-								display: { xs: "none", sm: "flex" },
-								alignItems: "center",
-							}}
-						>
-							<Image
-								src="/images/LogoSlim.png"
-								width={320}
-								height={50}
-								alt="Logo"
-							></Image>
-						</Box>
-					</Link>
 					<Link
 						href="/"
 						sx={{
 							textDecoration: "none",
 							color: "#fff",
 							flexGrow: 1,
-							display: { xs: "flex", sm: "none" },
+							display: { xs: "flex" },
 							justifyContent: "center",
 						}}
 					>
 						<Box
 							sx={{
 								flexGrow: 1,
-								display: { xs: "flex", sm: "none" },
-								justifyContent: "center",
+								display: { xs: "flex" },
+
 								alignItems: "center",
 							}}
 						>
@@ -93,7 +78,7 @@ function ResponsiveAppBar() {
 								component="p"
 								// href="/"
 								sx={{
-									display: { xs: "flex", sm: "none" },
+									display: { xs: "flex" },
 									mr: 1,
 									fontFamily: "'Arimo', sans-serif",
 									fontWeight: 100,
@@ -102,7 +87,7 @@ function ResponsiveAppBar() {
 									fontSize: "28px",
 								}}
 							>
-								ab |
+								SaaS |
 							</Typography>
 
 							<Typography
@@ -111,7 +96,7 @@ function ResponsiveAppBar() {
 								component="p"
 								// href="/"
 								sx={{
-									display: { xs: "flex", sm: "none" },
+									display: { xs: "flex" },
 									mt: "4px",
 									fontWeight: 400,
 									// letterSpacing: ".3rem",
@@ -120,26 +105,7 @@ function ResponsiveAppBar() {
 									fontSize: "18px",
 								}}
 							>
-								DES
-							</Typography>
-							<ExtruderLogo />
-							<Typography
-								variant="h6"
-								noWrap
-								component="p"
-								// href="/"
-								sx={{
-									mr: 2,
-									display: { xs: "flex", sm: "none" },
-									mt: "4px",
-									fontWeight: 400,
-									// letterSpacing: ".3rem",
-									color: "inherit",
-									textDecoration: "none",
-									fontSize: "18px",
-								}}
-							>
-								GNS
+								STARTER
 							</Typography>
 						</Box>
 					</Link>

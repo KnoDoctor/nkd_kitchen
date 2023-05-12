@@ -117,13 +117,13 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 										alignItems: "center",
 									}}
 								>
-									<Image
+									{/* <Image
 										src="/images/LogoSlim.png"
 										width={320}
 										height={50}
 										alt="Logo"
-									></Image>
-									{/* <Typography
+									></Image> */}
+									<Typography
 										variant="h6"
 										noWrap
 										component="p"
@@ -138,7 +138,7 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 											fontSize: "28px",
 										}}
 									>
-										ab |
+										SaaS |
 									</Typography>
 
 									<Typography
@@ -156,9 +156,9 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 											fontSize: "18px",
 										}}
 									>
-										DES
+										STA
 									</Typography>
-									<ExtruderLogo />
+									{/* <ExtruderLogo /> */}
 									<Typography
 										variant="h6"
 										noWrap
@@ -175,8 +175,8 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 											fontSize: "18px",
 										}}
 									>
-										GNS
-									</Typography> */}
+										RTER
+									</Typography>
 								</Box>
 							</Link>
 						</Box>
