@@ -4,6 +4,7 @@ import Breadcrumbs from "../../_molecules/Breadcrumbs";
 
 import TileListCard from "../../_molecules/__cards/TileListCard";
 
+import getCustomGreeting from "../../../utils/helperFunctions/getCustomGreeting";
 import sortByReferenceArray from "../../../utils/helperFunctions/sortByReferenceArray";
 
 //////Update to useModules
@@ -22,9 +23,6 @@ const sortingArr: string[] = [
 const AdminHomepageOrganism = () => {
 	const modulesData = useModules();
 
-	//////Update to useModules
-	console.log(modulesData);
-
 	if (modulesData.isLoading) {
 		return <div>Loading...</div>;
 	}
@@ -41,7 +39,7 @@ const AdminHomepageOrganism = () => {
 			<Breadcrumbs
 				breadcrumbs={[
 					{
-						label: `Welcome back Jeff, what would you like to work on this evening?`,
+						label: getCustomGreeting("Jeff"),
 						anchor: null,
 					},
 				]}

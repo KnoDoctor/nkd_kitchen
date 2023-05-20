@@ -8,7 +8,7 @@ const MainLayout = ({ children }: any) => {
 		<>
 			<Head>
 				<meta name="viewport" content="initial-scale=1, width=device-width" />
-				<title>AB Designs</title>
+				<title>SaaS | Starter</title>
 			</Head>
 			<main id="app" data-testid="layout" style={{ position: "relative" }}>
 				<NavBar />
