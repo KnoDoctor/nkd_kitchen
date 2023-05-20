@@ -1,4 +1,5 @@
 import { Card, Grid } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 import Breadcrumbs from "../../_molecules/Breadcrumbs";
 
@@ -21,6 +22,8 @@ const sortingArr: string[] = [
 ];
 
 const AdminHomepageOrganism = () => {
+	const { data: session } = useSession();
+
 	const modulesData = useModules();
 
 	if (modulesData.isLoading) {
@@ -39,7 +42,7 @@ const AdminHomepageOrganism = () => {
 			<Breadcrumbs
 				breadcrumbs={[
 					{
-						label: getCustomGreeting("Jeff"),
+						label: getCustomGreeting(session?.user?.name),
 						anchor: null,
 					},
 				]}

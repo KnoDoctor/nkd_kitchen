@@ -48,6 +48,19 @@ export function createLookupString(str) {
 	}
 }
 
+// Convert a slug to a page lookup string
+export function parseLookupString(str) {
+	if (str) {
+		try {
+			return str.toLowerCase().replace(/___/g, "/").toLowerCase();
+		} catch (e) {
+			console.log(e);
+		}
+	} else {
+		return "Page Lookup String parse failed.";
+	}
+}
+
 export function getUnique(arr, comp) {
 	if (arr) {
 		const unique = arr

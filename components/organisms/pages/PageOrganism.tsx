@@ -21,7 +21,11 @@ import AlertSnackbar from "../../_atoms/AlertSnackbar";
 
 import usePage from "../../../hooks/pages/usePage";
 
-import { returnCurrentModule } from "../../../utils/helperFunctions";
+import {
+	returnCurrentModule,
+	createLookupString,
+	parseLookupString,
+} from "../../../utils/helperFunctions";
 
 interface handleSavePageInputs {
 	updatedPage: any;
@@ -78,6 +82,7 @@ const PageOrganism = () => {
 	const page = usePage(id);
 
 	const [updatedPageName, setUpdatedPageName] = useState<string | null>(null);
+	const [updatedPageLookupString, setUpdatedPageLookupString] = useState<string | null>(null);
 	const [updatedPageDescription, setUpdatedPageDescription] = useState<string | null>(null);
 	// const [updatedAiPageData, setUpdatedAiPageData] = useState<string | null>(null);
 	const [updatedHeroImage, setUpdatedHeroImage] = useState<string | null>(null);
@@ -91,6 +96,7 @@ const PageOrganism = () => {
 
 	const [updatedPage, setUpdatedPage] = useState<{
 		page_name: string | null;
+		page_lookup_string: string | null;
 		page_description: string | null;
 		// page_data: string | null;
 		page_hero_image: string | null;
@@ -100,6 +106,10 @@ const PageOrganism = () => {
 
 	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUpdatedPageName(event.target.value);
+		setHasContentBeenEdited(true);
+	};
+	const handlePageLookupStringChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setUpdatedPageLookupString(event.target.value);
 		setHasContentBeenEdited(true);
 	};
 	const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,6 +127,7 @@ const PageOrganism = () => {
 
 	useEffect(() => {
 		setUpdatedPageName(page?.data?.data?.page_name);
+		setUpdatedPageLookupString(parseLookupString(page?.data?.data?.page_lookup_string));
 		setUpdatedPageDescription(page?.data?.data?.page_description);
 		// setUpdatedAiPageData(page?.data?.data?.page_data);
 		setUpdatedPageCmsData(page?.data?.data?.cms_data);
@@ -127,6 +138,7 @@ const PageOrganism = () => {
 	useEffect(() => {
 		setUpdatedPage({
 			page_name: updatedPageName,
+			page_lookup_string: createLookupString(updatedPageLookupString),
 			page_description: updatedPageDescription,
 			cms_data: updatedPageCmsData,
 			// page_data: updatedAiPageData,
@@ -135,6 +147,7 @@ const PageOrganism = () => {
 		});
 	}, [
 		updatedPageName,
+		updatedPageLookupString,
 		updatedPageDescription,
 		// updatedAiPageData,
 		updatedPageCmsData,
@@ -245,7 +258,16 @@ const PageOrganism = () => {
 							<TextField
 								sx={{ width: "100%", mb: 2 }}
 								multiline
-								id="outlined-name"
+								id="outlined-lookup-string"
+								label="Page Slug"
+								value={updatedPageLookupString}
+								onChange={handlePageLookupStringChange}
+								variant="standard"
+							/>
+							<TextField
+								sx={{ width: "100%", mb: 2 }}
+								multiline
+								id="outlined-description"
 								label="Page Description"
 								value={updatedPageDescription}
 								onChange={handleDescriptionChange}
