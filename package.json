@@ -22,7 +22,7 @@
 		"@mui/material": "^5.11.11",
 		"@next-auth/prisma-adapter": "^1.0.5",
 		"@next/font": "latest",
-		"@prisma/client": "^4.14.0",
+		"@prisma/client": "^4.14.1",
 		"@vercel/analytics": "^1.0.0",
 		"cloudinary": "^1.33.0",
 		"embla-carousel-react": "^7.0.5",
@@ -48,7 +48,7 @@
 		"@types/uuid": "^9.0.0",
 		"eslint": "latest",
 		"eslint-config-next": "^13.4.2",
-		"prisma": "^4.14.0",
+		"prisma": "^4.14.1",
 		"typescript": "latest"
 	}
 }

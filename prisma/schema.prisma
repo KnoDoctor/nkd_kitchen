@@ -106,8 +106,8 @@ model ingredients {
 }
 
 model recipe_ingredients {
-  recipe_id     String
-  ingredient_id String
+  recipe_id     String      @db.Uuid
+  ingredient_id String      @db.Uuid
   quantity      Float
   unit          String?
   created_at    DateTime    @default(now())
@@ -128,8 +128,8 @@ model categories {
 }
 
 model recipe_categories {
-  recipe_id   String
-  category_id String
+  recipe_id   String     @db.Uuid
+  category_id String     @db.Uuid
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
   recipes     recipes    @relation(fields: [recipe_id], references: [recipe_id])
@@ -141,7 +141,7 @@ model recipe_categories {
 
 model comments {
   comment_id String   @id @db.Uuid
-  recipe_id  String
+  recipe_id  String   @db.Uuid
   user_id    String
   content    String
   created_at DateTime @default(now())
