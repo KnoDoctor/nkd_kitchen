@@ -22,7 +22,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
 	async function getRecipes() {
 		try {
-			const allRecipes = await prisma.recipes.findMany();
+			const allRecipes = await prisma.recipes.findMany({
+				include: { users: { select: { name: true } } },
+			});
 
 			res.status(200).json({
 				success: true,

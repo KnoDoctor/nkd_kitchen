@@ -82,7 +82,8 @@ export const authOptions: NextAuthOptions = {
 			if (
 				token.email === "barfieldjt@gmail.com" ||
 				token.email === "andrewbarfield4@gmail.com" ||
-				token.email === "meagan.trush@gmail.com"
+				token.email === "meagan.trush@gmail.com" ||
+				token.email === "jeff.barfield@butterfield.com"
 			) {
 				token.userRole = "admin";
 				return token;
