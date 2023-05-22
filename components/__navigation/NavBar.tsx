@@ -24,7 +24,7 @@ import ExtruderLogo from "../_atoms/ExtruderLogo";
 
 const pages = [
 	{ name: "Home", anchor: "/" },
-	// { name: "Articles", anchor: "/articles" },
+	{ name: "Recipes", anchor: "/recipes" },
 	// { name: "Tiny Homes", anchor: "/tiny-homes" },
 	{ name: "About Us", anchor: "/about" },
 	{ name: "Contact", anchor: "/contact" },

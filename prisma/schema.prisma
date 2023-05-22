@@ -83,7 +83,7 @@ model people {
 
 model recipes {
   recipe_id          String               @id @db.Uuid
-  title              String
+  recipe_name        String
   description        String?
   instructions       Json                 @default("[]")
   user_id            String
@@ -98,7 +98,7 @@ model recipes {
 
 model ingredients {
   ingredient_id      String               @id @db.Uuid
-  name               String
+  ingredient_name    String
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt
   recipe_ingredients recipe_ingredients[]
@@ -121,7 +121,7 @@ model recipe_ingredients {
 
 model categories {
   category_id       String              @id @db.Uuid
-  name              String
+  category_name     String
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
   recipe_categories recipe_categories[]

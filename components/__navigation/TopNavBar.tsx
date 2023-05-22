@@ -117,7 +117,7 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 									alignItems: "center",
 								}}
 							>
-								<Link href="/" sx={{ textDecoration: "none", color: "#fff" }}>
+								<Link href="/admin" sx={{ textDecoration: "none", color: "#fff" }}>
 									<Image
 										src="/images/logos/primary_logo.png"
 										width={60}
