@@ -54,7 +54,23 @@ function ResponsiveAppBar() {
 		>
 			<Container maxWidth="lg">
 				<Toolbar disableGutters>
-					<Link
+					<Box
+						sx={{
+							display: { xs: "flex" },
+							flexGrow: 1,
+							alignItems: "center",
+						}}
+					>
+						<Link href="/" sx={{ textDecoration: "none", color: "#fff" }}>
+							<Image
+								src="/images/logos/primary_logo.png"
+								width={60}
+								height={55}
+								alt="Logo"
+							></Image>
+						</Link>
+					</Box>
+					{/* <Link
 						href="/"
 						sx={{
 							textDecoration: "none",
@@ -108,7 +124,7 @@ function ResponsiveAppBar() {
 								STARTER
 							</Typography>
 						</Box>
-					</Link>
+					</Link> */}
 					<Box
 						sx={{
 							// flexGrow: 1,

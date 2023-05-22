@@ -18,7 +18,7 @@ export default function Home({ pageData }: any) {
 	return (
 		<>
 			<RenderComponents cmsData={page?.cms_data} />
-			<div style={{ maxWidth: "250px", margin: "2rem auto" }}>
+			{/* <div style={{ maxWidth: "250px", margin: "2rem auto" }}>
 				<ArticleCard />
 			</div>
 			<div style={{ maxWidth: "100%", margin: "2rem auto" }}>
@@ -32,7 +32,7 @@ export default function Home({ pageData }: any) {
 						{ title: "boop" },
 					]}
 				/>
-			</div>
+			</div> */}
 		</>
 	);
 }
@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	try {
 		//Fetch Page Data
 		const pageReq = await fetch(
-			`${process.env.NEXT_PUBLIC_APP_DOMAIN}/api/pages/fd42735f-49ae-450b-9854-d7633b6d0f08`
+			`${process.env.NEXT_PUBLIC_APP_DOMAIN}/api/pages/6555bcef-0836-4e91-a9ed-3f5bcebfd266`
 		);
 
 		const pageData = await pageReq.json();

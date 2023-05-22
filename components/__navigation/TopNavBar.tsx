@@ -110,75 +110,22 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 							>
 								<MenuIcon />
 							</IconButton>
-							<Link href="/admin" sx={{ textDecoration: "none", color: "#fff" }}>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-									}}
-								>
-									{/* <Image
-										src="/images/LogoSlim.png"
-										width={320}
-										height={50}
+							<Box
+								sx={{
+									display: { xs: "flex" },
+									flexGrow: 1,
+									alignItems: "center",
+								}}
+							>
+								<Link href="/" sx={{ textDecoration: "none", color: "#fff" }}>
+									<Image
+										src="/images/logos/primary_logo.png"
+										width={60}
+										height={55}
 										alt="Logo"
-									></Image> */}
-									<Typography
-										variant="h6"
-										noWrap
-										component="p"
-										// href="/"
-										sx={{
-											display: "flex",
-											mr: 1,
-											fontFamily: "'Arimo', sans-serif",
-											fontWeight: 100,
-											color: "inherit",
-											textDecoration: "none",
-											fontSize: "28px",
-										}}
-									>
-										SaaS |
-									</Typography>
-
-									<Typography
-										variant="h6"
-										noWrap
-										component="p"
-										// href="/"
-										sx={{
-											display: "flex",
-											mt: "4px",
-											fontWeight: 400,
-											// letterSpacing: ".3rem",
-											color: "inherit",
-											textDecoration: "none",
-											fontSize: "18px",
-										}}
-									>
-										STA
-									</Typography>
-									{/* <ExtruderLogo /> */}
-									<Typography
-										variant="h6"
-										noWrap
-										component="p"
-										// href="/"
-										sx={{
-											mr: 2,
-											display: "flex",
-											mt: "4px",
-											fontWeight: 400,
-											// letterSpacing: ".3rem",
-											color: "inherit",
-											textDecoration: "none",
-											fontSize: "18px",
-										}}
-									>
-										RTER
-									</Typography>
-								</Box>
-							</Link>
+									></Image>
+								</Link>
+							</Box>
 						</Box>
 						<Box
 							sx={{
