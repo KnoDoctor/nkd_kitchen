@@ -45,6 +45,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   roles         users_roles[]
+  recipes       recipes[]
+  comments      comments[]
+  articles      articles[]
 
   @@map("users")
 }
@@ -76,29 +79,92 @@ model people {
   person_id  String  @id @db.Uuid
   first_name String?
   last_name  String?
-  // leads      prospects[]
 }
 
-// model projects {
-//   project_id          String  @id @db.Uuid
-//   project_name        String
-//   project_description String?
-//   project_data        String?
-//   project_hero_image  String?
-//   is_published        Boolean @default(false)
-// }
+model recipes {
+  recipe_id          String               @id @db.Uuid
+  title              String
+  description        String?
+  instructions       Json                 @default("[]")
+  user_id            String
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  recipe_ingredients recipe_ingredients[]
+  recipe_categories  recipe_categories[]
+  comments           comments[]
+  users              User                 @relation(fields: [user_id], references: [id])
+  articles           articles[]           @relation("ArticleToRecipe")
+}
 
-// model articles {
-//   article_id            String  @id @db.Uuid
-//   article_name          String
-//   article_lookup_string String
-//   article_description   String?
-//   cms_data              Json    @default("[]")
-//   article_prompt        String?
-//   article_ai_response   String?
-//   article_hero_image    String?
-//   is_published          Boolean @default(false)
-// }
+model ingredients {
+  ingredient_id      String               @id @db.Uuid
+  name               String
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  recipe_ingredients recipe_ingredients[]
+  articles           articles[]           @relation("ArticleToIngredient")
+}
+
+model recipe_ingredients {
+  recipe_id     String
+  ingredient_id String
+  quantity      Float
+  unit          String?
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  recipes       recipes     @relation(fields: [recipe_id], references: [recipe_id])
+  ingredients   ingredients @relation(fields: [ingredient_id], references: [ingredient_id])
+
+  @@id([recipe_id, ingredient_id])
+  @@unique([recipe_id, ingredient_id])
+}
+
+model categories {
+  category_id       String              @id @db.Uuid
+  name              String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  recipe_categories recipe_categories[]
+}
+
+model recipe_categories {
+  recipe_id   String
+  category_id String
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+  recipes     recipes    @relation(fields: [recipe_id], references: [recipe_id])
+  categories  categories @relation(fields: [category_id], references: [category_id])
+
+  @@id([recipe_id, category_id])
+  @@unique([recipe_id, category_id])
+}
+
+model comments {
+  comment_id String   @id @db.Uuid
+  recipe_id  String
+  user_id    String
+  content    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  recipes    recipes  @relation(fields: [recipe_id], references: [recipe_id])
+  users      User     @relation(fields: [user_id], references: [id])
+}
+
+model articles {
+  article_id            String        @id @db.Uuid
+  article_name          String
+  article_lookup_string String
+  article_description   String?
+  cms_data              Json          @default("[]")
+  article_prompt        String?
+  article_ai_response   String?
+  article_hero_image    String?
+  user_id               String
+  is_published          Boolean       @default(false)
+  users                 User          @relation(fields: [user_id], references: [id])
+  recipes               recipes[]     @relation("ArticleToRecipe")
+  ingredients           ingredients[] @relation("ArticleToIngredient")
+}
 
 model pages {
   page_id            String  @id @db.Uuid
@@ -109,18 +175,6 @@ model pages {
   page_lookup_string String  @db.VarChar(500)
   is_published       Boolean @default(false)
 }
-
-// model prospects {
-//   prospect_id                 String @id @db.Uuid
-//   prospect_sales_funnel_stage Int
-//   person_id                   String @db.Uuid
-//   person                      people @relation(fields: [person_id], references: [person_id])
-// }
-
-// model entities {
-//   entity_id   String @id @db.Uuid
-//   entity_name String @db.VarChar(150)
-// }
 
 model modules {
   module_id    String  @id @db.Uuid
