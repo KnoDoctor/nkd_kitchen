@@ -86,6 +86,7 @@ model recipes {
   recipe_name        String
   description        String?
   instructions       Json                 @default("[]")
+  notes              Json                 @default("[]")
   user_id            String
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt
@@ -190,6 +191,8 @@ model ingredient_substitutions {
   substituted_ingredient_id  String      @db.Uuid
   substituting_quantity      Float
   substituted_quantity       Float
+  substituting_unit          String
+  substituted_unit           String
   additional_info            String?
   substituting_ingredient    ingredients @relation("SubstitutingIngredient", fields: [substituting_ingredient_id], references: [ingredient_id])
   substituted_ingredient     ingredients @relation("SubstitutedIngredient", fields: [substituted_ingredient_id], references: [ingredient_id])

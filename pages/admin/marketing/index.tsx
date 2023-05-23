@@ -7,6 +7,7 @@ const marketingModules = [
 	// { name: "Expressions of Interest", anchor: "/admin/marketing/expressions-of-interest" },
 	{ name: "Pages", anchor: "/admin/marketing/pages" },
 	{ name: "Recipes", anchor: "/admin/marketing/recipes" },
+	{ name: "Ingredients", anchor: "/admin/marketing/ingredients" },
 	{ name: "People", anchor: "/admin/marketing/people" },
 	// { name: "Articles", anchor: "/admin/marketing/articles" },
 	// { name: "Entities", anchor: "/admin/marketing/entities" },
