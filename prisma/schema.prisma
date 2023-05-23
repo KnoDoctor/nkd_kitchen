@@ -97,12 +97,14 @@ model recipes {
 }
 
 model ingredients {
-  ingredient_id      String               @id @db.Uuid
-  ingredient_name    String
-  created_at         DateTime             @default(now())
-  updated_at         DateTime             @updatedAt
-  recipe_ingredients recipe_ingredients[]
-  articles           articles[]           @relation("ArticleToIngredient")
+  ingredient_id           String                     @id @db.Uuid
+  ingredient_name         String
+  created_at              DateTime                   @default(now())
+  updated_at              DateTime                   @updatedAt
+  recipe_ingredients      recipe_ingredients[]
+  articles                articles[]                 @relation("ArticleToIngredient")
+  substituted_ingredient  ingredient_substitutions[] @relation("SubstitutedIngredient")
+  substituting_ingredient ingredient_substitutions[] @relation("SubstitutingIngredient")
 }
 
 model recipe_ingredients {
@@ -181,4 +183,16 @@ model modules {
   module_name  String  @db.VarChar(150)
   module_image String? @db.VarChar(150)
   module_slug  String  @db.VarChar(150)
+}
+
+model ingredient_substitutions {
+  substituting_ingredient_id String      @db.Uuid
+  substituted_ingredient_id  String      @db.Uuid
+  substituting_quantity      Float
+  substituted_quantity       Float
+  additional_info            String?
+  substituting_ingredient    ingredients @relation("SubstitutingIngredient", fields: [substituting_ingredient_id], references: [ingredient_id])
+  substituted_ingredient     ingredients @relation("SubstitutedIngredient", fields: [substituted_ingredient_id], references: [ingredient_id])
+
+  @@id([substituting_ingredient_id, substituted_ingredient_id])
 }
