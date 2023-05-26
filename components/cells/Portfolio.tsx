@@ -3,9 +3,9 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import SlideIn from "../_atoms/SlideIn";
 
-import PortfolioCard from "../_molecules/projects/PortfolioCard";
+// import PortfolioCard from "../_molecules/projects/PortfolioCard";
 
-import useProjects from "../../hooks/projects/useProjects";
+// import useProjects from "../../hooks/projects/useProjects";
 
 const projects = [
 	{
@@ -52,11 +52,11 @@ const projects = [
 ];
 
 const Portfolio = () => {
-	const projects = useProjects();
+	// const projects = useProjects();
 
-	if (projects.isLoading) {
-		return <div>Loading</div>;
-	}
+	// if (projects.isLoading) {
+	// 	return <div>Loading</div>;
+	// }
 	return (
 		<Container
 			maxWidth={"xl"}
@@ -73,7 +73,7 @@ const Portfolio = () => {
 					<Typography variant="h2" component="h3" sx={{ textAlign: "center", mb: 5 }}>
 						Projects
 					</Typography>
-					<Grid container spacing={4}>
+					{/* <Grid container spacing={4}>
 						{projects.data.data
 							.filter((project: any) => project.is_published === true)
 							.map((project: any, i: number) => {
@@ -83,7 +83,7 @@ const Portfolio = () => {
 									</Grid>
 								);
 							})}
-					</Grid>
+					</Grid> */}
 				</>
 			</SlideIn>
 		</Container>
