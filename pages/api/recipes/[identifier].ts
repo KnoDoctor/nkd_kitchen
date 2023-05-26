@@ -36,6 +36,18 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				where: {
 					recipe_id,
 				},
+				include: {
+					recipe_ingredients: {
+						select: {
+							ingredients: {
+								include: {
+									substituting_ingredient: true,
+									substituted_ingredient: true,
+								},
+							},
+						},
+					},
+				},
 			});
 
 			if (recipe) {

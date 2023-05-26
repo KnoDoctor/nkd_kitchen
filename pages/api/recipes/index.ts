@@ -26,7 +26,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				include: {
 					users: { select: { name: true } },
 					recipe_ingredients: {
-						select: { ingredients: true },
+						select: {
+							ingredients: {
+								include: {
+									substituting_ingredient: true,
+									substituted_ingredient: true,
+								},
+							},
+						},
 					},
 				},
 			});
