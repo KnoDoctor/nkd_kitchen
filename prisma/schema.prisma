@@ -84,7 +84,8 @@ model people {
 model recipes {
   recipe_id          String               @id @db.Uuid
   recipe_name        String
-  description        String?
+  recipe_description String?
+  cms_data           Json                 @default("[]")
   instructions       Json                 @default("[]")
   notes              Json                 @default("[]")
   user_id            String

@@ -19,6 +19,8 @@ interface RenderComponentsProps {
 }
 
 const RenderComponents = ({ cmsData }: RenderComponentsProps) => {
+	console.log("RENDER: ", cmsData);
+
 	if (!cmsData) {
 		return <div style={{ paddingTop: 100 }}>Loading...</div>;
 	}
