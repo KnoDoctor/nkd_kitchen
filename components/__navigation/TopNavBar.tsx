@@ -88,8 +88,8 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 				position="fixed"
 				elevation={0}
 				sx={{
-					boxShadow: "inset 0px -1px 1px rgb(0, 0, 0)",
-					backgroundColor: "rgba(0, 0, 0, 0.85)",
+					boxShadow: "inset 0px -1px 1px rgb(10, 10, 10)",
+					backgroundColor: "rgba(10, 10, 10, 0.85)",
 					backdropFilter: "blur(8px)",
 					marginLeft: "0 !important",
 					width: "100% !important",
@@ -119,9 +119,9 @@ const TopNavBar = ({ isXs, isDrawerOpen, handleDrawerOpen }: TopNavBarProps) => 
 							>
 								<Link href="/admin" sx={{ textDecoration: "none", color: "#fff" }}>
 									<Image
-										src="/images/logos/primary_logo.png"
-										width={60}
-										height={55}
+										src="/images/logos/slim_logo.png"
+										width={125}
+										height={37}
 										alt="Logo"
 									></Image>
 								</Link>

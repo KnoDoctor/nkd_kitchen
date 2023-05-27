@@ -47,8 +47,8 @@ function ResponsiveAppBar() {
 		<AppBar
 			position="fixed"
 			sx={{
-				boxShadow: "inset 0px -1px 1px rgb(0, 0, 0)",
-				backgroundColor: "rgba(0, 0, 0, 0.85)",
+				boxShadow: "inset 0px -1px 1px rgb(10, 10, 10)",
+				backgroundColor: "rgba(10, 10, 10, 0.85)",
 				backdropFilter: "blur(8px)",
 			}}
 		>
@@ -61,11 +61,14 @@ function ResponsiveAppBar() {
 							alignItems: "center",
 						}}
 					>
-						<Link href="/" sx={{ textDecoration: "none", color: "#fff" }}>
+						<Link
+							href="/"
+							sx={{ textDecoration: "none", color: "#fff", display: "flex" }}
+						>
 							<Image
-								src="/images/logos/primary_logo.png"
-								width={60}
-								height={55}
+								src="/images/logos/slim_logo.png"
+								width={125}
+								height={37}
 								alt="Logo"
 							></Image>
 						</Link>
