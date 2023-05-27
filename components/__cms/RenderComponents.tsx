@@ -10,7 +10,7 @@ import TwoColumnImage from "./components/TwoColumnImage/Component";
 import ImageLeftTextRight from "./components/ImageLeftTextRight/Component";
 import ImageRightTextLeft from "./components/ImageRightTextLeft/Component";
 import JeffsFirstComponent from "./components/JeffsFirstComponent/Component";
-import { Box } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 
 // import Video from "./Video";
 
@@ -121,6 +121,7 @@ const RenderComponents = ({ cmsData }: RenderComponentsProps) => {
 
 	return (
 		<>
+			<Toolbar />
 			{cmsData ? (
 				cmsData.map((section: any) => {
 					return (

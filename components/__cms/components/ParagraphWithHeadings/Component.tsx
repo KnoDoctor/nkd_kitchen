@@ -118,7 +118,7 @@ const BrParagraph = ({
 		<div
 			style={{
 				background: colorSettings === "Custom" ? sectionBackgroundColor : "none",
-				padding: mobileWidth ? "2rem 0.5rem" : "2rem 0rem",
+				margin: mobileWidth ? "2rem 0.5rem" : "2rem 0rem",
 			}}
 		>
 			<StyledParagraphContainer maxWidth={"lg"}>
