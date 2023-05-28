@@ -16,7 +16,7 @@ const Recipes = () => {
 					<ListCard
 						name={recipe.recipe_name}
 						user={recipe.users.name}
-						image={`https://picsum.photos/300/200?random=${i}`}
+						image={recipe.recipe_image || `https://picsum.photos/300/200?random=${i}`}
 					/>
 				</Link>
 			))}

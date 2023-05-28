@@ -84,6 +84,7 @@ model people {
 model recipes {
   recipe_id          String               @id @db.Uuid
   recipe_name        String
+  recipe_image       String?
   recipe_description String?
   cms_data           Json                 @default("[]")
   instructions       Json                 @default("[]")
