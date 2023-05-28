@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 //Import CMS Block
@@ -7,10 +7,16 @@ import RadioGroupCmsBlock from "../../_inputs/RadioGroupCmsBlock";
 import ColorPickerCmsBlock from "../../_inputs/ColorPickerCmsBlock";
 import CategoryArrayInput from "../../_inputs/CategoryArrayInput";
 
+//Experimental///
+import Referencer from "../../____wip/inputs/Referencer";
+////////////////
+
 const WysiwygCmsBlock = dynamic(() => import("../../_inputs/WysiwygCmsBlock"), { ssr: false });
 
 //Import Material-UI Components
 import { Grid } from "@mui/material";
+
+import useCategories from "../../../../hooks/categories/useCategories";
 
 interface CategorySectionCmsProps {
 	section: any;
@@ -20,7 +26,7 @@ interface CategorySectionCmsProps {
 
 const CategorySectionCms = ({
 	section,
-	handleSectionDataChange,
+	// handleSectionDataChange,
 	handleExplicitSectionDataChange,
 }: CategorySectionCmsProps) => {
 	const [colorSettings, setColorSettings] = useState(section?.colorSettings || "Default");
@@ -135,6 +141,17 @@ const CategorySectionCms = ({
 						fieldName="featuredCategories"
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
 						section={section}
+					/>
+				</Grid>
+			</Grid>
+			<Grid container spacing={1}>
+				<Grid item xs={12}>
+					<Referencer
+						section={section}
+						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
+						fieldName="featuredCategories"
+						entityFieldPrefix="category"
+						useHook={useCategories}
 					/>
 				</Grid>
 			</Grid>

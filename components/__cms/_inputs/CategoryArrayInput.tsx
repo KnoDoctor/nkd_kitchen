@@ -27,20 +27,7 @@ export default function DataFetchAutocompleteInput({
 
 	const categories = useCategories();
 
-	const getCategoryData = async () => {
-		if (fieldValue) {
-			let res = await fetch(`/api/categories/${fieldValue}`);
-
-			let data = await res.json();
-
-			setCategory(data.data);
-		} else {
-			setCategory(null);
-		}
-	};
-
 	useEffect(() => {
-		getCategoryData();
 		handleExplicitSectionDataChange(
 			{
 				fieldName,
