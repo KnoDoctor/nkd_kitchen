@@ -43,6 +43,7 @@ import TwoColumnImageCms from "./components/TwoColumnImage/Cms";
 import FullWidthImageCms from "./components/FullWidthImage/Cms";
 import JeffsFirstComponentCms from "./components/JeffsFirstComponent/Cms";
 import CategorySectionCms from "./components/CategorySection/Cms";
+import RecipeSectionCms from "./components/RecipeSection/Cms";
 
 import { scrollToTarget } from "../../utils/helperFunctions";
 import PageDeletionOrganism from "../organisms/pages/PageDeletionOrganism";
@@ -280,8 +281,8 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			sectionLabel: "Jeff's First Component",
 		},
 		{
-			sectionFieldName: "categorySection",
-			sectionLabel: "Category Section",
+			sectionFieldName: "recipeSection",
+			sectionLabel: "Recipe Section",
 		},
 	];
 
@@ -354,6 +355,14 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			case "categorySection":
 				return (
 					<CategorySectionCms
+						section={section}
+						handleSectionDataChange={handleSectionDataChange}
+						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
+					/>
+				);
+			case "recipeSection":
+				return (
+					<RecipeSectionCms
 						section={section}
 						handleSectionDataChange={handleSectionDataChange}
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}

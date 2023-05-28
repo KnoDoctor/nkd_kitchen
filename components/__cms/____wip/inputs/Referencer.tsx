@@ -40,7 +40,7 @@ const Referencer = ({
 	section,
 	useHook,
 }: ReferencerProps) => {
-	const [referencedEntities, setReferences] = useState(section[fieldName]);
+	const [referencedEntities, setReferences] = useState(section[fieldName] || []);
 
 	const referenceableEntities = useHook();
 

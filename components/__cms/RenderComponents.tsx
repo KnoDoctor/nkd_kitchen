@@ -11,6 +11,7 @@ import ImageLeftTextRight from "./components/ImageLeftTextRight/Component";
 import ImageRightTextLeft from "./components/ImageRightTextLeft/Component";
 import JeffsFirstComponent from "./components/JeffsFirstComponent/Component";
 import CategorySection from "./components/CategorySection/Component";
+import RecipeSection from "./components/RecipeSection/Component";
 import { Box, Toolbar } from "@mui/material";
 
 // import Video from "./Video";
@@ -118,6 +119,16 @@ const RenderComponents = ({ cmsData }: RenderComponentsProps) => {
 			case "categorySection":
 				return (
 					<CategorySection
+						section={section}
+						colorSettings={section.colorSettings}
+						sectionBackgroundColor={section.sectionBackgroundColor}
+						sectionFontColor={section.sectionFontColor}
+						sectionAnchor={section.sectionAnchor}
+					/>
+				);
+			case "recipeSection":
+				return (
+					<RecipeSection
 						section={section}
 						colorSettings={section.colorSettings}
 						sectionBackgroundColor={section.sectionBackgroundColor}
