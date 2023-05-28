@@ -26,7 +26,6 @@ interface CategorySectionCmsProps {
 
 const CategorySectionCms = ({
 	section,
-	// handleSectionDataChange,
 	handleExplicitSectionDataChange,
 }: CategorySectionCmsProps) => {
 	const [colorSettings, setColorSettings] = useState(section?.colorSettings || "Default");
@@ -59,7 +58,6 @@ const CategorySectionCms = ({
 				<Grid item xs={12} sm={6}>
 					<TextCmsBlock
 						section={section}
-						// handleSectionDataChange={handleSectionDataChange}
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
 						fieldName={"sectionTitle"}
 						value={section.sectionTitle}
@@ -68,7 +66,6 @@ const CategorySectionCms = ({
 				<Grid item xs={12} sm={6}>
 					<TextCmsBlock
 						section={section}
-						// handleSectionDataChange={handleSectionDataChange}
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
 						fieldName={"sectionAnchor"}
 						value={section.sectionAnchor}
@@ -119,7 +116,6 @@ const CategorySectionCms = ({
 				<Grid item xs={12}>
 					<TextCmsBlock
 						section={section}
-						// handleSectionDataChange={handleSectionDataChange}
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
 						fieldName={"sectionHeadline"}
 						value={section.sectionHeadline}
@@ -136,22 +132,13 @@ const CategorySectionCms = ({
 			</Grid>
 			<Grid container spacing={1}>
 				<Grid item xs={12}>
-					<CategoryArrayInput
-						value={section.featuredCategories}
-						fieldName="featuredCategories"
-						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
-						section={section}
-					/>
-				</Grid>
-			</Grid>
-			<Grid container spacing={1}>
-				<Grid item xs={12}>
 					<Referencer
-						section={section}
-						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
-						fieldName="featuredCategories"
-						entityFieldPrefix="category"
+						entityName="categories"
 						useHook={useCategories}
+						entityFieldPrefix="category"
+						section={section}
+						fieldName="featuredCategories"
+						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
 					/>
 				</Grid>
 			</Grid>

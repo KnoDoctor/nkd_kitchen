@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, TextField, Autocomplete, Stack, Chip, Typography } from "@mui/material";
+import { Box, Stack, Chip, Typography } from "@mui/material";
 
 // interface Entity {
 // 	entity_id: string;
@@ -12,7 +12,7 @@ function getMissingEntities(
 	entityFieldPrefix: string
 ): any {
 	if (referenceableEntities.length === 0) {
-		return []; // Return an empty array if either input array is empty
+		return []; // Return an empty array if referenceableEntities input array is empty
 	}
 
 	const referencedIds = referencedEntities.map(
@@ -25,6 +25,7 @@ function getMissingEntities(
 
 interface ReferencerProps {
 	fieldName: string;
+	entityName: string;
 	entityFieldPrefix: string;
 	handleExplicitSectionDataChange: any;
 	section: any;
@@ -33,6 +34,7 @@ interface ReferencerProps {
 
 const Referencer = ({
 	fieldName,
+	entityName,
 	entityFieldPrefix,
 	handleExplicitSectionDataChange,
 	section,
@@ -73,15 +75,12 @@ const Referencer = ({
 
 	if (referenceableEntities.isLoading) return <>Loading...</>;
 
-	console.log("REF: ", referenceableEntities);
-	console.log(
-		"Missing: ",
-		getMissingEntities(referencedEntities, referenceableEntities.data.data, entityFieldPrefix)
-	);
 	return (
 		<>
 			<Box>
-				<h4>Referencer for {fieldName}</h4>
+				<h4>
+					Referencer for {fieldName}, this section is referencing {entityName}.
+				</h4>
 				<Box my={2}>
 					{referencedEntities.length > 0 ? (
 						<Stack direction="row" spacing={1}>
