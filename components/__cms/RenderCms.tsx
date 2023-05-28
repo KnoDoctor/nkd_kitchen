@@ -42,6 +42,7 @@ import QuoteCms from "./components/Quote/Cms";
 import TwoColumnImageCms from "./components/TwoColumnImage/Cms";
 import FullWidthImageCms from "./components/FullWidthImage/Cms";
 import JeffsFirstComponentCms from "./components/JeffsFirstComponent/Cms";
+import CategorySectionCms from "./components/CategorySection/Cms";
 
 import { scrollToTarget } from "../../utils/helperFunctions";
 import PageDeletionOrganism from "../organisms/pages/PageDeletionOrganism";
@@ -278,6 +279,10 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			sectionFieldName: "jeffsFirstComponent",
 			sectionLabel: "Jeff's First Component",
 		},
+		{
+			sectionFieldName: "categorySection",
+			sectionLabel: "Category Section",
+		},
 	];
 
 	const renderSectionCms = (section: any) => {
@@ -341,6 +346,14 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			case "jeffsFirstComponent":
 				return (
 					<JeffsFirstComponentCms
+						section={section}
+						handleSectionDataChange={handleSectionDataChange}
+						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
+					/>
+				);
+			case "categorySection":
+				return (
+					<CategorySectionCms
 						section={section}
 						handleSectionDataChange={handleSectionDataChange}
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}

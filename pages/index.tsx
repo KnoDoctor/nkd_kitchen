@@ -2,19 +2,7 @@ import { useRouter } from "next/router";
 
 import { GetStaticProps } from "next";
 
-import Box from "@mui/material/Box";
-
 import RenderComponents from "../components/__cms/RenderComponents";
-import ArticleCard from "../components/_molecules/__cards/ArticleCard";
-import CategoryCard from "../components/_molecules/__cards/CategoryCard";
-import CardSlider from "../components/_molecules/__cards/CardSlider";
-
-const categoryCardMockData = [
-	{ title: "Quick and Easy Dinners", image: "/images/sample-images/ground-turkey-stir-fry.webp" },
-	{ title: "Slow Cooker", image: "/images/sample-images/salmon-tacos.webp" },
-	{ title: "Stir Fry", image: "/images/sample-images/sheet-pan-chicken-fajitas.webp" },
-	{ title: "Mexican Recipes", image: "/images/sample-images/slow-cooker-pork-tenderloin.webp" },
-];
 
 export default function Home({ pageData }: any) {
 	const router = useRouter();
@@ -25,35 +13,7 @@ export default function Home({ pageData }: any) {
 
 	const page = pageData?.data;
 
-	return (
-		<>
-			<RenderComponents cmsData={page?.cms_data} />
-			<Box
-				sx={{
-					maxWidth: "1200px",
-					margin: "2rem auto",
-					display: "flex",
-					justifyContent: "center",
-				}}
-			>
-				{categoryCardMockData.map((category) => (
-					<CategoryCard categoryName={category.title} imageUrl={category.image} />
-				))}
-			</Box>
-			{/* <div style={{ maxWidth: "100%", margin: "2rem auto" }}>
-				<CardSlider
-					slides={[
-						{ title: "boop" },
-						{ title: "boop" },
-						{ title: "boop" },
-						{ title: "boop" },
-						{ title: "boop" },
-						{ title: "boop" },
-					]}
-				/>
-			</div> */}
-		</>
-	);
+	return <RenderComponents cmsData={page?.cms_data} />;
 }
 
 // This function gets called at build time on server-side.
