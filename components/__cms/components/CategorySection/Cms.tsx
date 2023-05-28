@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import TextCmsBlock from "../../_inputs/TextCmsBlock";
 import RadioGroupCmsBlock from "../../_inputs/RadioGroupCmsBlock";
 import ColorPickerCmsBlock from "../../_inputs/ColorPickerCmsBlock";
+import CategoryArrayInput from "../../_inputs/CategoryArrayInput";
 
 const WysiwygCmsBlock = dynamic(() => import("../../_inputs/WysiwygCmsBlock"), { ssr: false });
 
@@ -124,6 +125,16 @@ const CategorySectionCms = ({
 						section={section}
 						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
 						fieldName={"sectionContent"}
+					/>
+				</Grid>
+			</Grid>
+			<Grid container spacing={1}>
+				<Grid item xs={12}>
+					<CategoryArrayInput
+						value={section.featuredCategories}
+						fieldName="featuredCategories"
+						handleExplicitSectionDataChange={handleExplicitSectionDataChange}
+						section={section}
 					/>
 				</Grid>
 			</Grid>

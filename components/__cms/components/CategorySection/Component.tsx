@@ -1,6 +1,8 @@
 //React & Material-UI Imports
 import React from "react";
 
+import useCategories from "../../../../hooks/categories/useCategories";
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Element, isText } from "domhandler";
@@ -29,6 +31,32 @@ interface CategorySectionProps {
 	sectionAnchor?: string;
 }
 
+interface SimplifiedCategory {
+	category_id: string;
+	category_name: string;
+}
+
+interface FullCategory {
+	category_id: string;
+	category_name: string;
+	created_at: string;
+	category_image: string;
+	updated_at: string;
+}
+
+function getFullCategories(
+	simplifiedCategories: SimplifiedCategory[],
+	fullCategories: FullCategory[]
+): FullCategory[] {
+	if (simplifiedCategories.length === 0 || fullCategories.length === 0) {
+		return []; // Return an empty array if either input array is empty
+	}
+
+	const categoryIds = simplifiedCategories.map((category) => category.category_id);
+
+	return fullCategories.filter((category) => categoryIds.includes(category.category_id));
+}
+
 const CategorySection = ({
 	section,
 	colorSettings,
@@ -39,6 +67,14 @@ const CategorySection = ({
 	//Set Media Query
 	const theme = useTheme();
 	const mobileWidth = useMediaQuery(theme.breakpoints.down("md"));
+
+	const categories = useCategories();
+	console.log(categories);
+
+	if (categories.isLoading) {
+		return <div>Loading...</div>;
+	}
+	console.log(getFullCategories(section.featuredCategories, categories.data.data));
 
 	return section ? (
 		// <ScrollableAnchor id={sectionAnchor ? sectionAnchor : 'section'}>
@@ -108,9 +144,14 @@ const CategorySection = ({
 					justifyContent: "center",
 				}}
 			>
-				{categoryCardMockData.map((category) => (
-					<CategoryCard categoryName={category.title} imageUrl={category.image} />
-				))}
+				{getFullCategories(section.featuredCategories, categories.data.data).map(
+					(category: any) => (
+						<CategoryCard
+							categoryName={category.category_name}
+							imageUrl={category.category_image}
+						/>
+					)
+				)}
 			</Box>
 		</Box>
 	) : (
