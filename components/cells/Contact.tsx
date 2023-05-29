@@ -37,7 +37,7 @@ const Contact = () => {
 								}}
 							>
 								<Image
-									src="/images/contact.jpg"
+									src="/images/sample-images/image.jpg"
 									alt="profile"
 									fill={true}
 									style={{ objectFit: "cover" }}
