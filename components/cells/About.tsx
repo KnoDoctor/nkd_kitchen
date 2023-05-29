@@ -46,39 +46,50 @@ const About = () => {
 						</Grid>
 						<Grid item xs={12} md={7}>
 							<Typography variant="body1" sx={{ textAlign: "justify", mb: 2 }}>
-								I'm Andrew Barfield, and I'm located in Toronto, Canada. I have a
-								passion for design and manufacturing using the latest in maker
-								technology, and I've been honing my skills in this area for several
-								years. I have a university degree in history from McMaster
-								University, which has taught me to think critically and creatively.
-								These skills have been invaluable in my journey as a maker, as I've
-								been able to bring unique and functional designs to life using
-								technologies such as 3D printing and vacuum forming.
+								Introducing N_K_D Kitchen, a vibrant and interactive online platform
+								dedicated to connecting passionate food enthusiasts and culinary
+								aficionados from around the world. Our recipe sharing website serves
+								as a digital hub where individuals can discover, create, and share
+								their favorite recipes, fostering a global community united by their
+								love for cooking and gastronomy.
 							</Typography>
 							<Typography variant="body1" sx={{ textAlign: "justify", mb: 2 }}>
-								During the pandemic, I discovered the world of maker technology and
-								became fascinated by the endless possibilities it presents. I began
-								experimenting with 3D printing and soon realised that I had a real
-								talent for creating functional and unique objects. However, I didn't
-								stop there. I expanded my skill set to include vacuum forming and
-								other technologies, which has given me the ability to bring even
-								more complex and innovative designs to life.
+								At N_K_D Kitchen, we believe that cooking is an art form that
+								transcends boundaries, cultures, and skill levels. Whether you're an
+								experienced chef or a kitchen novice, our platform welcomes everyone
+								to explore a diverse collection of recipes spanning various
+								cuisines, dietary preferences, and cooking techniques. From
+								mouthwatering mains and delectable desserts to refreshing beverages
+								and innovative appetizers, there's something for every palate.
 							</Typography>
 							<Typography variant="body1" sx={{ textAlign: "justify", mb: 2 }}>
-								My approach to making is to think holistically about how to design
-								an object that maximises the potential of the technology being used.
-								I've worked on a variety of projects, from beer taps and cookie
-								cutters to faux neon signs, trophies, and custom gummy candies. I
-								believe that maker technology has the power to revolutionise the way
-								we live and work, and I'm dedicated to playing my part in making
-								that happen.
+								As a member of our community, you can unleash your culinary
+								creativity by contributing your own recipes, complete with
+								step-by-step instructions, ingredient lists, and captivating food
+								photography. Our user-friendly interface and intuitive recipe editor
+								make it easy for you to showcase your culinary creations and engage
+								with other passionate food lovers.
 							</Typography>
 							<Typography variant="body1" sx={{ textAlign: "justify", mb: 2 }}>
-								My future goals include continuing to learn and explore new maker
-								technologies, and using my skills to create interesting and exciting
-								products and objects for consumers and clients. I'm always looking
-								for new challenges and opportunities to grow and expand my skill
-								set.
+								Connect with fellow food enthusiasts through vibrant discussions,
+								comments, and ratings. Discover hidden gems and personal favorites
+								shared by others, and share your cooking experiences, tips, and
+								tricks. Expand your culinary repertoire by browsing through curated
+								collections, seasonal inspirations, and trending recipes tailored to
+								your preferences.
+							</Typography>
+							<Typography variant="body1" sx={{ textAlign: "justify", mb: 2 }}>
+								We value the importance of dietary diversity and inclusivity, so
+								you'll find a wide array of recipes catering to various dietary
+								needs, such as vegetarian, vegan, gluten-free, and more. Our search
+								filters and personalized recommendations ensure that you can easily
+								find recipes that align with your specific requirements.
+							</Typography>
+							<Typography variant="body1" sx={{ textAlign: "justify", mb: 2 }}>
+								Embrace the joy of cooking with N_K_D Kitchen, your go-to
+								destination for culinary exploration, inspiration, and connection.
+								Join our growing community today and embark on a flavorful journey,
+								celebrating the art of cooking, one recipe at a time.
 							</Typography>
 						</Grid>
 					</Grid>
