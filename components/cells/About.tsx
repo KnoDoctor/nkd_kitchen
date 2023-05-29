@@ -21,7 +21,7 @@ const About = () => {
 		>
 			<SlideIn>
 				<Typography variant="h2" component="h3" sx={{ textAlign: "center", mb: 5 }}>
-					About Me
+					About n_k_d Kitchen
 				</Typography>
 			</SlideIn>
 			<SlideIn delaySlideIn={0.1}>
@@ -37,7 +37,7 @@ const About = () => {
 								}}
 							>
 								<Image
-									src="/images/profile_pic.jpg"
+									src="/images/sample-images/8806914143_a750ced2cb.jpg"
 									alt="profile"
 									fill={true}
 									style={{ objectFit: "cover", objectPosition: "top" }}
