@@ -45,7 +45,12 @@ export default function ListCard({ name, user, image }: ListCardProps) {
 					</IconButton>
 				</Box> */}
 				</Box>
-				<CardMedia component="img" sx={{ width: 200 }} image={image} alt={name} />
+				<CardMedia
+					component="img"
+					sx={{ width: 240, height: 135 }}
+					image={image}
+					alt={name}
+				/>
 			</CardActionArea>
 		</Card>
 	);
