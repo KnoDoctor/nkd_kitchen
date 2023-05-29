@@ -1,27 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, Chip, Typography } from "@mui/material";
 
-// interface Entity {
-// 	entity_id: string;
-// 	entity_name: string;
-// }
-
-function getMissingEntities(
-	referencedEntities: any,
-	referenceableEntities: any,
-	entityFieldPrefix: string
-): any {
-	if (referenceableEntities.length === 0) {
-		return []; // Return an empty array if referenceableEntities input array is empty
-	}
-
-	const referencedIds = referencedEntities.map(
-		(entity: any) => entity[`${entityFieldPrefix}_id`]
-	);
-	return referenceableEntities.filter(
-		(entity: any) => !referencedIds.includes(entity[`${entityFieldPrefix}_id`])
-	);
-}
+import getMissingEntities from "../../../../utils/helperFunctions/getMissingEntities";
 
 interface ReferencerProps {
 	fieldName: string;
