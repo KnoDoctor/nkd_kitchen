@@ -11,11 +11,12 @@ import Link from "../../_atoms/Link";
 interface CategoryCardProps {
 	categoryName: string;
 	imageUrl: string;
+	categoryId: string;
 }
 
-const CategoryCard = ({ categoryName, imageUrl }: CategoryCardProps) => {
+const CategoryCard = ({ categoryName, imageUrl, categoryId }: CategoryCardProps) => {
 	return (
-		<Link href={"/about"} sx={{ textDecoration: "none" }}>
+		<Link href={`/categories/${categoryId}`} sx={{ textDecoration: "none" }}>
 			<Card elevation={6} sx={{ width: "240px", borderRadius: "4px", margin: "0.5rem" }}>
 				<CardActionArea onClick={() => console.log("Boop")}>
 					<CardMedia sx={{ height: 240 }} image={imageUrl} title="Lake Pichola" />

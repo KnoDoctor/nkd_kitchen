@@ -34,8 +34,6 @@ const Breadcrumbs = ({ breadcrumbs, actions }: BreadcrumbsProps) => {
 	const theme = useTheme();
 	const isSm = useMediaQuery(theme.breakpoints.down("md"));
 
-	console.log(router);
-
 	return (
 		<Card sx={{ p: 2 }}>
 			<Grid container direction={isSm ? "column-reverse" : "row"}>

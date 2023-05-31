@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Stack, Chip, Typography } from "@mui/material";
 
-import getMissingEntities from "../../../../utils/helperFunctions/getMissingEntities";
+import getMissingEntitiesReferencer from "../../../../utils/helperFunctions/getMissingEntitiesReferencer";
 
 interface ReferencerProps {
 	fieldName: string;
@@ -20,7 +20,7 @@ const Referencer = ({
 	section,
 	useHook,
 }: ReferencerProps) => {
-	const [referencedEntities, setReferences] = useState(section[fieldName] || []);
+	const [referencedEntities, setReferencedEntities] = useState(section[fieldName] || []);
 
 	const referenceableEntities = useHook();
 
@@ -50,7 +50,7 @@ const Referencer = ({
 			});
 		}
 
-		setReferences(currentEntityReferences);
+		setReferencedEntities(currentEntityReferences);
 	};
 
 	if (referenceableEntities.isLoading) return <>Loading...</>;
@@ -79,13 +79,13 @@ const Referencer = ({
 					)}
 				</Box>
 				<Box my={2}>
-					{getMissingEntities(
+					{getMissingEntitiesReferencer(
 						referencedEntities,
 						referenceableEntities.data.data,
 						entityFieldPrefix
 					).length > 0 ? (
 						<Stack direction="row" spacing={1}>
-							{getMissingEntities(
+							{getMissingEntitiesReferencer(
 								referencedEntities,
 								referenceableEntities.data.data,
 								entityFieldPrefix

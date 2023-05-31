@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-import { checkIfGuid } from "../../../utils/uuids";
+import { checkIfGuid } from "../../../../utils/uuids";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
 	const {
@@ -37,7 +37,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 					recipe_id,
 				},
 				include: {
-					recipe_ingredients: {
+					recipes_ingredients: {
 						select: {
 							ingredients: {
 								include: {
@@ -47,6 +47,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 							},
 							quantity: true,
 							unit: true,
+						},
+					},
+					recipes_categories: {
+						select: {
+							categories: true,
 						},
 					},
 				},

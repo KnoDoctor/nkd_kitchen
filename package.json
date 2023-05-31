@@ -14,15 +14,15 @@
 	"dependencies": {
 		"@ckeditor/ckeditor5-react": "^5.0.6",
 		"@emotion/cache": "latest",
-		"@emotion/react": "latest",
+		"@emotion/react": "^11.11.0",
 		"@emotion/server": "latest",
-		"@emotion/styled": "latest",
+		"@emotion/styled": "^11.11.0",
 		"@mui/icons-material": "latest",
 		"@mui/lab": "^5.0.0-alpha.121",
-		"@mui/material": "^5.11.11",
+		"@mui/material": "^5.13.3",
 		"@next-auth/prisma-adapter": "^1.0.5",
 		"@next/font": "latest",
-		"@prisma/client": "^4.14.1",
+		"@prisma/client": "^4.15.0",
 		"@vercel/analytics": "^1.0.0",
 		"cloudinary": "^1.33.0",
 		"embla-carousel-react": "^7.0.5",
@@ -48,7 +48,7 @@
 		"@types/uuid": "^9.0.0",
 		"eslint": "latest",
 		"eslint-config-next": "^13.4.2",
-		"prisma": "^4.14.1",
+		"prisma": "^4.15.0",
 		"typescript": "latest"
 	}
 }

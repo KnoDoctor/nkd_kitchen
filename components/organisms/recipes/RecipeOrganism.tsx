@@ -19,8 +19,11 @@ import UploadButton from "../../_atoms/UploadButton";
 import AlertSnackbar from "../../_atoms/AlertSnackbar";
 
 import useRecipe from "../../../hooks/recipes/useRecipe";
+import useIngredients from "../../../hooks/ingredients/useIngredients";
 
 import { returnCurrentModule } from "../../../utils/helperFunctions";
+import Relator from "../../__cms/____wip/inputs/Relator";
+import useCategories from "../../../hooks/categories/useCategories";
 
 interface handleSaveRecipeInputs {
 	updatedRecipe: any;
@@ -158,6 +161,16 @@ const RecipeOrganism = () => {
 			<Card sx={{ height: "100%", p: 2, mt: 2, overflow: "visible" }}>
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={8}>
+						<Relator
+							title="Ingredients"
+							relatingEntityName="recipes"
+							relatingEntityFieldPrefix="recipe"
+							relatingEntity={recipe}
+							relatableEntityName="ingredients"
+							relatableEntityFieldPrefix="ingredient"
+							relationName="recipes_ingredients"
+							useHook={useIngredients}
+						/>
 						<RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} />
 					</Grid>
 					<Grid
@@ -215,6 +228,17 @@ const RecipeOrganism = () => {
 									setHasContentBeenEdited={setHasContentBeenEdited}
 								/>
 							</Grid>
+							<Relator
+								title="Categories"
+								relatingEntityName="recipes"
+								relatingEntityFieldPrefix="recipe"
+								relatingEntity={recipe}
+								relatableEntityName="categories"
+								relatableEntityFieldPrefix="category"
+								relationName="recipes_categories"
+								useHook={useCategories}
+								isSidebar
+							/>
 							<TextField
 								sx={{ width: "100%", mb: 2 }}
 								multiline

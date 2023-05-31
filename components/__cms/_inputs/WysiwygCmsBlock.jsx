@@ -47,8 +47,7 @@ function WysiwygCmsBlock({ data, section, handleExplicitSectionDataChange, field
 				data={data}
 				onReady={(editor) => {
 					// You can store the "editor" and use when it is needed.
-					console.log("Editor is ready to use!", editor);
-
+					// console.log("Editor is ready to use!", editor);
 					// // Insert the toolbar before the editable area.
 					// editor.ui
 					// 	.getEditableElement()

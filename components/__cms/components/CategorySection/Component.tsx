@@ -149,6 +149,7 @@ const CategorySection = ({
 						<CategoryCard
 							categoryName={category.category_name}
 							imageUrl={category.category_image}
+							categoryId={category.category_id}
 						/>
 					)
 				)}

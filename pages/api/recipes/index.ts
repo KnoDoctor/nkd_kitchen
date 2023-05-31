@@ -25,7 +25,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 			const allRecipes = await prisma.recipes.findMany({
 				include: {
 					users: { select: { name: true } },
-					recipe_ingredients: {
+					recipes_ingredients: {
 						select: {
 							ingredients: {
 								include: {
@@ -37,6 +37,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 							unit: true,
 						},
 					},
+					recipes_categories: true,
 				},
 			});
 
