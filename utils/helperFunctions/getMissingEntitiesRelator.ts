@@ -11,18 +11,7 @@ export default function getMissingEntitiesRelator(
 	const referencedIds = relatedEntities.map(
 		(entity: any) => entity[`${relatableEntityName}`][`${entityFieldPrefix}_id`]
 	);
-	console.log(
-		relatableEntities
-			.map((entity: any) => {
-				return { [`${relatableEntityName}`]: entity };
-			})
-			.filter(
-				(entity: any) =>
-					!referencedIds.includes(
-						entity[`${relatableEntityName}`][`${entityFieldPrefix}_id`]
-					)
-			)
-	);
+
 	return relatableEntities
 		.map((entity: any) => {
 			return { [`${relatableEntityName}`]: entity };

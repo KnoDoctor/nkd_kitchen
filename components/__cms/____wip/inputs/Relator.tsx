@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Box, Card, Stack, Chip, Typography } from "@mui/material";
 
 import getMissingEntitiesRelator from "../../../../utils/helperFunctions/getMissingEntitiesRelator";
@@ -8,18 +8,19 @@ import getMissingEntitiesRelator from "../../../../utils/helperFunctions/getMiss
 // 	recipe_id: string;
 // }
 
-const handleRelation = async ({
+const handleRelationCreation = async ({
 	relatable_id,
 	relatableEntityName,
 	relatableEntityFieldPrefix,
 	relating_id,
 	relatingEntityName,
 	relatingEntityFieldPrefix,
+	relatingEntity,
 }: any) => {
 	// setIsRecipeSaving(true);
 	try {
 		const relationRes = await fetch(
-			`/api/${relatingEntityName}/${relating_id}/${relatableEntityName}`,
+			`/api/${relatingEntityName}/${relating_id}/${relatableEntityName}/${relatable_id}`,
 			{
 				method: "POST",
 
@@ -37,13 +38,61 @@ const handleRelation = async ({
 
 		if (relationsData.success) {
 			console.log("Created");
-
-			// recipe.mutate();
+			// relatingEntity.mutate();
 			// setIsRecipeSaving(false);
 			// setRecipeSaveError(null);
 			// setHasContentBeenEdited(false);
 		} else {
 			console.log("Failed");
+			// relatingEntity.mutate();
+			// setIsRecipeSaving(false);
+			// setRecipeSaveError(`${updateRecipeData.error.name}: ${updateRecipeData.error.message}`);
+			// console.log("ERROR: ", updateRecipeData);
+		}
+	} catch (error: any) {
+		console.log(`${error.name}: ${error.message}`);
+		// setIsRecipeSaving(false);
+		// setRecipeSaveError(`${error.name}: ${error.message}`);
+	}
+};
+
+const handleRelationDeletion = async ({
+	relatable_id,
+	relatableEntityName,
+	relatableEntityFieldPrefix,
+	relating_id,
+	relatingEntityName,
+	relatingEntityFieldPrefix,
+	relatingEntity,
+}: any) => {
+	// setIsRecipeSaving(true);
+	try {
+		const relationRes = await fetch(
+			`/api/${relatingEntityName}/${relating_id}/${relatableEntityName}/${relatable_id}`,
+			{
+				method: "DELETE",
+
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					[`${relatableEntityFieldPrefix}_id`]: relatable_id,
+					[`${relatingEntityFieldPrefix}_id`]: relating_id,
+				}),
+			}
+		);
+
+		const relationsData = await relationRes.json();
+
+		if (relationsData.success) {
+			console.log("Deleted");
+			// relatingEntity.mutate();
+			// setIsRecipeSaving(false);
+			// setRecipeSaveError(null);
+			// setHasContentBeenEdited(false);
+		} else {
+			console.log("Failed");
+			// relatingEntity.mutate();
 			// setIsRecipeSaving(false);
 			// setRecipeSaveError(`${updateRecipeData.error.name}: ${updateRecipeData.error.message}`);
 			// console.log("ERROR: ", updateRecipeData);
@@ -145,6 +194,21 @@ const Relator = ({
 									}
 									onDelete={() => {
 										toggleEntityReference(reference);
+										handleRelationDeletion({
+											relatable_id:
+												reference[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_id`
+												],
+											relating_id:
+												relatingEntity.data.data[
+													`${relatingEntityFieldPrefix}_id`
+												],
+											relatableEntityName,
+											relatableEntityFieldPrefix,
+											relatingEntityName,
+											relatingEntityFieldPrefix,
+											relatingEntity,
+										});
 									}}
 								/>
 							))}
@@ -185,7 +249,7 @@ const Relator = ({
 									}
 									onClick={() => {
 										toggleEntityReference(reference);
-										handleRelation({
+										handleRelationCreation({
 											relatable_id:
 												reference[`${relatableEntityName}`][
 													`${relatableEntityFieldPrefix}_id`
@@ -198,6 +262,7 @@ const Relator = ({
 											relatableEntityFieldPrefix,
 											relatingEntityName,
 											relatingEntityFieldPrefix,
+											relatingEntity,
 										});
 									}}
 									variant="outlined"
