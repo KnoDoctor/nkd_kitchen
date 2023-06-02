@@ -281,6 +281,10 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			sectionLabel: "Jeff's First Component",
 		},
 		{
+			sectionFieldName: "categorySection",
+			sectionLabel: "Category Section",
+		},
+		{
 			sectionFieldName: "recipeSection",
 			sectionLabel: "Recipe Section",
 		},
