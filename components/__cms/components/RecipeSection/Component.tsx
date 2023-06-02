@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Element, isText } from "domhandler";
 
-import { Box, Typography } from "@mui/material";
+import { Container, Box, Grid, Typography } from "@mui/material";
 
 import parse, { attributesToProps } from "html-react-parser";
 
@@ -129,22 +129,29 @@ const RecipeSection = ({
 					)}
 				</Typography>
 			</Box>
-			<Box
-				sx={{
-					maxWidth: "1200px",
-					margin: "2rem auto",
-					display: "flex",
-					justifyContent: "center",
-				}}
-			>
-				{getFullRecipes(section.featuredRecipes, recipes.data.data).map((recipe: any) => (
-					<RecipeCard
-						recipeName={recipe.recipe_name}
-						imageUrl={recipe.recipe_image}
-						recipeId={recipe.recipe_id}
-					/>
-				))}
-			</Box>
+			<Container maxWidth="lg" sx={{ my: 4 }}>
+				<Grid container spacing={2} my={4}>
+					{getFullRecipes(section.featuredRecipes, recipes.data.data).map(
+						(recipe: any) => (
+							<Grid
+								item
+								xs={12}
+								sm={6}
+								md={4}
+								lg={3}
+								display={"flex"}
+								justifyContent={"center"}
+							>
+								<RecipeCard
+									recipeName={recipe.recipe_name}
+									imageUrl={recipe.recipe_image}
+									recipeId={recipe.recipe_id}
+								/>
+							</Grid>
+						)
+					)}
+				</Grid>
+			</Container>
 		</Box>
 	) : (
 		<></>

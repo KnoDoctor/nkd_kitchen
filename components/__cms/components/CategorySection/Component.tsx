@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { Element, isText } from "domhandler";
 
-import { Box, Typography } from "@mui/material";
+import { Container, Grid, Box, Typography } from "@mui/material";
 
 import parse, { attributesToProps } from "html-react-parser";
 
@@ -136,24 +136,29 @@ const CategorySection = ({
 					)}
 				</Typography>
 			</Box>
-			<Box
-				sx={{
-					maxWidth: "1200px",
-					margin: "2rem auto",
-					display: "flex",
-					justifyContent: "center",
-				}}
-			>
-				{getFullCategories(section.featuredCategories, categories.data.data).map(
-					(category: any) => (
-						<CategoryCard
-							categoryName={category.category_name}
-							imageUrl={category.category_image}
-							categoryId={category.category_id}
-						/>
-					)
-				)}
-			</Box>
+			<Container maxWidth="lg" sx={{ my: 4 }}>
+				<Grid container spacing={2} my={4}>
+					{getFullCategories(section.featuredCategories, categories.data.data).map(
+						(category: any) => (
+							<Grid
+								item
+								xs={12}
+								sm={6}
+								md={4}
+								lg={3}
+								display={"flex"}
+								justifyContent={"center"}
+							>
+								<CategoryCard
+									categoryName={category.category_name}
+									imageUrl={category.category_image}
+									categoryId={category.category_id}
+								/>
+							</Grid>
+						)
+					)}
+				</Grid>
+			</Container>
 		</Box>
 	) : (
 		<></>

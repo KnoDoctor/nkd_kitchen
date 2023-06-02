@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -15,26 +17,34 @@ interface RecipeCardProps {
 }
 
 const RecipeCard = ({ recipeName, imageUrl, recipeId }: RecipeCardProps) => {
+	const router = useRouter();
 	return (
-		<Link href={`/recipes/${recipeId}`} sx={{ textDecoration: "none" }}>
-			<Card elevation={6} sx={{ width: "240px", borderRadius: "4px", margin: "0.5rem" }}>
-				<CardActionArea onClick={() => console.log("Boop")}>
-					<CardMedia sx={{ height: 240 }} image={imageUrl} title="Lake Pichola" />
-					<CardContent>
-						{/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+		// <Link href={`/recipes/${recipeId}`} sx={{ textDecoration: "none" }}>
+		<Card
+			elevation={6}
+			sx={{
+				width: { xs: "100%", sm: "340px", md: "300px" },
+				borderRadius: "4px",
+				margin: "0.5rem",
+			}}
+		>
+			<CardActionArea onClick={() => router.push(`/recipes/${recipeId}`)}>
+				<CardMedia sx={{ height: 240 }} image={imageUrl} title="Lake Pichola" />
+				<CardContent>
+					{/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
 						Features & Stories
 					</Typography> */}
-						<Typography variant={"h6"} fontWeight={300} my={1} textAlign={"center"}>
-							{recipeName}
-						</Typography>
-						{/* <Typography variant="body2">
+					<Typography variant={"h6"} fontWeight={300} my={1} textAlign={"center"}>
+						{recipeName}
+					</Typography>
+					{/* <Typography variant="body2">
 						We take a look at the things you need to consider when building a tiny house
 						in southern Ontario.
 					</Typography> */}
-					</CardContent>
-				</CardActionArea>
-			</Card>
-		</Link>
+				</CardContent>
+			</CardActionArea>
+		</Card>
+		// </Link>
 	);
 };
 

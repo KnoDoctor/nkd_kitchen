@@ -44,7 +44,15 @@ const Category = ({ categoryData }: any) => {
 				<Grid container spacing={2} my={4}>
 					{categoryData?.data?.recipes_categories.map((recipe: any) => {
 						return (
-							<Grid item xs={3} display={"flex"} justifyContent={"center"}>
+							<Grid
+								item
+								xs={12}
+								sm={6}
+								md={4}
+								lg={3}
+								display={"flex"}
+								justifyContent={"center"}
+							>
 								<RecipeCard
 									recipeName={recipe.recipes.recipe_name}
 									imageUrl={recipe.recipes.recipe_image}
