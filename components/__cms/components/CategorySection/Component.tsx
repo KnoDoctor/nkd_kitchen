@@ -98,11 +98,11 @@ const CategorySection = ({
 				>
 					{section.sectionHeadline}
 				</Typography>
+
 				<Typography
 					variant="body1"
 					sx={{
 						color: colorSettings === "Custom" ? sectionFontColor : "#494949",
-
 						textAlign: "center",
 					}}
 				>

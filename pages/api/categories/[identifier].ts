@@ -36,6 +36,13 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				where: {
 					category_id,
 				},
+				include: {
+					recipes_categories: {
+						select: {
+							recipes: true,
+						},
+					},
+				},
 			});
 
 			if (category) {
