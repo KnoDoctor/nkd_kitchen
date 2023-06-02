@@ -20,10 +20,10 @@ import AlertSnackbar from "../../_atoms/AlertSnackbar";
 
 import useRecipe from "../../../hooks/recipes/useRecipe";
 import useIngredients from "../../../hooks/ingredients/useIngredients";
+import useCategories from "../../../hooks/categories/useCategories";
 
 import { returnCurrentModule } from "../../../utils/helperFunctions";
 import Relator from "../../__cms/____wip/inputs/Relator";
-import useCategories from "../../../hooks/categories/useCategories";
 
 interface handleSaveRecipeInputs {
 	updatedRecipe: any;
@@ -164,12 +164,13 @@ const RecipeOrganism = () => {
 						<Relator
 							title="Ingredients"
 							relatingEntityName="recipes"
+							relatingEntityId={id}
 							relatingEntityFieldPrefix="recipe"
-							relatingEntity={recipe}
+							useRelatingEntityHook={useRecipe}
 							relatableEntityName="ingredients"
 							relatableEntityFieldPrefix="ingredient"
 							relationName="recipes_ingredients"
-							useHook={useIngredients}
+							useRelatableEntityHook={useIngredients}
 						/>
 						<RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} />
 					</Grid>
@@ -231,12 +232,13 @@ const RecipeOrganism = () => {
 							<Relator
 								title="Categories"
 								relatingEntityName="recipes"
+								relatingEntityId={id}
 								relatingEntityFieldPrefix="recipe"
-								relatingEntity={recipe}
+								useRelatingEntityHook={useRecipe}
 								relatableEntityName="categories"
 								relatableEntityFieldPrefix="category"
 								relationName="recipes_categories"
-								useHook={useCategories}
+								useRelatableEntityHook={useCategories}
 								isSidebar
 							/>
 							<TextField

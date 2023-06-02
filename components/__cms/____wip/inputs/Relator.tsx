@@ -1,14 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Container, Box, Card, Stack, Chip, Typography } from "@mui/material";
+
+import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 
 import getMissingEntitiesRelator from "../../../../utils/helperFunctions/getMissingEntitiesRelator";
 
-// interface handleSaveRecipeInputs {
-// 	category_id: string;
-// 	recipe_id: string;
-// }
+interface HandleRelationProps {
+	relatable_id: string;
+	relatableEntityName: string;
+	relatableEntityFieldPrefix: string;
+	relating_id: string;
+	relatingEntityName: string;
+	relatingEntityFieldPrefix: string;
+	relatingEntity: string;
+	setIsRelationSaving: (isSaving: boolean) => void;
+	setRelationSaveError: (error: string | null) => void;
+	setIsAlertSnackbarOpen: (isOpen: boolean) => void;
+	action: "POST" | "DELETE";
+}
 
-const handleRelationCreation = async ({
+const handleRelation = async ({
 	relatable_id,
 	relatableEntityName,
 	relatableEntityFieldPrefix,
@@ -16,13 +27,37 @@ const handleRelationCreation = async ({
 	relatingEntityName,
 	relatingEntityFieldPrefix,
 	relatingEntity,
-}: any) => {
-	// setIsRecipeSaving(true);
+	setIsRelationSaving,
+	setRelationSaveError,
+	setIsAlertSnackbarOpen,
+	action,
+}: HandleRelationProps) => {
+	const updateStateOnSuccess = (
+		setIsRelationSaving: (isSaving: boolean) => void,
+		setRelationSaveError: (error: string | null) => void
+	) => {
+		console.log("Success");
+		setIsRelationSaving(false);
+		setRelationSaveError(null);
+	};
+
+	const updateStateOnError = (
+		setIsRelationSaving: (isSaving: boolean) => void,
+		setRelationSaveError: (error: string | null) => void,
+		errorMessage: string
+	) => {
+		console.log("Failed");
+		setIsRelationSaving(false);
+		setRelationSaveError(errorMessage);
+	};
+
 	try {
+		setIsRelationSaving(true);
+		setIsAlertSnackbarOpen(true);
 		const relationRes = await fetch(
 			`/api/${relatingEntityName}/${relating_id}/${relatableEntityName}/${relatable_id}`,
 			{
-				method: "POST",
+				method: action,
 
 				headers: {
 					"Content-Type": "application/json",
@@ -34,73 +69,27 @@ const handleRelationCreation = async ({
 			}
 		);
 
+		if (!relationRes.ok) {
+			throw new Error(`HTTP error! status: ${relationRes.status}`);
+		}
+
 		const relationsData = await relationRes.json();
 
 		if (relationsData.success) {
-			console.log("Created");
-			// relatingEntity.mutate();
-			// setIsRecipeSaving(false);
-			// setRecipeSaveError(null);
-			// setHasContentBeenEdited(false);
+			updateStateOnSuccess(setIsRelationSaving, setRelationSaveError);
 		} else {
-			console.log("Failed");
-			// relatingEntity.mutate();
-			// setIsRecipeSaving(false);
-			// setRecipeSaveError(`${updateRecipeData.error.name}: ${updateRecipeData.error.message}`);
-			// console.log("ERROR: ", updateRecipeData);
+			updateStateOnError(
+				setIsRelationSaving,
+				setRelationSaveError,
+				action === "POST" ? "Creation Failed" : "Deletion Failed"
+			);
 		}
 	} catch (error: any) {
-		console.log(`${error.name}: ${error.message}`);
-		// setIsRecipeSaving(false);
-		// setRecipeSaveError(`${error.name}: ${error.message}`);
-	}
-};
-
-const handleRelationDeletion = async ({
-	relatable_id,
-	relatableEntityName,
-	relatableEntityFieldPrefix,
-	relating_id,
-	relatingEntityName,
-	relatingEntityFieldPrefix,
-	relatingEntity,
-}: any) => {
-	// setIsRecipeSaving(true);
-	try {
-		const relationRes = await fetch(
-			`/api/${relatingEntityName}/${relating_id}/${relatableEntityName}/${relatable_id}`,
-			{
-				method: "DELETE",
-
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					[`${relatableEntityFieldPrefix}_id`]: relatable_id,
-					[`${relatingEntityFieldPrefix}_id`]: relating_id,
-				}),
-			}
+		updateStateOnError(
+			setIsRelationSaving,
+			setRelationSaveError,
+			`${error.name}: ${error.message}`
 		);
-
-		const relationsData = await relationRes.json();
-
-		if (relationsData.success) {
-			console.log("Deleted");
-			// relatingEntity.mutate();
-			// setIsRecipeSaving(false);
-			// setRecipeSaveError(null);
-			// setHasContentBeenEdited(false);
-		} else {
-			console.log("Failed");
-			// relatingEntity.mutate();
-			// setIsRecipeSaving(false);
-			// setRecipeSaveError(`${updateRecipeData.error.name}: ${updateRecipeData.error.message}`);
-			// console.log("ERROR: ", updateRecipeData);
-		}
-	} catch (error: any) {
-		console.log(`${error.name}: ${error.message}`);
-		// setIsRecipeSaving(false);
-		// setRecipeSaveError(`${error.name}: ${error.message}`);
 	}
 };
 
@@ -108,11 +97,12 @@ interface RelatorProps {
 	title: string;
 	relationName: string;
 	relatingEntityName: string;
+	relatingEntityId: any;
 	relatingEntityFieldPrefix: string;
-	relatingEntity: any;
+	useRelatingEntityHook: any;
 	relatableEntityName: string;
 	relatableEntityFieldPrefix: string;
-	useHook: any;
+	useRelatableEntityHook: any;
 	isSidebar?: boolean;
 }
 
@@ -120,18 +110,24 @@ const Relator = ({
 	title,
 	relationName,
 	relatingEntityName,
+	relatingEntityId,
 	relatingEntityFieldPrefix,
-	relatingEntity,
+	useRelatingEntityHook,
 	relatableEntityName,
 	relatableEntityFieldPrefix,
-	useHook,
+	useRelatableEntityHook,
 	isSidebar,
 }: RelatorProps) => {
+	const relatingEntity = useRelatingEntityHook(relatingEntityId);
+	const relatableEntities = useRelatableEntityHook();
+
 	const [relatedEntities, setRelatedEntities] = useState(
 		relatingEntity.data.data[`${relationName}`] || []
 	);
 
-	const relatableEntities = useHook();
+	const [isRelationSaving, setIsRelationSaving] = useState(false);
+	const [relationSaveError, setRelationSaveError] = useState<string | undefined | null>(null);
+	const [isAlertSnackbarOpen, setIsAlertSnackbarOpen] = useState(false);
 
 	const toggleEntityReference = (entity: any) => {
 		let currentEntityRelations = [...relatedEntities];
@@ -156,8 +152,6 @@ const Relator = ({
 		}
 		setRelatedEntities(currentEntityRelations);
 	};
-
-	if (relatableEntities.isLoading) return <>Loading...</>;
 
 	const RenderPrimaryComponent = () => {
 		return (
@@ -194,7 +188,7 @@ const Relator = ({
 									}
 									onDelete={() => {
 										toggleEntityReference(reference);
-										handleRelationDeletion({
+										handleRelation({
 											relatable_id:
 												reference[`${relatableEntityName}`][
 													`${relatableEntityFieldPrefix}_id`
@@ -208,6 +202,10 @@ const Relator = ({
 											relatingEntityName,
 											relatingEntityFieldPrefix,
 											relatingEntity,
+											setIsRelationSaving,
+											setRelationSaveError,
+											setIsAlertSnackbarOpen,
+											action: "DELETE",
 										});
 									}}
 								/>
@@ -249,7 +247,7 @@ const Relator = ({
 									}
 									onClick={() => {
 										toggleEntityReference(reference);
-										handleRelationCreation({
+										handleRelation({
 											relatable_id:
 												reference[`${relatableEntityName}`][
 													`${relatableEntityFieldPrefix}_id`
@@ -263,6 +261,10 @@ const Relator = ({
 											relatingEntityName,
 											relatingEntityFieldPrefix,
 											relatingEntity,
+											setIsRelationSaving,
+											setRelationSaveError,
+											setIsAlertSnackbarOpen,
+											action: "POST",
 										});
 									}}
 									variant="outlined"
@@ -273,9 +275,18 @@ const Relator = ({
 						<Typography variant="body1">{`You've referenced every ${relatableEntityFieldPrefix}, make sure they're all relevant 😉`}</Typography>
 					)}
 				</Box>
+				<AlertSnackbar
+					isSaving={isRelationSaving}
+					saveError={relationSaveError}
+					isAlertSnackbarOpen={isAlertSnackbarOpen}
+					setIsAlertSnackbarOpen={setIsAlertSnackbarOpen}
+				/>
 			</>
 		);
 	};
+
+	if (relatingEntity.isLoading) return <>Loading...</>;
+	if (relatableEntities.isLoading) return <>Loading...</>;
 
 	return (
 		<>

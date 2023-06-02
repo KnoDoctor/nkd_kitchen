@@ -28,9 +28,12 @@ export default function AlertSnackbar({
 		setIsAlertSnackbarOpen(false);
 	};
 
+	console.log(saveError);
+
 	if (isSaving)
 		return (
 			<Snackbar
+				sx={{ minWidth: "250px" }}
 				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 				open={isAlertSnackbarOpen}
 				autoHideDuration={6000}
@@ -45,6 +48,7 @@ export default function AlertSnackbar({
 	if (saveError)
 		return (
 			<Snackbar
+				sx={{ minWidth: "250px" }}
 				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 				open={isAlertSnackbarOpen}
 				autoHideDuration={6000}
@@ -58,9 +62,10 @@ export default function AlertSnackbar({
 
 	return (
 		<Snackbar
+			sx={{ minWidth: "250px" }}
 			anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
 			open={isAlertSnackbarOpen}
-			autoHideDuration={6000}
+			autoHideDuration={1000}
 			onClose={handleClose}
 		>
 			<Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
