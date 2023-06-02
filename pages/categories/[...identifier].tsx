@@ -33,7 +33,7 @@ const Category = ({ categoryData }: any) => {
 						variant="body1"
 						sx={{
 							textAlign: "center",
-							mt: 2,
+							my: 2,
 						}}
 					>
 						Welcome to the n_k_d kitchen! Easy, healthy recipes for busy homes. Enjoy
@@ -41,7 +41,7 @@ const Category = ({ categoryData }: any) => {
 						prepare.
 					</Typography>
 				</Box>
-				<Grid container spacing={2}>
+				<Grid container spacing={2} my={4}>
 					{categoryData?.data?.recipes_categories.map((recipe: any) => {
 						return (
 							<Grid item xs={3} display={"flex"} justifyContent={"center"}>
