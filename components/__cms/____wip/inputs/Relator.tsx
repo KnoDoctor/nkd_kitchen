@@ -16,7 +16,8 @@ interface HandleRelationProps {
 	setIsRelationSaving: (isSaving: boolean) => void;
 	setRelationSaveError: (error: string | null) => void;
 	setIsAlertSnackbarOpen: (isOpen: boolean) => void;
-	action: "POST" | "DELETE";
+	action: "POST" | "PATCH" | "DELETE";
+	relationMetaData?: any;
 }
 
 const handleRelation = async ({
@@ -31,6 +32,7 @@ const handleRelation = async ({
 	setRelationSaveError,
 	setIsAlertSnackbarOpen,
 	action,
+	relationMetaData,
 }: HandleRelationProps) => {
 	const updateStateOnSuccess = (
 		setIsRelationSaving: (isSaving: boolean) => void,
@@ -62,10 +64,12 @@ const handleRelation = async ({
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({
-					[`${relatableEntityFieldPrefix}_id`]: relatable_id,
-					[`${relatingEntityFieldPrefix}_id`]: relating_id,
-				}),
+				body:
+					relationMetaData || action === "PATCH"
+						? JSON.stringify({
+								...relationMetaData,
+						  })
+						: null,
 			}
 		);
 
@@ -105,6 +109,7 @@ interface RelatorProps {
 	useRelatableEntityHook: any;
 	isSidebar?: boolean;
 	CustomRelationComponent?: any;
+	RelatableEntityCreationComponent?: any;
 }
 
 const Relator = ({
@@ -119,6 +124,7 @@ const Relator = ({
 	useRelatableEntityHook,
 	isSidebar,
 	CustomRelationComponent,
+	RelatableEntityCreationComponent,
 }: RelatorProps) => {
 	const relatingEntity = useRelatingEntityHook(relatingEntityId);
 	const relatableEntities = useRelatableEntityHook();
@@ -126,6 +132,8 @@ const Relator = ({
 	const [relatedEntities, setRelatedEntities] = useState(
 		relatingEntity.data.data[`${relationName}`] || []
 	);
+
+	console.log("RELATED ENTITIES: ", relatedEntities);
 
 	const [isRelationSaving, setIsRelationSaving] = useState(false);
 	const [relationSaveError, setRelationSaveError] = useState<string | undefined | null>(null);
@@ -143,14 +151,17 @@ const Relator = ({
 		if (entityIndex !== -1) {
 			currentEntityRelations.splice(entityIndex, 1);
 		} else {
-			currentEntityRelations.push({
-				[`${relatableEntityName}`]: {
-					[`${relatableEntityFieldPrefix}_id`]:
-						entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`],
-					[`${relatableEntityFieldPrefix}_name`]:
-						entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_name`],
-				},
-			});
+			currentEntityRelations.push(
+				{ ...entity }
+				// 	{
+				// 	[`${relatableEntityName}`]: {
+				// 		[`${relatableEntityFieldPrefix}_id`]:
+				// 			entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`],
+				// 		[`${relatableEntityFieldPrefix}_name`]:
+				// 			entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_name`],
+				// 	},
+				// }
+			);
 		}
 		setRelatedEntities(currentEntityRelations);
 	};
@@ -168,19 +179,20 @@ const Relator = ({
 				>
 					{title || "Relator"}
 				</Typography>
-				{CustomRelationComponent ? (
-					relatedEntities.length > 0 ? (
-						relatedEntities.map((reference: any) => (
-							<CustomRelationComponent
-								key={
-									reference[`${relatableEntityName}`][
-										`${relatableEntityFieldPrefix}_id`
-									]
-								}
-								ingredient={reference}
-								handleDelete={() => {
-									toggleEntityReference(reference);
-									handleRelation({
+				<>
+					{CustomRelationComponent ? (
+						relatedEntities.length > 0 ? (
+							relatedEntities.map((reference: any) => (
+								<CustomRelationComponent
+									key={
+										reference[`${relatableEntityName}`][
+											`${relatableEntityFieldPrefix}_id`
+										]
+									}
+									ingredient={reference}
+									handleRelation={handleRelation}
+									toggleEntityReference={toggleEntityReference}
+									handleRelationSetupData={{
 										relatable_id:
 											reference[`${relatableEntityName}`][
 												`${relatableEntityFieldPrefix}_id`
@@ -197,66 +209,66 @@ const Relator = ({
 										setIsRelationSaving,
 										setRelationSaveError,
 										setIsAlertSnackbarOpen,
-										action: "DELETE",
-									});
-								}}
-							/>
-						))
-					) : (
-						<></>
-					)
-				) : (
-					<></>
-				)}
-				<Box my={2}>
-					{relatedEntities.length > 0 ? (
-						<Stack
-							direction="row"
-							spacing={1}
-							sx={{ flexWrap: "wrap", gap: 1 }}
-							useFlexGap
-						>
-							{relatedEntities.map((reference: any) => (
-								<Chip
-									key={
-										reference[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_id`
-										]
-									}
-									label={
-										reference[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_name`
-										]
-									}
-									onDelete={() => {
-										toggleEntityReference(reference);
-										handleRelation({
-											relatable_id:
-												reference[`${relatableEntityName}`][
-													`${relatableEntityFieldPrefix}_id`
-												],
-											relating_id:
-												relatingEntity.data.data[
-													`${relatingEntityFieldPrefix}_id`
-												],
-											relatableEntityName,
-											relatableEntityFieldPrefix,
-											relatingEntityName,
-											relatingEntityFieldPrefix,
-											relatingEntity,
-											setIsRelationSaving,
-											setRelationSaveError,
-											setIsAlertSnackbarOpen,
-											action: "DELETE",
-										});
 									}}
 								/>
-							))}
-						</Stack>
+							))
+						) : (
+							<></>
+						)
 					) : (
-						<Typography variant="body1">{`No ${relatableEntityName} selected.`}</Typography>
+						<Box my={2}>
+							{relatedEntities.length > 0 ? (
+								<Stack
+									direction="row"
+									spacing={1}
+									sx={{ flexWrap: "wrap", gap: 1 }}
+									useFlexGap
+								>
+									{relatedEntities.map((reference: any) => (
+										<Chip
+											key={
+												reference[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_id`
+												]
+											}
+											label={
+												reference[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_name`
+												]
+											}
+											onDelete={() => {
+												toggleEntityReference(reference);
+												handleRelation({
+													relatable_id:
+														reference[`${relatableEntityName}`][
+															`${relatableEntityFieldPrefix}_id`
+														],
+													relating_id:
+														relatingEntity.data.data[
+															`${relatingEntityFieldPrefix}_id`
+														],
+													relatableEntityName,
+													relatableEntityFieldPrefix,
+													relatingEntityName,
+													relatingEntityFieldPrefix,
+													relatingEntity,
+													setIsRelationSaving,
+													setRelationSaveError,
+													setIsAlertSnackbarOpen,
+													action: "DELETE",
+												});
+											}}
+										/>
+									))}
+								</Stack>
+							) : (
+								<Typography variant="body1">{`No ${relatableEntityName} selected.`}</Typography>
+							)}
+						</Box>
 					)}
-				</Box>
+				</>
+
+				{RelatableEntityCreationComponent ? RelatableEntityCreationComponent : <></>}
 				<Box my={2}>
 					{getMissingEntitiesRelator(
 						relatedEntities,

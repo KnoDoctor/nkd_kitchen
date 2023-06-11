@@ -18,6 +18,8 @@ import RecipeDeletionOrganism from "./RecipeDeletionOrganism";
 import UploadButton from "../../_atoms/UploadButton";
 import AlertSnackbar from "../../_atoms/AlertSnackbar";
 import RecipeIngredientCard from "../../_molecules/__cards/RecipeIngredientCard";
+import ActionsModal from "../../_atoms/ActionsModal";
+import IngredientCreationOrganism from "../ingredients/IngredientCreationOrganism";
 
 import useRecipe from "../../../hooks/recipes/useRecipe";
 import useIngredients from "../../../hooks/ingredients/useIngredients";
@@ -173,6 +175,11 @@ const RecipeOrganism = () => {
 							useRelatingEntityHook={useRecipe}
 							useRelatableEntityHook={useIngredients}
 							CustomRelationComponent={RecipeIngredientCard}
+							RelatableEntityCreationComponent={
+								<ActionsModal label="Add A New Ingredient">
+									<IngredientCreationOrganism />
+								</ActionsModal>
+							}
 						/>
 						<RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} />
 					</Grid>

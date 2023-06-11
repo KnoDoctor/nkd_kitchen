@@ -3,6 +3,7 @@ import { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SaveIcon from "@mui/icons-material/Save";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
@@ -10,7 +11,10 @@ import sortArrayOfStringsAlphabetically from "../../../utils/helperFunctions/sor
 
 interface RecipeIngredientCardProps {
 	ingredient: RecipeIngredient;
-	handleDelete: any;
+	// handleDelete: any;
+	toggleEntityReference: any;
+	handleRelationSetupData: any;
+	handleRelation: any;
 }
 
 interface Ingredient {
@@ -79,14 +83,20 @@ const measurementUnits: string[] = [
 	"Clove(s)",
 ];
 
-const RecipeIngredientCard = ({ ingredient, handleDelete }: RecipeIngredientCardProps) => {
-	const [quantity, setQuantity] = useState<number | null>(null);
-	const [unit, setUnit] = useState<string | null>(null);
+const RecipeIngredientCard = ({
+	ingredient,
+	// handleDelete,
+	toggleEntityReference,
+	handleRelationSetupData,
+	handleRelation,
+}: RecipeIngredientCardProps) => {
+	const [quantity, setQuantity] = useState<number | null>(ingredient?.quantity);
+	const [unit, setUnit] = useState<string | null>(ingredient?.unit);
 	const [unitInputValue, setUnitInputValue] = useState("");
 
 	return (
 		<Grid container>
-			<Grid xs={6}>
+			<Grid item xs={5}>
 				<TextField
 					sx={{ width: "100%" }}
 					id="standard-controlled"
@@ -94,7 +104,7 @@ const RecipeIngredientCard = ({ ingredient, handleDelete }: RecipeIngredientCard
 					value={ingredient?.ingredients.ingredient_name}
 				/>
 			</Grid>
-			<Grid xs={2}>
+			<Grid item xs={2}>
 				<TextField
 					sx={{ width: "100%" }}
 					type="number"
@@ -107,7 +117,7 @@ const RecipeIngredientCard = ({ ingredient, handleDelete }: RecipeIngredientCard
 					}}
 				/>
 			</Grid>
-			<Grid xs={2}>
+			<Grid item xs={3}>
 				<Autocomplete
 					freeSolo
 					value={unit}
@@ -126,8 +136,36 @@ const RecipeIngredientCard = ({ ingredient, handleDelete }: RecipeIngredientCard
 					)}
 				/>
 			</Grid>
-			<Grid xs={2} display={"flex"} justifyContent={"center"}>
-				<IconButton edge="start" aria-label="delete" onClick={handleDelete}>
+			<Grid item xs={1} display={"flex"} justifyContent={"center"}>
+				<IconButton
+					edge="end"
+					aria-label="save"
+					onClick={() => {
+						handleRelation({
+							...handleRelationSetupData,
+							action: "PATCH",
+							relationMetaData: {
+								quantity,
+								unit,
+							},
+						});
+					}}
+				>
+					<SaveIcon />
+				</IconButton>
+			</Grid>
+			<Grid item xs={1} display={"flex"} justifyContent={"center"}>
+				<IconButton
+					edge="end"
+					aria-label="delete"
+					onClick={() => {
+						toggleEntityReference(ingredient);
+						handleRelation({
+							...handleRelationSetupData,
+							action: "DELETE",
+						});
+					}}
+				>
 					<DeleteIcon />
 				</IconButton>
 			</Grid>
