@@ -95,15 +95,16 @@ const handleRelation = async ({
 
 interface RelatorProps {
 	title: string;
-	relationName: string;
 	relatingEntityName: string;
-	relatingEntityId: any;
 	relatingEntityFieldPrefix: string;
-	useRelatingEntityHook: any;
 	relatableEntityName: string;
 	relatableEntityFieldPrefix: string;
+	relationName: string;
+	relatingEntityId: any;
+	useRelatingEntityHook: any;
 	useRelatableEntityHook: any;
 	isSidebar?: boolean;
+	CustomRelationComponent?: any;
 }
 
 const Relator = ({
@@ -117,6 +118,7 @@ const Relator = ({
 	relatableEntityFieldPrefix,
 	useRelatableEntityHook,
 	isSidebar,
+	CustomRelationComponent,
 }: RelatorProps) => {
 	const relatingEntity = useRelatingEntityHook(relatingEntityId);
 	const relatableEntities = useRelatableEntityHook();
@@ -166,6 +168,46 @@ const Relator = ({
 				>
 					{title || "Relator"}
 				</Typography>
+				{CustomRelationComponent ? (
+					relatedEntities.length > 0 ? (
+						relatedEntities.map((reference: any) => (
+							<CustomRelationComponent
+								key={
+									reference[`${relatableEntityName}`][
+										`${relatableEntityFieldPrefix}_id`
+									]
+								}
+								ingredient={reference}
+								handleDelete={() => {
+									toggleEntityReference(reference);
+									handleRelation({
+										relatable_id:
+											reference[`${relatableEntityName}`][
+												`${relatableEntityFieldPrefix}_id`
+											],
+										relating_id:
+											relatingEntity.data.data[
+												`${relatingEntityFieldPrefix}_id`
+											],
+										relatableEntityName,
+										relatableEntityFieldPrefix,
+										relatingEntityName,
+										relatingEntityFieldPrefix,
+										relatingEntity,
+										setIsRelationSaving,
+										setRelationSaveError,
+										setIsAlertSnackbarOpen,
+										action: "DELETE",
+									});
+								}}
+							/>
+						))
+					) : (
+						<></>
+					)
+				) : (
+					<></>
+				)}
 				<Box my={2}>
 					{relatedEntities.length > 0 ? (
 						<Stack

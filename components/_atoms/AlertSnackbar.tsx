@@ -28,8 +28,6 @@ export default function AlertSnackbar({
 		setIsAlertSnackbarOpen(false);
 	};
 
-	console.log(saveError);
-
 	if (isSaving)
 		return (
 			<Snackbar
