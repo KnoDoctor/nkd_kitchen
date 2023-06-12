@@ -82,6 +82,10 @@ const handleRelation = async ({
 		if (relationsData.success) {
 			updateStateOnSuccess(setIsRelationSaving, setRelationSaveError);
 			relatingEntity.mutate();
+			// relatingEntity.mutate({
+			// 	...relatingEntity.data,
+			// 	data: { ...relatingEntity.data.data, recipe_name: "TESTING" },
+			// });
 		} else {
 			updateStateOnError(
 				setIsRelationSaving,
