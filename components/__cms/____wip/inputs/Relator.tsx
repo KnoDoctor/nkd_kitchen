@@ -12,7 +12,7 @@ interface HandleRelationProps {
 	relating_id: string;
 	relatingEntityName: string;
 	relatingEntityFieldPrefix: string;
-	relatingEntity: string;
+	relatingEntity: any;
 	setIsRelationSaving: (isSaving: boolean) => void;
 	setRelationSaveError: (error: string | null) => void;
 	setIsAlertSnackbarOpen: (isOpen: boolean) => void;
@@ -81,6 +81,7 @@ const handleRelation = async ({
 
 		if (relationsData.success) {
 			updateStateOnSuccess(setIsRelationSaving, setRelationSaveError);
+			relatingEntity.mutate();
 		} else {
 			updateStateOnError(
 				setIsRelationSaving,
@@ -129,41 +130,24 @@ const Relator = ({
 	const relatingEntity = useRelatingEntityHook(relatingEntityId);
 	const relatableEntities = useRelatableEntityHook();
 
-	const [relatedEntities, setRelatedEntities] = useState(
-		relatingEntity.data.data[`${relationName}`] || []
-	);
-
-	console.log("RELATED ENTITIES: ", relatedEntities);
-
 	const [isRelationSaving, setIsRelationSaving] = useState(false);
 	const [relationSaveError, setRelationSaveError] = useState<string | undefined | null>(null);
 	const [isAlertSnackbarOpen, setIsAlertSnackbarOpen] = useState(false);
 
-	const toggleEntityReference = (entity: any) => {
-		let currentEntityRelations = [...relatedEntities];
+	const toggleEntityRelation = ({ relatableEntity, relationMetaData }: any) => {
+		let currentEntityRelations = [...relatingEntity.data.data[`${relationName}`]];
 
-		const entityIndex = currentEntityRelations.findIndex(
+		const relatableEntityIndex = currentEntityRelations.findIndex(
 			(item) =>
 				item[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`] ===
-				entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`]
+				relatableEntity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`]
 		);
 
-		if (entityIndex !== -1) {
-			currentEntityRelations.splice(entityIndex, 1);
+		if (relatableEntityIndex !== -1) {
+			currentEntityRelations.splice(relatableEntityIndex, 1);
 		} else {
-			currentEntityRelations.push(
-				{ ...entity }
-				// 	{
-				// 	[`${relatableEntityName}`]: {
-				// 		[`${relatableEntityFieldPrefix}_id`]:
-				// 			entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`],
-				// 		[`${relatableEntityFieldPrefix}_name`]:
-				// 			entity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_name`],
-				// 	},
-				// }
-			);
+			currentEntityRelations.push({ ...relatableEntity, ...relationMetaData });
 		}
-		setRelatedEntities(currentEntityRelations);
 	};
 
 	const RenderPrimaryComponent = () => {
@@ -181,20 +165,20 @@ const Relator = ({
 				</Typography>
 				<>
 					{CustomRelationComponent ? (
-						relatedEntities.length > 0 ? (
-							relatedEntities.map((reference: any) => (
+						relatingEntity.data.data[`${relationName}`].length > 0 ? (
+							relatingEntity.data.data[`${relationName}`].map((relation: any) => (
 								<CustomRelationComponent
 									key={
-										reference[`${relatableEntityName}`][
+										relation[`${relatableEntityName}`][
 											`${relatableEntityFieldPrefix}_id`
 										]
 									}
-									ingredient={reference}
+									ingredient={relation}
 									handleRelation={handleRelation}
-									toggleEntityReference={toggleEntityReference}
+									toggleEntityRelation={toggleEntityRelation}
 									handleRelationSetupData={{
 										relatable_id:
-											reference[`${relatableEntityName}`][
+											relation[`${relatableEntityName}`][
 												`${relatableEntityFieldPrefix}_id`
 											],
 										relating_id:
@@ -217,49 +201,53 @@ const Relator = ({
 						)
 					) : (
 						<Box my={2}>
-							{relatedEntities.length > 0 ? (
+							{relatingEntity.data.data[`${relationName}`].length > 0 ? (
 								<Stack
 									direction="row"
 									spacing={1}
 									sx={{ flexWrap: "wrap", gap: 1 }}
 									useFlexGap
 								>
-									{relatedEntities.map((reference: any) => (
-										<Chip
-											key={
-												reference[`${relatableEntityName}`][
-													`${relatableEntityFieldPrefix}_id`
-												]
-											}
-											label={
-												reference[`${relatableEntityName}`][
-													`${relatableEntityFieldPrefix}_name`
-												]
-											}
-											onDelete={() => {
-												toggleEntityReference(reference);
-												handleRelation({
-													relatable_id:
-														reference[`${relatableEntityName}`][
-															`${relatableEntityFieldPrefix}_id`
-														],
-													relating_id:
-														relatingEntity.data.data[
-															`${relatingEntityFieldPrefix}_id`
-														],
-													relatableEntityName,
-													relatableEntityFieldPrefix,
-													relatingEntityName,
-													relatingEntityFieldPrefix,
-													relatingEntity,
-													setIsRelationSaving,
-													setRelationSaveError,
-													setIsAlertSnackbarOpen,
-													action: "DELETE",
-												});
-											}}
-										/>
-									))}
+									{relatingEntity.data.data[`${relationName}`].map(
+										(relation: any) => (
+											<Chip
+												key={
+													relation[`${relatableEntityName}`][
+														`${relatableEntityFieldPrefix}_id`
+													]
+												}
+												label={
+													relation[`${relatableEntityName}`][
+														`${relatableEntityFieldPrefix}_name`
+													]
+												}
+												onDelete={() => {
+													toggleEntityRelation({
+														relatableEntity: relation,
+													});
+													handleRelation({
+														relatable_id:
+															relation[`${relatableEntityName}`][
+																`${relatableEntityFieldPrefix}_id`
+															],
+														relating_id:
+															relatingEntity.data.data[
+																`${relatingEntityFieldPrefix}_id`
+															],
+														relatableEntityName,
+														relatableEntityFieldPrefix,
+														relatingEntityName,
+														relatingEntityFieldPrefix,
+														relatingEntity,
+														setIsRelationSaving,
+														setRelationSaveError,
+														setIsAlertSnackbarOpen,
+														action: "DELETE",
+													});
+												}}
+											/>
+										)
+									)}
 								</Stack>
 							) : (
 								<Typography variant="body1">{`No ${relatableEntityName} selected.`}</Typography>
@@ -271,7 +259,7 @@ const Relator = ({
 				{RelatableEntityCreationComponent ? RelatableEntityCreationComponent : <></>}
 				<Box my={2}>
 					{getMissingEntitiesRelator(
-						relatedEntities,
+						relatingEntity.data.data[`${relationName}`],
 						relatableEntities.data.data,
 						relatableEntityFieldPrefix,
 						relatableEntityName
@@ -283,27 +271,27 @@ const Relator = ({
 							useFlexGap
 						>
 							{getMissingEntitiesRelator(
-								relatedEntities,
+								relatingEntity.data.data[`${relationName}`],
 								relatableEntities.data.data,
 								relatableEntityFieldPrefix,
 								relatableEntityName
-							).map((reference: any) => (
+							).map((relation: any) => (
 								<Chip
 									key={
-										reference[`${relatableEntityName}`][
+										relation[`${relatableEntityName}`][
 											`${relatableEntityFieldPrefix}_id`
 										]
 									}
 									label={
-										reference[`${relatableEntityName}`][
+										relation[`${relatableEntityName}`][
 											`${relatableEntityFieldPrefix}_name`
 										]
 									}
 									onClick={() => {
-										toggleEntityReference(reference);
+										toggleEntityRelation({ relatableEntity: relation });
 										handleRelation({
 											relatable_id:
-												reference[`${relatableEntityName}`][
+												relation[`${relatableEntityName}`][
 													`${relatableEntityFieldPrefix}_id`
 												],
 											relating_id:
@@ -326,7 +314,7 @@ const Relator = ({
 							))}
 						</Stack>
 					) : (
-						<Typography variant="body1">{`You've referenced every ${relatableEntityFieldPrefix}, make sure they're all relevant 😉`}</Typography>
+						<Typography variant="body1">{`You've related every ${relatableEntityFieldPrefix}, make sure they're all relevant 😉`}</Typography>
 					)}
 				</Box>
 				<AlertSnackbar

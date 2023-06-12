@@ -12,7 +12,7 @@ import sortArrayOfStringsAlphabetically from "../../../utils/helperFunctions/sor
 interface RecipeIngredientCardProps {
 	ingredient: RecipeIngredient;
 	// handleDelete: any;
-	toggleEntityReference: any;
+	toggleEntityRelation: any;
 	handleRelationSetupData: any;
 	handleRelation: any;
 }
@@ -85,8 +85,7 @@ const measurementUnits: string[] = [
 
 const RecipeIngredientCard = ({
 	ingredient,
-	// handleDelete,
-	toggleEntityReference,
+	toggleEntityRelation,
 	handleRelationSetupData,
 	handleRelation,
 }: RecipeIngredientCardProps) => {
@@ -159,7 +158,7 @@ const RecipeIngredientCard = ({
 					edge="end"
 					aria-label="delete"
 					onClick={() => {
-						toggleEntityReference(ingredient);
+						toggleEntityRelation({ relatableEntity: ingredient });
 						handleRelation({
 							...handleRelationSetupData,
 							action: "DELETE",
