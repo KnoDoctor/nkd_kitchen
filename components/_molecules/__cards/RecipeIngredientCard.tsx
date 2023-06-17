@@ -93,9 +93,10 @@ const RecipeIngredientCard = ({
 	const [quantity, setQuantity] = useState<number | null>(ingredient?.quantity);
 	const [unit, setUnit] = useState<string | null>(ingredient?.unit);
 	const [unitInputValue, setUnitInputValue] = useState("");
+	const [isSaving, setIsSaving] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 
-	if (ingredient.ingredients.ingredient_name === "Loading..." || isDeleting)
+	if (ingredient.ingredients.ingredient_name === "ZZLoading..." || isDeleting || isSaving)
 		return (
 			<Grid container spacing={1} mb={"4px"}>
 				<Grid item xs={5}>
@@ -163,6 +164,7 @@ const RecipeIngredientCard = ({
 					edge="end"
 					aria-label="save"
 					onClick={() => {
+						setIsSaving(true);
 						handleRelation({
 							...handleRelationSetupData,
 							action: "PATCH",

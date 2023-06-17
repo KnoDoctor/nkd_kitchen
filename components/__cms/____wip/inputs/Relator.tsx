@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Box, Grid, Card, Stack, Chip, Typography, Skeleton } from "@mui/material";
+import { Container, Box, Card, Stack, Chip, Typography } from "@mui/material";
 
 import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 
@@ -58,6 +58,7 @@ const handleRelation = async ({
 	};
 
 	try {
+		//Handle Create Opimistic Mutation
 		if (action === "POST") {
 			relatingEntity.mutate(
 				{
@@ -67,12 +68,10 @@ const handleRelation = async ({
 						[`${relationName}`]: [
 							...relatingEntity.data.data[`${relationName}`],
 							{
-								ingredients: {
-									ingredient_name: "Loading...",
-									ingredient_id: "loading",
+								[`${relatableEntityName}`]: {
+									[`${relatableEntityFieldPrefix}_name`]: "ZZLoading...",
+									[`${relatableEntityFieldPrefix}_id`]: "loading",
 								},
-								quantity: null,
-								unit: null,
 							},
 						],
 					},
@@ -193,36 +192,50 @@ const Relator = ({
 				<>
 					{CustomRelationComponent ? (
 						relatingEntity.data.data[`${relationName}`].length > 0 ? (
-							relatingEntity.data.data[`${relationName}`].map((relation: any) => (
-								<CustomRelationComponent
-									key={
-										relation[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_id`
-										]
-									}
-									ingredient={relation}
-									handleRelation={handleRelation}
-									toggleEntityRelation={toggleEntityRelation}
-									handleRelationSetupData={{
-										relatable_id:
+							relatingEntity.data.data[`${relationName}`]
+								.sort((a: any, b: any) => {
+									const nameA =
+										a[`${relatableEntityName}`][
+											`${relatableEntityFieldPrefix}_name`
+										].toLowerCase();
+									const nameB =
+										b[`${relatableEntityName}`][
+											`${relatableEntityFieldPrefix}_name`
+										].toLowerCase();
+									if (nameA < nameB) return -1;
+									if (nameA > nameB) return 1;
+									return 0;
+								})
+								.map((relation: any) => (
+									<CustomRelationComponent
+										key={
 											relation[`${relatableEntityName}`][
 												`${relatableEntityFieldPrefix}_id`
-											],
-										relating_id:
-											relatingEntity.data.data[
-												`${relatingEntityFieldPrefix}_id`
-											],
-										relatableEntityName,
-										relatableEntityFieldPrefix,
-										relatingEntityName,
-										relatingEntityFieldPrefix,
-										relatingEntity,
-										setIsRelationSaving,
-										setRelationSaveError,
-										setIsAlertSnackbarOpen,
-									}}
-								/>
-							))
+											]
+										}
+										ingredient={relation}
+										handleRelation={handleRelation}
+										toggleEntityRelation={toggleEntityRelation}
+										handleRelationSetupData={{
+											relatable_id:
+												relation[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_id`
+												],
+											relating_id:
+												relatingEntity.data.data[
+													`${relatingEntityFieldPrefix}_id`
+												],
+											relatableEntityName,
+											relatableEntityFieldPrefix,
+											relatingEntityName,
+											relatingEntityFieldPrefix,
+											relatingEntity,
+											setIsRelationSaving,
+											setRelationSaveError,
+											setIsAlertSnackbarOpen,
+										}}
+									/>
+								))
 						) : (
 							<></>
 						)
