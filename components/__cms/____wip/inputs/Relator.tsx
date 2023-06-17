@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Box, Card, Stack, Chip, Typography } from "@mui/material";
+import { Container, Box, Grid, Card, Stack, Chip, Typography, Skeleton } from "@mui/material";
 
 import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 
@@ -7,6 +7,7 @@ import getMissingEntitiesRelator from "../../../../utils/helperFunctions/getMiss
 
 interface HandleRelationProps {
 	relatable_id: string;
+	relationName: string;
 	relatableEntityName: string;
 	relatableEntityFieldPrefix: string;
 	relating_id: string;
@@ -16,12 +17,14 @@ interface HandleRelationProps {
 	setIsRelationSaving: (isSaving: boolean) => void;
 	setRelationSaveError: (error: string | null) => void;
 	setIsAlertSnackbarOpen: (isOpen: boolean) => void;
+
 	action: "POST" | "PATCH" | "DELETE";
 	relationMetaData?: any;
 }
 
 const handleRelation = async ({
 	relatable_id,
+	relationName,
 	relatableEntityName,
 	relatableEntityFieldPrefix,
 	relating_id,
@@ -49,13 +52,35 @@ const handleRelation = async ({
 		errorMessage: string
 	) => {
 		console.log("Failed");
+		setIsAlertSnackbarOpen(true);
 		setIsRelationSaving(false);
 		setRelationSaveError(errorMessage);
 	};
 
 	try {
-		setIsRelationSaving(true);
-		setIsAlertSnackbarOpen(true);
+		if (action === "POST") {
+			relatingEntity.mutate(
+				{
+					...relatingEntity.data,
+					data: {
+						...relatingEntity.data.data,
+						[`${relationName}`]: [
+							...relatingEntity.data.data[`${relationName}`],
+							{
+								ingredients: {
+									ingredient_name: "Loading...",
+									ingredient_id: "loading",
+								},
+								quantity: null,
+								unit: null,
+							},
+						],
+					},
+				},
+				{ revalidate: false }
+			);
+		}
+
 		const relationRes = await fetch(
 			`/api/${relatingEntityName}/${relating_id}/${relatableEntityName}/${relatable_id}`,
 			{
@@ -81,11 +106,8 @@ const handleRelation = async ({
 
 		if (relationsData.success) {
 			updateStateOnSuccess(setIsRelationSaving, setRelationSaveError);
+
 			relatingEntity.mutate();
-			// relatingEntity.mutate({
-			// 	...relatingEntity.data,
-			// 	data: { ...relatingEntity.data.data, recipe_name: "TESTING" },
-			// });
 		} else {
 			updateStateOnError(
 				setIsRelationSaving,
@@ -99,6 +121,7 @@ const handleRelation = async ({
 			setRelationSaveError,
 			`${error.name}: ${error.message}`
 		);
+		console.log(error);
 	}
 };
 
@@ -234,6 +257,7 @@ const Relator = ({
 															relation[`${relatableEntityName}`][
 																`${relatableEntityFieldPrefix}_id`
 															],
+														relationName,
 														relating_id:
 															relatingEntity.data.data[
 																`${relatingEntityFieldPrefix}_id`
@@ -246,6 +270,7 @@ const Relator = ({
 														setIsRelationSaving,
 														setRelationSaveError,
 														setIsAlertSnackbarOpen,
+
 														action: "DELETE",
 													});
 												}}
@@ -303,6 +328,7 @@ const Relator = ({
 													`${relatingEntityFieldPrefix}_id`
 												],
 											relatableEntityName,
+											relationName,
 											relatableEntityFieldPrefix,
 											relatingEntityName,
 											relatingEntityFieldPrefix,
@@ -310,6 +336,7 @@ const Relator = ({
 											setIsRelationSaving,
 											setRelationSaveError,
 											setIsAlertSnackbarOpen,
+
 											action: "POST",
 										});
 									}}

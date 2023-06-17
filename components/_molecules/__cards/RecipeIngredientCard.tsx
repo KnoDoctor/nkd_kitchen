@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Skeleton from "@mui/material/Skeleton";
 
 import sortArrayOfStringsAlphabetically from "../../../utils/helperFunctions/sortArrayOfStringsAlphabetically";
 
@@ -92,6 +93,28 @@ const RecipeIngredientCard = ({
 	const [quantity, setQuantity] = useState<number | null>(ingredient?.quantity);
 	const [unit, setUnit] = useState<string | null>(ingredient?.unit);
 	const [unitInputValue, setUnitInputValue] = useState("");
+	const [isDeleting, setIsDeleting] = useState(false);
+
+	if (ingredient.ingredients.ingredient_name === "Loading..." || isDeleting)
+		return (
+			<Grid container spacing={1} mb={"4px"}>
+				<Grid item xs={5}>
+					<Skeleton height={45} />
+				</Grid>
+				<Grid item xs={2}>
+					<Skeleton height={45} />
+				</Grid>
+				<Grid item xs={3}>
+					<Skeleton height={45} />
+				</Grid>
+				<Grid item xs={1}>
+					<Skeleton height={45} />
+				</Grid>
+				<Grid item xs={1}>
+					<Skeleton height={45} />
+				</Grid>
+			</Grid>
+		);
 
 	return (
 		<Grid container>
@@ -158,7 +181,8 @@ const RecipeIngredientCard = ({
 					edge="end"
 					aria-label="delete"
 					onClick={() => {
-						toggleEntityRelation({ relatableEntity: ingredient });
+						setIsDeleting(true);
+						// toggleEntityRelation({ relatableEntity: ingredient });
 						handleRelation({
 							...handleRelationSetupData,
 							action: "DELETE",
