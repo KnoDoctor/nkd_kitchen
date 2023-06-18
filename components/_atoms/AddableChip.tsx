@@ -1,8 +1,4 @@
-import { useState } from "react";
-
-import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
-import Skeleton from "@mui/material/Skeleton";
 
 const AddableChip = ({
 	relation,

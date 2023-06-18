@@ -8,7 +8,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 interface AlertSnackbarProps {
-	isSaving: boolean;
+	isSaving?: boolean;
 	saveError: string | undefined | null;
 	isAlertSnackbarOpen: boolean;
 	setIsAlertSnackbarOpen(isAlertSnackbarOpen: boolean): void;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Box, Card, Stack, Chip, Typography } from "@mui/material";
+import { Container, Box, Card, Stack, Typography } from "@mui/material";
 
 import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 
@@ -16,10 +16,8 @@ interface HandleRelationProps {
 	relatingEntityName: string;
 	relatingEntityFieldPrefix: string;
 	relatingEntity: any;
-	setIsRelationSaving: (isSaving: boolean) => void;
 	setRelationSaveError: (error: string | null) => void;
 	setIsAlertSnackbarOpen: (isOpen: boolean) => void;
-
 	action: "POST" | "PATCH" | "DELETE";
 	relationMetaData?: any;
 }
@@ -33,29 +31,22 @@ const handleRelation = async ({
 	relatingEntityName,
 	relatingEntityFieldPrefix,
 	relatingEntity,
-	setIsRelationSaving,
 	setRelationSaveError,
 	setIsAlertSnackbarOpen,
 	action,
 	relationMetaData,
 }: HandleRelationProps) => {
-	const updateStateOnSuccess = (
-		setIsRelationSaving: (isSaving: boolean) => void,
-		setRelationSaveError: (error: string | null) => void
-	) => {
+	const updateStateOnSuccess = (setRelationSaveError: (error: string | null) => void) => {
 		console.log("Success");
-		setIsRelationSaving(false);
 		setRelationSaveError(null);
 	};
 
 	const updateStateOnError = (
-		setIsRelationSaving: (isSaving: boolean) => void,
 		setRelationSaveError: (error: string | null) => void,
 		errorMessage: string
 	) => {
 		console.log("Failed");
 		setIsAlertSnackbarOpen(true);
-		setIsRelationSaving(false);
 		setRelationSaveError(errorMessage);
 	};
 
@@ -106,22 +97,17 @@ const handleRelation = async ({
 		const relationsData = await relationRes.json();
 
 		if (relationsData.success) {
-			updateStateOnSuccess(setIsRelationSaving, setRelationSaveError);
+			updateStateOnSuccess(setRelationSaveError);
 
 			relatingEntity.mutate();
 		} else {
 			updateStateOnError(
-				setIsRelationSaving,
 				setRelationSaveError,
 				action === "POST" ? "Creation Failed" : "Deletion Failed"
 			);
 		}
 	} catch (error: any) {
-		updateStateOnError(
-			setIsRelationSaving,
-			setRelationSaveError,
-			`${error.name}: ${error.message}`
-		);
+		updateStateOnError(setRelationSaveError, `${error.name}: ${error.message}`);
 		console.log(error);
 	}
 };
@@ -158,25 +144,8 @@ const Relator = ({
 	const relatingEntity = useRelatingEntityHook(relatingEntityId);
 	const relatableEntities = useRelatableEntityHook();
 
-	const [isRelationSaving, setIsRelationSaving] = useState(false);
 	const [relationSaveError, setRelationSaveError] = useState<string | undefined | null>(null);
 	const [isAlertSnackbarOpen, setIsAlertSnackbarOpen] = useState(false);
-
-	const toggleEntityRelation = ({ relatableEntity, relationMetaData }: any) => {
-		let currentEntityRelations = [...relatingEntity.data.data[`${relationName}`]];
-
-		const relatableEntityIndex = currentEntityRelations.findIndex(
-			(item) =>
-				item[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`] ===
-				relatableEntity[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_id`]
-		);
-
-		if (relatableEntityIndex !== -1) {
-			currentEntityRelations.splice(relatableEntityIndex, 1);
-		} else {
-			currentEntityRelations.push({ ...relatableEntity, ...relationMetaData });
-		}
-	};
 
 	const RenderPrimaryComponent = () => {
 		return (
@@ -217,7 +186,6 @@ const Relator = ({
 										}
 										ingredient={relation}
 										handleRelation={handleRelation}
-										toggleEntityRelation={toggleEntityRelation}
 										handleRelationSetupData={{
 											relatable_id:
 												relation[`${relatableEntityName}`][
@@ -232,7 +200,7 @@ const Relator = ({
 											relatingEntityName,
 											relatingEntityFieldPrefix,
 											relatingEntity,
-											setIsRelationSaving,
+
 											setRelationSaveError,
 											setIsAlertSnackbarOpen,
 										}}
@@ -274,7 +242,7 @@ const Relator = ({
 													relatingEntityName,
 													relatingEntityFieldPrefix,
 													relatingEntity,
-													setIsRelationSaving,
+
 													setRelationSaveError,
 													setIsAlertSnackbarOpen,
 												}}
@@ -336,7 +304,7 @@ const Relator = ({
 										relatingEntityName,
 										relatingEntityFieldPrefix,
 										relatingEntity,
-										setIsRelationSaving,
+
 										setRelationSaveError,
 										setIsAlertSnackbarOpen,
 									}}
@@ -350,7 +318,6 @@ const Relator = ({
 					)}
 				</Box>
 				<AlertSnackbar
-					isSaving={isRelationSaving}
 					saveError={relationSaveError}
 					isAlertSnackbarOpen={isAlertSnackbarOpen}
 					setIsAlertSnackbarOpen={setIsAlertSnackbarOpen}
