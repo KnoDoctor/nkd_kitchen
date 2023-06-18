@@ -4,6 +4,8 @@ import { Container, Box, Card, Stack, Chip, Typography } from "@mui/material";
 import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 
 import getMissingEntitiesRelator from "../../../../utils/helperFunctions/getMissingEntitiesRelator";
+import DeleteableChip from "../../../_atoms/DeletableChip";
+import AddableChip from "../../../_atoms/AddableChip";
 
 interface HandleRelationProps {
 	relatable_id: string;
@@ -70,7 +72,7 @@ const handleRelation = async ({
 							{
 								[`${relatableEntityName}`]: {
 									[`${relatableEntityFieldPrefix}_name`]: "ZZLoading...",
-									[`${relatableEntityFieldPrefix}_id`]: "loading",
+									[`${relatableEntityFieldPrefix}_id`]: relatable_id,
 								},
 							},
 						],
@@ -250,43 +252,36 @@ const Relator = ({
 								>
 									{relatingEntity.data.data[`${relationName}`].map(
 										(relation: any) => (
-											<Chip
+											<DeleteableChip
 												key={
 													relation[`${relatableEntityName}`][
 														`${relatableEntityFieldPrefix}_id`
 													]
 												}
-												label={
-													relation[`${relatableEntityName}`][
-														`${relatableEntityFieldPrefix}_name`
-													]
-												}
-												onDelete={() => {
-													toggleEntityRelation({
-														relatableEntity: relation,
-													});
-													handleRelation({
-														relatable_id:
-															relation[`${relatableEntityName}`][
-																`${relatableEntityFieldPrefix}_id`
-															],
-														relationName,
-														relating_id:
-															relatingEntity.data.data[
-																`${relatingEntityFieldPrefix}_id`
-															],
-														relatableEntityName,
-														relatableEntityFieldPrefix,
-														relatingEntityName,
-														relatingEntityFieldPrefix,
-														relatingEntity,
-														setIsRelationSaving,
-														setRelationSaveError,
-														setIsAlertSnackbarOpen,
-
-														action: "DELETE",
-													});
+												relation={relation}
+												handleRelation={handleRelation}
+												handleRelationSetupData={{
+													relatable_id:
+														relation[`${relatableEntityName}`][
+															`${relatableEntityFieldPrefix}_id`
+														],
+													relating_id:
+														relatingEntity.data.data[
+															`${relatingEntityFieldPrefix}_id`
+														],
+													relatableEntityName,
+													relatableEntityFieldPrefix,
+													relatingEntityName,
+													relatingEntityFieldPrefix,
+													relatingEntity,
+													setIsRelationSaving,
+													setRelationSaveError,
+													setIsAlertSnackbarOpen,
 												}}
+												relatableEntityName={relatableEntityName}
+												relatableEntityFieldPrefix={
+													relatableEntityFieldPrefix
+												}
 											/>
 										)
 									)}
@@ -318,42 +313,35 @@ const Relator = ({
 								relatableEntityFieldPrefix,
 								relatableEntityName
 							).map((relation: any) => (
-								<Chip
+								<AddableChip
 									key={
 										relation[`${relatableEntityName}`][
 											`${relatableEntityFieldPrefix}_id`
 										]
 									}
-									label={
-										relation[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_name`
-										]
-									}
-									onClick={() => {
-										toggleEntityRelation({ relatableEntity: relation });
-										handleRelation({
-											relatable_id:
-												relation[`${relatableEntityName}`][
-													`${relatableEntityFieldPrefix}_id`
-												],
-											relating_id:
-												relatingEntity.data.data[
-													`${relatingEntityFieldPrefix}_id`
-												],
-											relatableEntityName,
-											relationName,
-											relatableEntityFieldPrefix,
-											relatingEntityName,
-											relatingEntityFieldPrefix,
-											relatingEntity,
-											setIsRelationSaving,
-											setRelationSaveError,
-											setIsAlertSnackbarOpen,
-
-											action: "POST",
-										});
+									relation={relation}
+									handleRelation={handleRelation}
+									handleRelationSetupData={{
+										relatable_id:
+											relation[`${relatableEntityName}`][
+												`${relatableEntityFieldPrefix}_id`
+											],
+										relating_id:
+											relatingEntity.data.data[
+												`${relatingEntityFieldPrefix}_id`
+											],
+										relationName,
+										relatableEntityName,
+										relatableEntityFieldPrefix,
+										relatingEntityName,
+										relatingEntityFieldPrefix,
+										relatingEntity,
+										setIsRelationSaving,
+										setRelationSaveError,
+										setIsAlertSnackbarOpen,
 									}}
-									variant="outlined"
+									relatableEntityName={relatableEntityName}
+									relatableEntityFieldPrefix={relatableEntityFieldPrefix}
 								/>
 							))}
 						</Stack>
