@@ -218,8 +218,21 @@ const Relator = ({
 									sx={{ flexWrap: "wrap", gap: 1 }}
 									useFlexGap
 								>
-									{relatingEntity.data.data[`${relationName}`].map(
-										(relation: any) => (
+									{relatingEntity.data.data[`${relationName}`]
+										.sort((a: any, b: any) => {
+											const nameA =
+												a[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_name`
+												].toLowerCase();
+											const nameB =
+												b[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_name`
+												].toLowerCase();
+											if (nameA < nameB) return -1;
+											if (nameA > nameB) return 1;
+											return 0;
+										})
+										.map((relation: any) => (
 											<DeleteableChip
 												key={
 													relation[`${relatableEntityName}`][
@@ -251,8 +264,7 @@ const Relator = ({
 													relatableEntityFieldPrefix
 												}
 											/>
-										)
-									)}
+										))}
 								</Stack>
 							) : (
 								<Typography variant="body1">{`No ${relatableEntityName} selected.`}</Typography>
@@ -280,38 +292,52 @@ const Relator = ({
 								relatableEntities.data.data,
 								relatableEntityFieldPrefix,
 								relatableEntityName
-							).map((relation: any) => (
-								<AddableChip
-									key={
-										relation[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_id`
-										]
-									}
-									relation={relation}
-									handleRelation={handleRelation}
-									handleRelationSetupData={{
-										relatable_id:
+							)
+								.sort((a: any, b: any) => {
+									const nameA =
+										a[`${relatableEntityName}`][
+											`${relatableEntityFieldPrefix}_name`
+										].toLowerCase();
+									const nameB =
+										b[`${relatableEntityName}`][
+											`${relatableEntityFieldPrefix}_name`
+										].toLowerCase();
+									if (nameA < nameB) return -1;
+									if (nameA > nameB) return 1;
+									return 0;
+								})
+								.map((relation: any) => (
+									<AddableChip
+										key={
 											relation[`${relatableEntityName}`][
 												`${relatableEntityFieldPrefix}_id`
-											],
-										relating_id:
-											relatingEntity.data.data[
-												`${relatingEntityFieldPrefix}_id`
-											],
-										relationName,
-										relatableEntityName,
-										relatableEntityFieldPrefix,
-										relatingEntityName,
-										relatingEntityFieldPrefix,
-										relatingEntity,
+											]
+										}
+										relation={relation}
+										handleRelation={handleRelation}
+										handleRelationSetupData={{
+											relatable_id:
+												relation[`${relatableEntityName}`][
+													`${relatableEntityFieldPrefix}_id`
+												],
+											relating_id:
+												relatingEntity.data.data[
+													`${relatingEntityFieldPrefix}_id`
+												],
+											relationName,
+											relatableEntityName,
+											relatableEntityFieldPrefix,
+											relatingEntityName,
+											relatingEntityFieldPrefix,
+											relatingEntity,
 
-										setRelationSaveError,
-										setIsAlertSnackbarOpen,
-									}}
-									relatableEntityName={relatableEntityName}
-									relatableEntityFieldPrefix={relatableEntityFieldPrefix}
-								/>
-							))}
+											setRelationSaveError,
+											setIsAlertSnackbarOpen,
+										}}
+										relatableEntityName={relatableEntityName}
+										relatableEntityFieldPrefix={relatableEntityFieldPrefix}
+									/>
+								))}
 						</Stack>
 					) : (
 						<Typography variant="body1">{`You've related every ${relatableEntityFieldPrefix}, make sure they're all relevant 😉`}</Typography>

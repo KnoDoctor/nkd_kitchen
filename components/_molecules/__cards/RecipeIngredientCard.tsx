@@ -133,7 +133,7 @@ const RecipeIngredientCard = ({
 					placeholder="Quantity"
 					value={quantity}
 					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-						setQuantity(parseInt(event.target.value));
+						setQuantity(parseFloat(event.target.value));
 					}}
 				/>
 			</Grid>
