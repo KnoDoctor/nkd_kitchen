@@ -91,7 +91,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
 	async function updateIngredient() {
 		try {
-			const { ingredient_name } = req.body;
+			const { ingredient_name, ingredient_image } = req.body;
 
 			const patchedPost = await prisma.ingredients.update({
 				where: {
@@ -99,6 +99,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				},
 				data: {
 					ingredient_name,
+					ingredient_image,
 				},
 			});
 

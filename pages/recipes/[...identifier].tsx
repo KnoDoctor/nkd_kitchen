@@ -3,6 +3,8 @@ import { GetStaticProps, GetStaticPaths } from "next";
 
 import RenderComponents from "../../components/__cms/RenderComponents";
 import Button from "@mui/material/Button";
+import { Box, Container, Divider, Grid, Typography } from "@mui/material";
+import Image from "next/image";
 
 const Recipe = ({ recipeData }: any) => {
 	const router = useRouter();
@@ -15,12 +17,130 @@ const Recipe = ({ recipeData }: any) => {
 	console.log(recipeData);
 
 	return (
-		<div>
-			{/* <div style={{ paddingTop: "100px" }}>{recipeData?.data?.recipe_name}</div>
-			<div style={{ paddingTop: "10px" }}>{recipeData?.data?.recipe_description}</div> */}
-			<RenderComponents cmsData={recipe?.cms_data} />
-			{/* <Button onClick={() => router.back()}>Back</Button> */}
-		</div>
+		<Container maxWidth={false} disableGutters sx={{ pt: "64px", height: "100vh" }}>
+			<Grid container sx={{ height: "100%" }}>
+				{/* <Grid item xs={12} height={90}>
+					<Box p={2}>
+						<Typography variant="h3" textAlign={"center"}>
+							{recipe.recipe_name}
+						</Typography>
+					</Box>
+				</Grid> */}
+				<Grid item xs={6} height={"100%"}>
+					<Grid container height={"100%"}>
+						<Grid item xs={12} height={"100%"}>
+							<Box width={"100%"} height={"100%"} position="relative">
+								<Image
+									src={recipe.recipe_image}
+									alt="test"
+									fill={true}
+									style={{ objectFit: "cover" }}
+								/>
+							</Box>
+						</Grid>
+					</Grid>
+				</Grid>
+				<Grid item xs={6} sx={{ overflowY: "scroll", height: "100%" }}>
+					<Grid container>
+						<Grid item xs={12}>
+							<Box p={2}>
+								<Typography variant="h3" textAlign={"center"}>
+									{recipe.recipe_name}
+								</Typography>
+							</Box>
+							<Box p={2} maxWidth={"90%"} margin={"auto"}>
+								<Typography variant="body1" textAlign={"justify"}>
+									{recipe.recipe_description}
+								</Typography>
+							</Box>
+						</Grid>
+						<Grid item xs={12}>
+							<Box p={2} maxWidth={"90%"} margin={"auto"}>
+								<Typography variant="h4" mb={2}>
+									Ingredients
+								</Typography>
+								<Grid container spacing={2}>
+									{recipe.recipes_ingredients.map((ingredient: any) => (
+										<Grid item xs={12}>
+											<Grid container spacing={4}>
+												{/* <Grid item xs={2}>
+													<Box
+													width={"100%"}
+													height={"50px"}
+													position="relative"
+													>
+													<Image
+													src={
+														ingredient.ingredients
+														.ingredient_image ||
+														recipe.recipe_image
+													}
+															alt="test"
+															fill={true}
+															style={{ objectFit: "cover" }}
+															/>
+															</Box>
+														</Grid> */}
+												<Grid item xs={1}></Grid>
+												<Grid item xs={4}>
+													<Typography variant="body1" textAlign={"left"}>
+														{ingredient.ingredients.ingredient_name}
+													</Typography>
+												</Grid>
+												<Grid item xs={2}>
+													<Typography
+														variant="body1"
+														textAlign={"center"}
+													>
+														{ingredient.quantity}
+													</Typography>
+												</Grid>
+												<Grid item xs={3}>
+													<Typography
+														variant="body1"
+														textAlign={"center"}
+													>
+														{ingredient.unit}
+													</Typography>
+												</Grid>
+											</Grid>
+											<Divider sx={{ mt: 2 }} />
+										</Grid>
+									))}
+								</Grid>
+							</Box>
+						</Grid>
+						<Grid item xs={12}>
+							<Box p={2} maxWidth={"90%"} margin={"auto"}>
+								<Typography variant="h4" mb={2}>
+									Instructions
+								</Typography>
+								<Grid container spacing={2}>
+									{recipe.instructions.map((instruction: any, i: number) => (
+										<>
+											<Grid item xs={1}>
+												{`${i + 1}. `}
+											</Grid>
+											<Grid item xs={11}>
+												<Typography variant="body1" textAlign={"justify"}>
+													{instruction.instruction}
+												</Typography>
+											</Grid>
+										</>
+									))}
+								</Grid>
+							</Box>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
+		</Container>
+		// <div>
+		// 	{/* <div style={{ paddingTop: "100px" }}>{recipeData?.data?.recipe_name}</div>
+		// 	<div style={{ paddingTop: "10px" }}>{recipeData?.data?.recipe_description}</div> */}
+		// 	<RenderComponents cmsData={recipe?.cms_data} />
+		// 	{/* <Button onClick={() => router.back()}>Back</Button> */}
+		// </div>
 	);
 };
 

@@ -102,6 +102,7 @@ model recipes {
 model ingredients {
   ingredient_id           String                     @id @db.Uuid
   ingredient_name         String
+  ingredient_image        String?
   created_at              DateTime                   @default(now())
   updated_at              DateTime                   @updatedAt
   recipes_ingredients     recipes_ingredients[]
