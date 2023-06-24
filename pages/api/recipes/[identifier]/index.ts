@@ -80,7 +80,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
 	async function updateRecipe() {
 		try {
-			const { recipe_name, recipe_image, recipe_description, cms_data } = req.body;
+			const { recipe_name, recipe_image, recipe_description, instructions, cms_data } =
+				req.body;
 
 			const patchedPost = await prisma.recipes.update({
 				where: {
@@ -90,6 +91,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 					recipe_name,
 					recipe_image,
 					recipe_description,
+					instructions,
 					cms_data,
 				},
 			});

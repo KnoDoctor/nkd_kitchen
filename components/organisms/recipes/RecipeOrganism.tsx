@@ -27,6 +27,7 @@ import useCategories from "../../../hooks/categories/useCategories";
 
 import { returnCurrentModule } from "../../../utils/helperFunctions";
 import Relator from "../../__cms/____wip/inputs/Relator";
+import RecipeInstructions from "../../__cms/____wip/inputs/RecipeInstructions";
 
 interface handleSaveRecipeInputs {
 	updatedRecipe: any;
@@ -85,7 +86,10 @@ const RecipeOrganism = () => {
 	const [updatedRecipeName, setUpdatedRecipeName] = useState<string | null>(null);
 	const [updatedRecipeImage, setUpdatedRecipeImage] = useState<string | null>(null);
 	const [updatedRecipeDescription, setUpdatedRecipeDescription] = useState<string | null>(null);
-	const [updatedRecipeCmsData, setUpdatedRecipeCmsData] = useState<[] | null>(null);
+	const [updatedRecipeInstructionsData, setUpdatedRecipeInstructionsData] = useState<[] | null>(
+		null
+	);
+	const [updatedRecipeCmsData, setUpdatedRecipeCmsData] = useState<[] | null>([]);
 
 	const [isRecipeSaving, setIsRecipeSaving] = useState(false);
 	const [recipeSaveError, setRecipeSaveError] = useState<string | undefined | null>(null);
@@ -97,6 +101,7 @@ const RecipeOrganism = () => {
 		recipe_name: string | null;
 		recipe_image: string | null;
 		recipe_description: string | null;
+		instructions: [] | null;
 		cms_data: [] | null;
 	} | null>(null);
 
@@ -108,6 +113,10 @@ const RecipeOrganism = () => {
 		setUpdatedRecipeDescription(event.target.value);
 		setHasContentBeenEdited(true);
 	};
+	const handleInstructionsChange = (updatedInstructionsData: any) => {
+		setUpdatedRecipeInstructionsData(updatedInstructionsData);
+		setHasContentBeenEdited(true);
+	};
 	const handleCmsDataChange = (updatedCmsData: any) => {
 		setUpdatedRecipeCmsData(updatedCmsData.cms_data);
 		setHasContentBeenEdited(true);
@@ -117,6 +126,7 @@ const RecipeOrganism = () => {
 		setUpdatedRecipeName(recipe?.data?.data?.recipe_name);
 		setUpdatedRecipeImage(recipe?.data?.data?.recipe_image);
 		setUpdatedRecipeDescription(recipe?.data?.data?.recipe_description);
+		setUpdatedRecipeInstructionsData(recipe?.data?.data?.instructions);
 
 		// setUpdatedRecipeCmsData(recipe?.data?.data?.cms_data);
 	}, [recipe.data]);
@@ -126,9 +136,16 @@ const RecipeOrganism = () => {
 			recipe_name: updatedRecipeName,
 			recipe_image: updatedRecipeImage,
 			recipe_description: updatedRecipeDescription,
+			instructions: updatedRecipeInstructionsData,
 			cms_data: updatedRecipeCmsData,
 		});
-	}, [updatedRecipeName, updatedRecipeImage, updatedRecipeDescription, updatedRecipeCmsData]);
+	}, [
+		updatedRecipeName,
+		updatedRecipeImage,
+		updatedRecipeDescription,
+		updatedRecipeInstructionsData,
+		updatedRecipeCmsData,
+	]);
 
 	if (recipe.isLoading || !isReady) {
 		return <div>Loading</div>;
@@ -181,7 +198,11 @@ const RecipeOrganism = () => {
 								</ActionsModal>
 							}
 						/>
-						<RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} />
+						<RecipeInstructions
+							instructions={updatedRecipeInstructionsData}
+							updateInstructionData={handleInstructionsChange}
+						/>
+						{/* <RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} /> */}
 					</Grid>
 					<Grid
 						item

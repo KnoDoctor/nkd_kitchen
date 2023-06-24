@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Container, Box, Card, Stack, Typography } from "@mui/material";
+import { Container, Box, Grid, Card, Stack, Typography } from "@mui/material";
 
 import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 
@@ -153,7 +153,7 @@ const Relator = ({
 				<Typography
 					variant="h5"
 					sx={{
-						margin: 0,
+						mb: 2,
 						color: "#194666",
 						textDecoration: "underline",
 					}}
@@ -273,7 +273,27 @@ const Relator = ({
 					)}
 				</>
 
-				{RelatableEntityCreationComponent ? RelatableEntityCreationComponent : <></>}
+				{RelatableEntityCreationComponent ? (
+					<Grid container mt={2}>
+						<Grid item xs={6}>
+							<Typography
+								variant="body1"
+								sx={{
+									fontSize: 18,
+									color: "#194666",
+									textDecoration: "underline",
+								}}
+							>
+								{`Available ${title}`}
+							</Typography>
+						</Grid>
+						<Grid item xs={6} display={"flex"} justifyContent={"end"}>
+							{RelatableEntityCreationComponent}
+						</Grid>
+					</Grid>
+				) : (
+					<></>
+				)}
 				<Box my={2}>
 					{getMissingEntitiesRelator(
 						relatingEntity.data.data[`${relationName}`],
