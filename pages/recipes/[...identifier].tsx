@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { GetStaticProps, GetStaticPaths } from "next";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 import RenderComponents from "../../components/__cms/RenderComponents";
 import Button from "@mui/material/Button";
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
@@ -8,6 +10,9 @@ import Image from "next/image";
 
 const Recipe = ({ recipeData }: any) => {
 	const router = useRouter();
+	const isSingleColumn = useMediaQuery((theme: any) => theme.breakpoints.down("md"));
+
+	console.log(isSingleColumn);
 
 	if (router.isFallback) {
 		return <div style={{ padding: "150px" }}>Loading...</div>;
@@ -17,19 +22,20 @@ const Recipe = ({ recipeData }: any) => {
 	console.log(recipeData);
 
 	return (
-		<Container maxWidth={false} disableGutters sx={{ pt: "64px", height: "100vh" }}>
+		<Container
+			maxWidth={false}
+			disableGutters
+			sx={{ pt: "64px", height: isSingleColumn ? null : "100vh" }}
+		>
 			<Grid container sx={{ height: "100%" }}>
-				{/* <Grid item xs={12} height={90}>
-					<Box p={2}>
-						<Typography variant="h3" textAlign={"center"}>
-							{recipe.recipe_name}
-						</Typography>
-					</Box>
-				</Grid> */}
-				<Grid item xs={6} height={"100%"}>
+				<Grid item xs={12} md={6} height={"100%"}>
 					<Grid container height={"100%"}>
 						<Grid item xs={12} height={"100%"}>
-							<Box width={"100%"} height={"100%"} position="relative">
+							<Box
+								width={"100%"}
+								height={isSingleColumn ? "450px" : "100%"}
+								position="relative"
+							>
 								<Image
 									src={recipe.recipe_image}
 									alt="test"
@@ -40,10 +46,15 @@ const Recipe = ({ recipeData }: any) => {
 						</Grid>
 					</Grid>
 				</Grid>
-				<Grid item xs={6} sx={{ overflowY: "scroll", height: "100%" }}>
+				<Grid
+					item
+					xs={12}
+					md={6}
+					sx={{ overflowY: isSingleColumn ? null : "scroll", height: "100%" }}
+				>
 					<Grid container>
 						<Grid item xs={12}>
-							<Box p={2}>
+							<Box p={2} mt={4}>
 								<Typography variant="h3" textAlign={"center"}>
 									{recipe.recipe_name}
 								</Typography>
@@ -110,7 +121,7 @@ const Recipe = ({ recipeData }: any) => {
 								</Grid>
 							</Box>
 						</Grid>
-						<Grid item xs={12}>
+						<Grid item xs={12} mb={4}>
 							<Box p={2} maxWidth={"90%"} margin={"auto"}>
 								<Typography variant="h4" mb={2}>
 									Instructions

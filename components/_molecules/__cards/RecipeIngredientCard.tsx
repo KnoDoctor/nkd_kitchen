@@ -80,6 +80,7 @@ const measurementUnits: string[] = [
 	"Half",
 	"Dozen",
 	"Clove(s)",
+	"Sprig(s)",
 ];
 
 const RecipeIngredientCard = ({
