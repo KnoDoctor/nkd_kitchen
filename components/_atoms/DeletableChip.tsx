@@ -12,7 +12,6 @@ const DeleteableChip = ({
 	relatableEntityFieldPrefix,
 }: any) => {
 	const [isDeleting, setIsDeleting] = useState(false);
-	console.log("RELATION: ", relation);
 
 	if (
 		relation[`${relatableEntityName}`][`${relatableEntityFieldPrefix}_name`] ===

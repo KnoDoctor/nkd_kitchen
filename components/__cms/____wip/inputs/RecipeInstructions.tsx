@@ -32,7 +32,6 @@ const InstructionCard = ({ instruction, i, instructions, updateInstructionData }
 		const entityIndex = newInstructions.findIndex(
 			(instruction: any) => instruction[`id`] === id
 		);
-		console.log(entityIndex);
 
 		newInstructions[entityIndex].instruction = updatedValue;
 		updateInstructionData(newInstructions);
