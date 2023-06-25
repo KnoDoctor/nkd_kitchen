@@ -106,7 +106,7 @@ const RecipeOrganism = () => {
 		cms_data: [] | null;
 	} | null>(null);
 
-	const [debouncedHasContentBeenEdited] = useDebounce(hasContentBeenEdited, 1000);
+	const [debouncedHasContentBeenEdited] = useDebounce(hasContentBeenEdited, 500);
 
 	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUpdatedRecipeName(event.target.value);

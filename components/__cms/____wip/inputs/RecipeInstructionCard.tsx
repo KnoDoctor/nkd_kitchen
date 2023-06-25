@@ -13,7 +13,7 @@ import { useDebounce } from "use-debounce";
 
 const RecipeInstructionCard = ({ instruction, i, instructions, updateInstructionData }: any) => {
 	const [updatedInstruction, setUpdatedInstruction] = useState(instruction.instruction);
-	const [debouncedInstructionValue] = useDebounce(updatedInstruction, 500);
+	const [debouncedInstructionValue] = useDebounce(updatedInstruction, 5000);
 
 	useEffect(() => {
 		updateStep(instruction.id, updatedInstruction);
