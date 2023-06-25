@@ -131,8 +131,6 @@ const RecipeIngredientCard = ({
 		handleRelationSetupData.relatable_id
 	);
 
-	console.log("CAPN HOOK: ", recipeIngredientRelationship);
-
 	// const [quantity, setQuantity] = useState<number | null>(
 	// 	recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship?.quantity
 	// );
@@ -147,7 +145,6 @@ const RecipeIngredientCard = ({
 	const [debouncedHasContentBeenUpdated] = useDebounce(hasContentBeenUpdated, 750);
 
 	useEffect(() => {
-		console.log("boop");
 		if (hasContentBeenUpdated) {
 			setIsSaving(true);
 			handleRecipeIngredientRelationUpdate(

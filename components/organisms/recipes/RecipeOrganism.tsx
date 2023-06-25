@@ -28,6 +28,7 @@ import useCategories from "../../../hooks/categories/useCategories";
 import { returnCurrentModule } from "../../../utils/helperFunctions";
 import Relator from "../../__cms/____wip/inputs/Relator";
 import RecipeInstructions from "../../__cms/____wip/inputs/RecipeInstructions";
+import { useDebounce } from "use-debounce";
 
 interface handleSaveRecipeInputs {
 	updatedRecipe: any;
@@ -105,6 +106,8 @@ const RecipeOrganism = () => {
 		cms_data: [] | null;
 	} | null>(null);
 
+	const [debouncedHasContentBeenEdited] = useDebounce(hasContentBeenEdited, 1000);
+
 	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUpdatedRecipeName(event.target.value);
 		setHasContentBeenEdited(true);
@@ -146,6 +149,20 @@ const RecipeOrganism = () => {
 		updatedRecipeInstructionsData,
 		updatedRecipeCmsData,
 	]);
+
+	useEffect(() => {
+		if (hasContentBeenEdited) {
+			handleSaveRecipe({
+				updatedRecipe,
+				recipe,
+				setHasContentBeenEdited,
+				setIsRecipeSaving,
+				setRecipeSaveError,
+			});
+			setIsAlertSnackbarOpen(true);
+		}
+		setHasContentBeenEdited(false);
+	}, [debouncedHasContentBeenEdited]);
 
 	if (recipe.isLoading || !isReady) {
 		return <div>Loading</div>;
