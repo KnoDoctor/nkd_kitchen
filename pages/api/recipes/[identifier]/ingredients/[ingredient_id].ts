@@ -15,6 +15,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 	} = req;
 
 	switch (method) {
+		case "GET":
+			return getRecipeIngredientRelationship();
 		case "POST":
 			return createRecipeIngredientRelationship();
 		case "PATCH":
@@ -25,6 +27,46 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 			return sendError(res, 405, `Method ${method} Not Allowed`);
 	}
 
+	async function getRecipeIngredientRelationship() {
+		try {
+			if (typeof identifier != "string" || typeof ingredient_id != "string") {
+				throw new Error(
+					"Identifiers for relationship are not typeof string, please check URL and try again."
+				);
+			}
+
+			const token = await getToken({ req });
+
+			if (!token) {
+				throw new Error("Could not authenicate user, please login and try again.");
+			}
+
+			const { sub: user_id } = token;
+
+			if (typeof user_id != "string") {
+				throw new Error("user_id was not valid, please login and try again.");
+			}
+
+			const recipeIngredientRelationship = await prisma.recipes_ingredients.findUnique({
+				where: {
+					recipe_id_ingredient_id: {
+						recipe_id: identifier,
+						ingredient_id,
+					},
+				},
+			});
+
+			res.status(200).json({
+				success: true,
+				data: {
+					recipeIngredientRelationship,
+				},
+			});
+		} catch (error) {
+			console.log(error);
+			sendError(res, 400, error);
+		}
+	}
 	async function createRecipeIngredientRelationship() {
 		try {
 			if (typeof identifier != "string" || typeof ingredient_id != "string") {
