@@ -47,7 +47,9 @@ const handleSaveRecipe = async ({
 }: handleSaveRecipeInputs) => {
 	setIsRecipeSaving(true);
 	try {
-		const recipeId = recipe.data.data.recipe_id;
+		console.log(recipe);
+
+		const recipeId = recipe?.data?.data?.recipe_id;
 
 		const updateRecipeRes = await fetch(`/api/recipes/${recipeId}`, {
 			method: "PATCH",
@@ -153,21 +155,25 @@ const RecipeOrganism = () => {
 	]);
 
 	useEffect(() => {
-		if (hasContentBeenEdited) {
-			handleSaveRecipe({
-				updatedRecipe,
-				recipe,
-				setHasContentBeenEdited,
-				setIsRecipeSaving,
-				setRecipeSaveError,
-			});
-			setIsAlertSnackbarOpen(true);
+		if (!recipe.isLoading && isReady) {
+			if (hasContentBeenEdited) {
+				handleSaveRecipe({
+					updatedRecipe,
+					recipe,
+					setHasContentBeenEdited,
+					setIsRecipeSaving,
+					setRecipeSaveError,
+				});
+				setIsAlertSnackbarOpen(true);
+			}
+			setHasContentBeenEdited(false);
 		}
-		setHasContentBeenEdited(false);
 	}, [debouncedHasContentBeenEdited]);
 
 	useEffect(() => {
-		setHasContentBeenEdited(true);
+		if (!recipe.isLoading && isReady) {
+			setHasContentBeenEdited(true);
+		}
 	}, [debouncedUpdatedRecipeName, debouncedUpdatedDescription]);
 
 	if (recipe.isLoading || !isReady) {
