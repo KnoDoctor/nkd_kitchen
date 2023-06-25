@@ -107,14 +107,16 @@ const RecipeOrganism = () => {
 	} | null>(null);
 
 	const [debouncedHasContentBeenEdited] = useDebounce(hasContentBeenEdited, 500);
+	const [debouncedUpdatedRecipeName] = useDebounce(updatedRecipeName, 750);
+	const [debouncedUpdatedDescription] = useDebounce(updatedRecipeDescription, 750);
 
 	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUpdatedRecipeName(event.target.value);
-		setHasContentBeenEdited(true);
+		// setHasContentBeenEdited(true);
 	};
 	const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUpdatedRecipeDescription(event.target.value);
-		setHasContentBeenEdited(true);
+		// setHasContentBeenEdited(true);
 	};
 	const handleInstructionsChange = (updatedInstructionsData: any) => {
 		setUpdatedRecipeInstructionsData(updatedInstructionsData);
@@ -143,9 +145,9 @@ const RecipeOrganism = () => {
 			cms_data: updatedRecipeCmsData,
 		});
 	}, [
-		updatedRecipeName,
+		debouncedUpdatedRecipeName,
 		updatedRecipeImage,
-		updatedRecipeDescription,
+		debouncedUpdatedDescription,
 		updatedRecipeInstructionsData,
 		updatedRecipeCmsData,
 	]);
@@ -163,6 +165,10 @@ const RecipeOrganism = () => {
 		}
 		setHasContentBeenEdited(false);
 	}, [debouncedHasContentBeenEdited]);
+
+	useEffect(() => {
+		setHasContentBeenEdited(true);
+	}, [debouncedUpdatedRecipeName, debouncedUpdatedDescription]);
 
 	if (recipe.isLoading || !isReady) {
 		return <div>Loading</div>;
