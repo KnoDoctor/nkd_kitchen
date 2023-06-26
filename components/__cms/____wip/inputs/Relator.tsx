@@ -164,18 +164,24 @@ const Relator = ({
 					{CustomRelationComponent ? (
 						relatingEntity.data.data[`${relationName}`].length > 0 ? (
 							relatingEntity.data.data[`${relationName}`]
+								// .sort((a: any, b: any) => {
+								// 	const nameA =
+								// 		a[`${relatableEntityName}`][
+								// 			`${relatableEntityFieldPrefix}_name`
+								// 		].toLowerCase();
+								// 	const nameB =
+								// 		b[`${relatableEntityName}`][
+								// 			`${relatableEntityFieldPrefix}_name`
+								// 		].toLowerCase();
+								// 	if (nameA < nameB) return -1;
+								// 	if (nameA > nameB) return 1;
+								// 	return 0;
+								// })
 								.sort((a: any, b: any) => {
-									const nameA =
-										a[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_name`
-										].toLowerCase();
-									const nameB =
-										b[`${relatableEntityName}`][
-											`${relatableEntityFieldPrefix}_name`
-										].toLowerCase();
-									if (nameA < nameB) return -1;
-									if (nameA > nameB) return 1;
-									return 0;
+									const dateA = new Date(a[`created_at`]);
+									const dateB = new Date(b[`created_at`]);
+									return dateA.getTime() - dateB.getTime(); // For ascending order
+									// return dateB.getTime() - dateA.getTime(); // Uncomment for descending order
 								})
 								.map((relation: any) => (
 									<CustomRelationComponent

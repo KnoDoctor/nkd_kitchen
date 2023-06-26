@@ -47,6 +47,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 							},
 							quantity: true,
 							unit: true,
+							created_at: true,
 						},
 					},
 					recipes_categories: {
