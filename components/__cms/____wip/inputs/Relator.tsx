@@ -206,7 +206,6 @@ const Relator = ({
 											relatingEntityName,
 											relatingEntityFieldPrefix,
 											relatingEntity,
-
 											setRelationSaveError,
 											setIsAlertSnackbarOpen,
 										}}

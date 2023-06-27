@@ -28,6 +28,7 @@ import useCategories from "../../../hooks/categories/useCategories";
 import { returnCurrentModule } from "../../../utils/helperFunctions";
 import Relator from "../../__cms/____wip/inputs/Relator";
 import RecipeInstructions from "../../__cms/____wip/inputs/RecipeInstructions";
+import CategoryCreationOrganism from "../categories/CategoryCreationOrganism";
 
 interface handleSaveRecipeInputs {
 	updatedRecipe: any;
@@ -197,6 +198,40 @@ const RecipeOrganism = () => {
 						}}
 					>
 						<Grid container>
+							<Grid item xs={12} lg={6} mt={2} mb={4}>
+								<Button
+									variant="contained"
+									sx={{ width: "100%" }}
+									disabled={!hasContentBeenEdited}
+									onClick={() => {
+										handleSaveRecipe({
+											updatedRecipe: {
+												recipe_name: recipe?.data?.data?.recipe_name,
+												recipe_image: recipe?.data?.data?.recipe_image,
+												recipe_description:
+													recipe?.data?.data?.recipe_description,
+												instructions: recipe?.data?.data?.instructions,
+											},
+											recipe,
+											setHasContentBeenEdited,
+											setIsRecipeSaving,
+											setRecipeSaveError,
+										});
+										setIsAlertSnackbarOpen(true);
+									}}
+								>
+									{!hasContentBeenEdited ? "Up to Date" : "Content has Changed"}
+								</Button>
+							</Grid>
+							<Grid item xs={12} lg={6} mt={2} mb={4}>
+								<Button
+									variant="contained"
+									sx={{ width: "100%", ml: { xs: 0, lg: 2 } }}
+									onClick={() => setIsDeleteDialogOpen(true)}
+								>
+									Delete
+								</Button>
+							</Grid>
 							<Grid item xs={12}>
 								<Box
 									sx={{
@@ -260,18 +295,7 @@ const RecipeOrganism = () => {
 									setHasContentBeenEdited={setHasContentBeenEdited}
 								/>
 							</Grid>
-							<Relator
-								title="Categories"
-								relatingEntityName="recipes"
-								relatingEntityId={id}
-								relatingEntityFieldPrefix="recipe"
-								useRelatingEntityHook={useRecipe}
-								relatableEntityName="categories"
-								relatableEntityFieldPrefix="category"
-								relationName="recipes_categories"
-								useRelatableEntityHook={useCategories}
-								isSidebar
-							/>
+
 							<TextField
 								sx={{ width: "100%", mb: 2 }}
 								multiline
@@ -321,40 +345,23 @@ const RecipeOrganism = () => {
 								variant="standard"
 							/>
 
-							<Grid item xs={12} lg={6}>
-								<Button
-									variant="contained"
-									sx={{ width: "100%" }}
-									disabled={!hasContentBeenEdited}
-									onClick={() => {
-										handleSaveRecipe({
-											updatedRecipe: {
-												recipe_name: recipe?.data?.data?.recipe_name,
-												recipe_image: recipe?.data?.data?.recipe_image,
-												recipe_description:
-													recipe?.data?.data?.recipe_description,
-												instructions: recipe?.data?.data?.instructions,
-											},
-											recipe,
-											setHasContentBeenEdited,
-											setIsRecipeSaving,
-											setRecipeSaveError,
-										});
-										setIsAlertSnackbarOpen(true);
-									}}
-								>
-									{!hasContentBeenEdited ? "Up to Date" : "Content has Changed"}
-								</Button>
-							</Grid>
-							<Grid item xs={12} lg={6}>
-								<Button
-									variant="contained"
-									sx={{ width: "100%", ml: { xs: 0, lg: 2 } }}
-									onClick={() => setIsDeleteDialogOpen(true)}
-								>
-									Delete
-								</Button>
-							</Grid>
+							<Relator
+								title="Categories"
+								relatingEntityName="recipes"
+								relatingEntityId={id}
+								relatingEntityFieldPrefix="recipe"
+								useRelatingEntityHook={useRecipe}
+								relatableEntityName="categories"
+								relatableEntityFieldPrefix="category"
+								relationName="recipes_categories"
+								useRelatableEntityHook={useCategories}
+								RelatableEntityCreationComponent={
+									<ActionsModal label="+">
+										<CategoryCreationOrganism />
+									</ActionsModal>
+								}
+								isSidebar
+							/>
 
 							<AlertSnackbar
 								isSaving={isRecipeSaving}
