@@ -8,11 +8,28 @@ import { generateGuid } from "../../../../utils/uuids";
 
 import RecipeInstructionCard from "./RecipeInstructionCard";
 
-const RecipeInstructions = ({ instructions, updateInstructionData }: any) => {
+const RecipeInstructions = ({
+	instructions,
+	recipe,
+	setHasContentBeenEdited,
+	setHasBlurredInput,
+}: any) => {
 	const addStep = () => {
 		let newInstructions = [...instructions];
 		newInstructions.push({ id: generateGuid(), instruction: "" });
-		updateInstructionData(newInstructions);
+
+		recipe.mutate(
+			{
+				...recipe.data,
+				data: {
+					...recipe.data.data,
+					instructions: newInstructions,
+				},
+			},
+			{ revalidate: false }
+		);
+		setHasContentBeenEdited(true);
+		setHasBlurredInput(true);
 	};
 
 	if (!instructions) return <>Loading...</>;
@@ -51,7 +68,9 @@ const RecipeInstructions = ({ instructions, updateInstructionData }: any) => {
 								instruction={instruction}
 								i={i}
 								instructions={instructions}
-								updateInstructionData={updateInstructionData}
+								recipe={recipe}
+								setHasContentBeenEdited={setHasContentBeenEdited}
+								setHasBlurredInput={setHasBlurredInput}
 							/>
 						);
 					})}

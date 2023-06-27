@@ -127,6 +127,7 @@ const RecipeIngredientCard = ({
 		handleRelationSetupData.relating_id,
 		handleRelationSetupData.relatable_id
 	);
+
 	const [isSaving, setIsSaving] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [hasContentBeenUpdated, setHasContentBeenUpdated] = useState(false);
@@ -279,37 +280,7 @@ const RecipeIngredientCard = ({
 						<SyncIcon />
 					</IconButton>
 				) : (
-					<IconButton
-						edge="end"
-						aria-label="save"
-						onClick={() => {
-							// setIsSaving(true);
-							// handleRecipeIngredientRelationUpdate(
-							// 	handleRelationSetupData.relating_id,
-							// 	handleRelationSetupData.relatable_id,
-							// 	{
-							// 		quantity:
-							// 			recipeIngredientRelationship?.data?.data
-							// 				?.recipeIngredientRelationship?.quantity,
-							// 		unit: recipeIngredientRelationship?.data?.data
-							// 			?.recipeIngredientRelationship?.unit,
-							// 	},
-							// 	recipeIngredientRelationship,
-							// 	setIsSaving
-							// );
-							// handleRelation({
-							// 	...handleRelationSetupData,
-							// 	action: "PATCH",
-							// 	relationMetaData: {
-							// 		quantity:
-							// 			recipeIngredientRelationship?.data?.data
-							// 				?.recipeIngredientRelationship?.quantity,
-							// 		unit: recipeIngredientRelationship?.data?.data
-							// 			?.recipeIngredientRelationship?.unit,
-							// 	},
-							// });
-						}}
-					>
+					<IconButton edge="end" aria-label="save">
 						<DoneAllIcon />
 					</IconButton>
 				)}

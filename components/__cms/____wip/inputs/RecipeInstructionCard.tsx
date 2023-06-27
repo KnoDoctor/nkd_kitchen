@@ -11,9 +11,16 @@ import Divider from "@mui/material/Divider";
 
 import { useDebounce } from "use-debounce";
 
-const RecipeInstructionCard = ({ instruction, i, instructions, updateInstructionData }: any) => {
+const RecipeInstructionCard = ({
+	instruction,
+	i,
+	instructions,
+	recipe,
+	setHasContentBeenEdited,
+	setHasBlurredInput,
+}: any) => {
 	const [updatedInstruction, setUpdatedInstruction] = useState(instruction.instruction);
-	const [debouncedInstructionValue] = useDebounce(updatedInstruction, 5000);
+	const [debouncedInstructionValue] = useDebounce(updatedInstruction, 250);
 
 	useEffect(() => {
 		updateStep(instruction.id, updatedInstruction);
@@ -31,13 +38,34 @@ const RecipeInstructionCard = ({ instruction, i, instructions, updateInstruction
 		);
 
 		newInstructions[entityIndex].instruction = updatedValue;
-		updateInstructionData(newInstructions);
+		recipe.mutate(
+			{
+				...recipe.data,
+				data: {
+					...recipe.data.data,
+					instructions: newInstructions,
+				},
+			},
+			{ revalidate: false }
+		);
+		setHasContentBeenEdited(true);
 	};
 
 	const deleteStep = (id: any) => {
 		let newInstructions = [...instructions];
 		newInstructions = newInstructions.filter((instruction: any) => instruction.id !== id);
-		updateInstructionData(newInstructions);
+		recipe.mutate(
+			{
+				...recipe.data,
+				data: {
+					...recipe.data.data,
+					instructions: newInstructions,
+				},
+			},
+			{ revalidate: false }
+		);
+		setHasContentBeenEdited(true);
+		setHasBlurredInput(true);
 	};
 	return (
 		<>
@@ -63,6 +91,7 @@ const RecipeInstructionCard = ({ instruction, i, instructions, updateInstruction
 					}
 					multiline
 					InputProps={{ disableUnderline: true }}
+					onBlur={() => setHasBlurredInput(true)}
 				/>
 			</Grid>
 

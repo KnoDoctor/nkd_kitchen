@@ -87,8 +87,8 @@ const RecipeOrganism = () => {
 	const recipe = useRecipe(id);
 
 	const [updatedRecipeName, setUpdatedRecipeName] = useState<string | null>(null);
-	const [updatedRecipeImage, setUpdatedRecipeImage] = useState<string | null>(null);
 	const [updatedRecipeDescription, setUpdatedRecipeDescription] = useState<string | null>(null);
+	const [updatedRecipeImage, setUpdatedRecipeImage] = useState<string | null>(null);
 	const [updatedRecipeInstructionsData, setUpdatedRecipeInstructionsData] = useState<[] | null>(
 		null
 	);
@@ -97,6 +97,7 @@ const RecipeOrganism = () => {
 	const [isRecipeSaving, setIsRecipeSaving] = useState(false);
 	const [recipeSaveError, setRecipeSaveError] = useState<string | undefined | null>(null);
 	const [hasContentBeenEdited, setHasContentBeenEdited] = useState(false);
+	const [hasBlurredInput, setHasBlurredInput] = useState(false);
 	const [isAlertSnackbarOpen, setIsAlertSnackbarOpen] = useState(false);
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -108,73 +109,76 @@ const RecipeOrganism = () => {
 		cms_data: [] | null;
 	} | null>(null);
 
-	const [debouncedHasContentBeenEdited] = useDebounce(hasContentBeenEdited, 500);
-	const [debouncedUpdatedRecipeName] = useDebounce(updatedRecipeName, 750);
-	const [debouncedUpdatedDescription] = useDebounce(updatedRecipeDescription, 750);
+	// const [debouncedUpdatedRecipeName] = useDebounce(updatedRecipeName, 750);
+	// const [debouncedUpdatedDescription] = useDebounce(updatedRecipeDescription, 750);
 
-	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setUpdatedRecipeName(event.target.value);
-		// setHasContentBeenEdited(true);
-	};
-	const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setUpdatedRecipeDescription(event.target.value);
-		// setHasContentBeenEdited(true);
-	};
-	const handleInstructionsChange = (updatedInstructionsData: any) => {
-		setUpdatedRecipeInstructionsData(updatedInstructionsData);
-		setHasContentBeenEdited(true);
-	};
+	// const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setUpdatedRecipeName(event.target.value);
+	// 	// setHasContentBeenEdited(true);
+	// };
+	// const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setUpdatedRecipeDescription(event.target.value);
+	// 	// setHasContentBeenEdited(true);
+	// };
+	// const handleInstructionsChange = (updatedInstructionsData: any) => {
+	// 	setUpdatedRecipeInstructionsData(updatedInstructionsData);
+	// 	setHasContentBeenEdited(true);
+	// };
 	const handleCmsDataChange = (updatedCmsData: any) => {
 		setUpdatedRecipeCmsData(updatedCmsData.cms_data);
 		setHasContentBeenEdited(true);
 	};
 
-	useEffect(() => {
-		setUpdatedRecipeName(recipe?.data?.data?.recipe_name);
-		setUpdatedRecipeImage(recipe?.data?.data?.recipe_image);
-		setUpdatedRecipeDescription(recipe?.data?.data?.recipe_description);
-		setUpdatedRecipeInstructionsData(recipe?.data?.data?.instructions);
+	// useEffect(() => {
+	// 	setUpdatedRecipeName(recipe?.data?.data?.recipe_name);
+	// 	setUpdatedRecipeImage(recipe?.data?.data?.recipe_image);
+	// 	setUpdatedRecipeDescription(recipe?.data?.data?.recipe_description);
+	// 	setUpdatedRecipeInstructionsData(recipe?.data?.data?.instructions);
 
-		// setUpdatedRecipeCmsData(recipe?.data?.data?.cms_data);
-	}, [recipe.data]);
+	// 	// setUpdatedRecipeCmsData(recipe?.data?.data?.cms_data);
+	// }, [recipe.data]);
+
+	// useEffect(() => {
+	// 	setUpdatedRecipe({
+	// 		recipe_name: updatedRecipeName,
+	// 		recipe_image: updatedRecipeImage,
+	// 		recipe_description: updatedRecipeDescription,
+	// 		instructions: updatedRecipeInstructionsData,
+	// 		cms_data: updatedRecipeCmsData,
+	// 	});
+	// }, [
+	// 	debouncedUpdatedRecipeName,
+	// 	updatedRecipeImage,
+	// 	debouncedUpdatedDescription,
+	// 	updatedRecipeInstructionsData,
+	// 	updatedRecipeCmsData,
+	// ]);
 
 	useEffect(() => {
-		setUpdatedRecipe({
-			recipe_name: updatedRecipeName,
-			recipe_image: updatedRecipeImage,
-			recipe_description: updatedRecipeDescription,
-			instructions: updatedRecipeInstructionsData,
-			cms_data: updatedRecipeCmsData,
-		});
-	}, [
-		debouncedUpdatedRecipeName,
-		updatedRecipeImage,
-		debouncedUpdatedDescription,
-		updatedRecipeInstructionsData,
-		updatedRecipeCmsData,
-	]);
-
-	useEffect(() => {
-		if (!recipe.isLoading && isReady) {
-			if (hasContentBeenEdited) {
-				handleSaveRecipe({
-					updatedRecipe,
-					recipe,
-					setHasContentBeenEdited,
-					setIsRecipeSaving,
-					setRecipeSaveError,
-				});
-				setIsAlertSnackbarOpen(true);
-			}
+		if (hasContentBeenEdited) {
+			handleSaveRecipe({
+				updatedRecipe: {
+					recipe_name: recipe?.data?.data?.recipe_name,
+					recipe_image: recipe?.data?.data?.recipe_image,
+					recipe_description: recipe?.data?.data?.recipe_description,
+					instructions: recipe?.data?.data?.instructions,
+				},
+				recipe,
+				setHasContentBeenEdited,
+				setIsRecipeSaving,
+				setRecipeSaveError,
+			});
+			setIsAlertSnackbarOpen(true);
 			setHasContentBeenEdited(false);
 		}
-	}, [debouncedHasContentBeenEdited]);
+		setHasBlurredInput(false);
+	}, [hasBlurredInput]);
 
-	useEffect(() => {
-		if (!recipe.isLoading && isReady) {
-			setHasContentBeenEdited(true);
-		}
-	}, [debouncedUpdatedRecipeName, debouncedUpdatedDescription]);
+	// useEffect(() => {
+	// 	if (!recipe.isLoading && isReady) {
+	// 		setHasContentBeenEdited(true);
+	// 	}
+	// }, [debouncedUpdatedRecipeName, debouncedUpdatedDescription]);
 
 	if (recipe.isLoading || !isReady) {
 		return <div>Loading</div>;
@@ -228,8 +232,10 @@ const RecipeOrganism = () => {
 							}
 						/>
 						<RecipeInstructions
-							instructions={updatedRecipeInstructionsData}
-							updateInstructionData={handleInstructionsChange}
+							instructions={recipe?.data?.data?.instructions}
+							recipe={recipe}
+							setHasContentBeenEdited={setHasContentBeenEdited}
+							setHasBlurredInput={setHasBlurredInput}
 						/>
 						{/* <RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} /> */}
 					</Grid>
@@ -261,7 +267,7 @@ const RecipeOrganism = () => {
 								>
 									<Image
 										src={
-											updatedRecipeImage ||
+											recipe?.data?.data?.recipe_image ||
 											"https://images.unsplash.com/photo-1596887245124-5150ad2491e7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
 										}
 										fill={true}
@@ -274,17 +280,42 @@ const RecipeOrganism = () => {
 									multiline
 									id="outlined-name"
 									label="SEO Image"
-									value={updatedRecipeImage}
-									onChange={(e) => {
-										setUpdatedRecipeImage(e.target.value);
+									value={recipe?.data?.data?.recipe_image}
+									onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+										recipe.mutate(
+											{
+												...recipe.data,
+												data: {
+													...recipe.data.data,
+													recipe_image: event.target.value,
+												},
+											},
+											{ revalidate: false }
+										);
 										setHasContentBeenEdited(true);
+									}}
+									onBlur={() => {
+										setHasBlurredInput(true);
 									}}
 									variant="standard"
 								/>
 							</Grid>
 							<Grid item xs={6}>
 								<UploadButton
-									setUpdatedHeroImage={setUpdatedRecipeImage}
+									setUpdatedHeroImage={(url: string) => {
+										recipe.mutate(
+											{
+												...recipe.data,
+												data: {
+													...recipe.data.data,
+													recipe_image: url,
+												},
+											},
+											{ revalidate: false }
+										);
+										setHasContentBeenEdited(true);
+										setHasBlurredInput(true);
+									}}
 									setHasContentBeenEdited={setHasContentBeenEdited}
 								/>
 							</Grid>
@@ -305,8 +336,23 @@ const RecipeOrganism = () => {
 								multiline
 								id="outlined-name"
 								label="Recipe Name"
-								value={updatedRecipeName}
-								onChange={handleNameChange}
+								value={recipe?.data?.data?.recipe_name}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+									recipe.mutate(
+										{
+											...recipe.data,
+											data: {
+												...recipe.data.data,
+												recipe_name: event.target.value,
+											},
+										},
+										{ revalidate: false }
+									);
+									setHasContentBeenEdited(true);
+								}}
+								onBlur={() => {
+									setHasBlurredInput(true);
+								}}
 								variant="standard"
 							/>
 							<TextField
@@ -314,8 +360,23 @@ const RecipeOrganism = () => {
 								multiline
 								id="outlined-description"
 								label="Recipe Description"
-								value={updatedRecipeDescription}
-								onChange={handleDescriptionChange}
+								value={recipe?.data?.data?.recipe_description}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+									recipe.mutate(
+										{
+											...recipe.data,
+											data: {
+												...recipe.data.data,
+												recipe_description: event.target.value,
+											},
+										},
+										{ revalidate: false }
+									);
+									setHasContentBeenEdited(true);
+								}}
+								onBlur={() => {
+									setHasBlurredInput(true);
+								}}
 								variant="standard"
 							/>
 
@@ -326,7 +387,13 @@ const RecipeOrganism = () => {
 									disabled={!hasContentBeenEdited}
 									onClick={() => {
 										handleSaveRecipe({
-											updatedRecipe,
+											updatedRecipe: {
+												recipe_name: recipe?.data?.data?.recipe_name,
+												recipe_image: recipe?.data?.data?.recipe_image,
+												recipe_description:
+													recipe?.data?.data?.recipe_description,
+												instructions: recipe?.data?.data?.instructions,
+											},
 											recipe,
 											setHasContentBeenEdited,
 											setIsRecipeSaving,
@@ -360,7 +427,7 @@ const RecipeOrganism = () => {
 			</Card>
 			<RecipeDeletionOrganism
 				recipeId={id}
-				recipeName={updatedRecipeName}
+				recipeName={recipe?.data?.data?.recipe_name}
 				open={isDeleteDialogOpen}
 				handleClose={() => setIsDeleteDialogOpen(false)}
 			/>
