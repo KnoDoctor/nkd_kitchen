@@ -167,6 +167,8 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			type: "SET_UPDATED_CMS_DATA",
 			payload: updatedValue,
 		});
+
+		updateCmsData(updatedValue);
 	};
 
 	const removeSection = (sectionId: string) => {
@@ -179,6 +181,7 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			type: "SET_UPDATED_CMS_DATA",
 			payload: updatedValue,
 		});
+		updateCmsData(updatedValue);
 	};
 
 	const reorderSections = (sectionToMove: any, moveTo: any) => {
@@ -196,6 +199,7 @@ const RenderCms = ({ cmsData, updateCmsData }: RenderCmsProps) => {
 			type: "SET_UPDATED_CMS_DATA",
 			payload: updatedValue,
 		});
+		updateCmsData(updatedValue);
 	};
 
 	const handleSectionChange = (event: any) => {
