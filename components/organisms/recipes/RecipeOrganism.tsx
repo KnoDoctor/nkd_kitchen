@@ -236,6 +236,7 @@ const RecipeOrganism = () => {
 							recipe={recipe}
 							setHasContentBeenEdited={setHasContentBeenEdited}
 							setHasBlurredInput={setHasBlurredInput}
+							isSaving={isRecipeSaving}
 						/>
 						{/* <RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} /> */}
 					</Grid>

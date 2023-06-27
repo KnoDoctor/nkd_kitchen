@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-import Button from "../../../_atoms/Button";
+import Button from "@mui/material/Button";
 import { generateGuid } from "../../../../utils/uuids";
 
 import RecipeInstructionCard from "./RecipeInstructionCard";
@@ -13,6 +13,7 @@ const RecipeInstructions = ({
 	recipe,
 	setHasContentBeenEdited,
 	setHasBlurredInput,
+	isSaving,
 }: any) => {
 	const addStep = () => {
 		let newInstructions = [...instructions];
@@ -56,6 +57,7 @@ const RecipeInstructions = ({
 							variant={"contained"}
 							onClick={addStep}
 							sx={{ float: "right" }}
+							disabled={isSaving}
 						>
 							Add Step
 						</Button>
