@@ -4,7 +4,6 @@ import IconButton from "@mui/material/IconButton";
 import Grid from "@mui/material/Grid";
 import SyncIcon from "@mui/icons-material/Sync";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -14,7 +13,6 @@ import sortArrayOfStringsAlphabetically from "../../../utils/helperFunctions/sor
 
 //Testing
 import useRecipeIngredientRelationship from "../../../hooks/recipes/useRecipeIngredientRelationship";
-import { useDebounce } from "use-debounce";
 interface RecipeIngredientCardProps {
 	ingredient: RecipeIngredient;
 	handleRelationSetupData: any;
@@ -112,12 +110,11 @@ const handleRecipeIngredientRelationUpdate = async (
 			throw new Error(`HTTP error! status: ${recipeIngredientRelationRes.status}`);
 		}
 
-		// const recipeIngredientRelationData = await recipeIngredientRelationRes.json();
-
 		recipeIngredientRelationship.mutate();
 		setIsSaving(false);
 	} catch (error) {
 		console.log(error);
+		setIsSaving(false);
 	}
 };
 
@@ -130,19 +127,10 @@ const RecipeIngredientCard = ({
 		handleRelationSetupData.relating_id,
 		handleRelationSetupData.relatable_id
 	);
-
-	// const [quantity, setQuantity] = useState<number | null>(
-	// 	recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship?.quantity
-	// );
-	// const [unit, setUnit] = useState<string | null>(
-	// 	recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship?.unit
-	// );
-	// const [unitInputValue, setUnitInputValue] = useState("");
 	const [isSaving, setIsSaving] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [hasContentBeenUpdated, setHasContentBeenUpdated] = useState(false);
-
-	const [debouncedHasContentBeenUpdated] = useDebounce(hasContentBeenUpdated, 750);
+	const [hasBlurredInput, setHasBlurredInput] = useState(false);
 
 	useEffect(() => {
 		if (hasContentBeenUpdated) {
@@ -160,9 +148,10 @@ const RecipeIngredientCard = ({
 				recipeIngredientRelationship,
 				setIsSaving
 			);
+			setHasContentBeenUpdated(false);
 		}
-		setHasContentBeenUpdated(false);
-	}, [debouncedHasContentBeenUpdated]);
+		setHasBlurredInput(false);
+	}, [hasBlurredInput]);
 
 	if (ingredient.ingredients.ingredient_name === "ZZLoading..." || isDeleting)
 		return (
@@ -223,6 +212,9 @@ const RecipeIngredientCard = ({
 						);
 						setHasContentBeenUpdated(true);
 					}}
+					onBlur={() => {
+						setHasBlurredInput(true);
+					}}
 				/>
 			</Grid>
 			<Grid item xs={3}>
@@ -248,6 +240,9 @@ const RecipeIngredientCard = ({
 							{ revalidate: false }
 						);
 						setHasContentBeenUpdated(true);
+					}}
+					onBlur={() => {
+						setHasBlurredInput(true);
 					}}
 					inputValue={
 						recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship
