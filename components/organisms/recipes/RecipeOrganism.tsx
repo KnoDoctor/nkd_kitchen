@@ -63,18 +63,18 @@ const handleSaveRecipe = async ({
 
 		if (updateRecipeData.success) {
 			recipe.mutate();
-			setIsRecipeSaving(false);
 			setRecipeSaveError(null);
 			setHasContentBeenEdited(false);
-		} else {
 			setIsRecipeSaving(false);
+		} else {
 			setRecipeSaveError(`${updateRecipeData.error.name}: ${updateRecipeData.error.message}`);
+			setIsRecipeSaving(false);
 			console.log("ERROR: ", updateRecipeData);
 		}
 	} catch (error: any) {
 		console.log(`${error.name}: ${error.message}`);
-		setIsRecipeSaving(false);
 		setRecipeSaveError(`${error.name}: ${error.message}`);
+		setIsRecipeSaving(false);
 	}
 };
 
@@ -342,7 +342,7 @@ const RecipeOrganism = () => {
 										setIsAlertSnackbarOpen(true);
 									}}
 								>
-									{!hasContentBeenEdited ? "Up to Date" : "Save"}
+									{!hasContentBeenEdited ? "Up to Date" : "Content has Changed"}
 								</Button>
 							</Grid>
 							<Grid item xs={12} lg={6}>
