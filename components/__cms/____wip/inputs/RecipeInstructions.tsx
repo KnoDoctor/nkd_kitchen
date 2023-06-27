@@ -11,6 +11,7 @@ import RecipeInstructionCard from "./RecipeInstructionCard";
 const RecipeInstructions = ({
 	instructions,
 	recipe,
+	hasContentBeenEdited,
 	setHasContentBeenEdited,
 	setHasBlurredInput,
 	isSaving,
@@ -71,6 +72,7 @@ const RecipeInstructions = ({
 								i={i}
 								instructions={instructions}
 								recipe={recipe}
+								hasContentBeenEdited={hasContentBeenEdited}
 								setHasContentBeenEdited={setHasContentBeenEdited}
 								setHasBlurredInput={setHasBlurredInput}
 							/>

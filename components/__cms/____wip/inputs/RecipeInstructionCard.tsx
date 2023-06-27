@@ -16,6 +16,7 @@ const RecipeInstructionCard = ({
 	i,
 	instructions,
 	recipe,
+	hasContentBeenEdited,
 	setHasContentBeenEdited,
 	setHasBlurredInput,
 }: any) => {
@@ -23,7 +24,9 @@ const RecipeInstructionCard = ({
 	const [debouncedInstructionValue] = useDebounce(updatedInstruction, 250);
 
 	useEffect(() => {
-		updateStep(instruction.id, updatedInstruction);
+		if (hasContentBeenEdited) {
+			updateStep(instruction.id, updatedInstruction);
+		}
 	}, [debouncedInstructionValue]);
 
 	useEffect(() => {
@@ -86,9 +89,10 @@ const RecipeInstructionCard = ({
 					autoComplete="off"
 					placeholder={i === 0 ? "What's the first step?" : "What do we do next?"}
 					value={updatedInstruction}
-					onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-						setUpdatedInstruction(event.target.value)
-					}
+					onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+						setUpdatedInstruction(event.target.value);
+						setHasContentBeenEdited(true);
+					}}
 					multiline
 					InputProps={{ disableUnderline: true }}
 					onBlur={() => setHasBlurredInput(true)}

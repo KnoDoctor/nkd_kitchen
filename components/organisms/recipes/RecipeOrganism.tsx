@@ -173,6 +173,7 @@ const RecipeOrganism = () => {
 						<RecipeInstructions
 							instructions={recipe?.data?.data?.instructions}
 							recipe={recipe}
+							hasContentBeenEdited={hasContentBeenEdited}
 							setHasContentBeenEdited={setHasContentBeenEdited}
 							setHasBlurredInput={setHasBlurredInput}
 							isSaving={isRecipeSaving}
