@@ -71,10 +71,16 @@ const Recipe = ({ recipeData }: any) => {
 									Ingredients
 								</Typography>
 								<Grid container spacing={2}>
-									{recipe.recipes_ingredients.map((ingredient: any) => (
-										<Grid item xs={12}>
-											<Grid container spacing={4}>
-												{/* <Grid item xs={2}>
+									{recipe.recipes_ingredients
+										.sort((a: any, b: any) => {
+											const dateA = new Date(a[`created_at`]);
+											const dateB = new Date(b[`created_at`]);
+											return dateA.getTime() - dateB.getTime(); // For ascending order
+										})
+										.map((ingredient: any) => (
+											<Grid item xs={12}>
+												<Grid container spacing={4}>
+													{/* <Grid item xs={2}>
 													<Box
 													width={"100%"}
 													height={"50px"}
@@ -92,32 +98,35 @@ const Recipe = ({ recipeData }: any) => {
 															/>
 															</Box>
 														</Grid> */}
-												<Grid item xs={1}></Grid>
-												<Grid item xs={4}>
-													<Typography variant="body1" textAlign={"left"}>
-														{ingredient.ingredients.ingredient_name}
-													</Typography>
+													<Grid item xs={1}></Grid>
+													<Grid item xs={4}>
+														<Typography
+															variant="body1"
+															textAlign={"left"}
+														>
+															{ingredient.ingredients.ingredient_name}
+														</Typography>
+													</Grid>
+													<Grid item xs={2}>
+														<Typography
+															variant="body1"
+															textAlign={"center"}
+														>
+															{ingredient.quantity}
+														</Typography>
+													</Grid>
+													<Grid item xs={3}>
+														<Typography
+															variant="body1"
+															textAlign={"center"}
+														>
+															{ingredient.unit}
+														</Typography>
+													</Grid>
 												</Grid>
-												<Grid item xs={2}>
-													<Typography
-														variant="body1"
-														textAlign={"center"}
-													>
-														{ingredient.quantity}
-													</Typography>
-												</Grid>
-												<Grid item xs={3}>
-													<Typography
-														variant="body1"
-														textAlign={"center"}
-													>
-														{ingredient.unit}
-													</Typography>
-												</Grid>
+												<Divider sx={{ mt: 2 }} />
 											</Grid>
-											<Divider sx={{ mt: 2 }} />
-										</Grid>
-									))}
+										))}
 								</Grid>
 							</Box>
 						</Grid>
