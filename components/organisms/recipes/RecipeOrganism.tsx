@@ -108,6 +108,7 @@ const RecipeOrganism = () => {
 					recipe_image: recipe?.data?.data?.recipe_image,
 					recipe_description: recipe?.data?.data?.recipe_description,
 					instructions: recipe?.data?.data?.instructions,
+					cms_data: recipe?.data?.data?.cms_data,
 				},
 				recipe,
 				setHasContentBeenEdited,
@@ -179,7 +180,23 @@ const RecipeOrganism = () => {
 							setHasBlurredInput={setHasBlurredInput}
 							isSaving={isRecipeSaving}
 						/>
-						{/* <RenderCms cmsData={recipe} updateCmsData={handleCmsDataChange} /> */}
+						<RenderCms
+							cmsData={recipe}
+							updateCmsData={(updatedCmsData: any) => {
+								recipe.mutate(
+									{
+										...recipe.data,
+										data: {
+											...recipe.data.data,
+											cms_data: updatedCmsData?.cms_data,
+										},
+									},
+									{ revalidate: false }
+								);
+								setHasContentBeenEdited(true);
+								setHasBlurredInput(true);
+							}}
+						/>
 					</Grid>
 					<Grid
 						item

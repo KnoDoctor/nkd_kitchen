@@ -151,6 +151,9 @@ const Recipe = ({ recipeData }: any) => {
 								</Grid>
 							</Box>
 						</Grid>
+						<Grid item xs={12} mb={4}>
+							<RenderComponents cmsData={recipe?.cms_data} />
+						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
