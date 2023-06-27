@@ -348,7 +348,7 @@ const RecipeOrganism = () => {
 							<Grid item xs={12} lg={6}>
 								<Button
 									variant="contained"
-									sx={{ width: "100%", ml: 2 }}
+									sx={{ width: "100%", ml: { xs: 0, lg: 2 } }}
 									onClick={() => setIsDeleteDialogOpen(true)}
 								>
 									Delete
