@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Box, Grid, Card, Stack, Typography } from "@mui/material";
 
 import AlertSnackbar from "../../../_atoms/AlertSnackbar";
@@ -6,6 +6,7 @@ import AlertSnackbar from "../../../_atoms/AlertSnackbar";
 import getMissingEntitiesRelator from "../../../../utils/helperFunctions/getMissingEntitiesRelator";
 import DeleteableChip from "../../../_atoms/DeletableChip";
 import AddableChip from "../../../_atoms/AddableChip";
+import DebouncedTextField from "./DebouncedTextField";
 
 interface HandleRelationProps {
 	relatable_id: string;
@@ -147,6 +148,15 @@ const Relator = ({
 	const [relationSaveError, setRelationSaveError] = useState<string | undefined | null>(null);
 	const [isAlertSnackbarOpen, setIsAlertSnackbarOpen] = useState(false);
 
+	const searchInputRef = useRef();
+	const [searchTerm, setSearchTerm] = useState<string>("");
+
+	useEffect(() => {
+		if (searchInputRef.current) {
+			(searchInputRef.current as HTMLInputElement)?.focus();
+		}
+	}, [searchTerm]);
+
 	const RenderPrimaryComponent = () => {
 		return (
 			<>
@@ -279,7 +289,7 @@ const Relator = ({
 				</>
 
 				{RelatableEntityCreationComponent ? (
-					<Grid container mt={2}>
+					<Grid container my={2}>
 						<Grid item xs={6}>
 							<Typography
 								variant="body1"
@@ -299,6 +309,14 @@ const Relator = ({
 				) : (
 					<></>
 				)}
+				<Box width="100%">
+					<DebouncedTextField
+						value={searchTerm}
+						setValue={setSearchTerm}
+						ref={searchInputRef}
+						placeholder={`Search for ${title.toLowerCase()}...`}
+					/>
+				</Box>
 				<Box my={2}>
 					{getMissingEntitiesRelator(
 						relatingEntity.data.data[`${relationName}`],
@@ -330,6 +348,14 @@ const Relator = ({
 									if (nameA < nameB) return -1;
 									if (nameA > nameB) return 1;
 									return 0;
+								})
+								.filter((relation: any) => {
+									if (searchTerm.trim() === "") return true;
+									return relation[`${relatableEntityName}`][
+										`${relatableEntityFieldPrefix}_name`
+									]
+										.toLowerCase()
+										.includes(searchTerm.toLowerCase());
 								})
 								.map((relation: any) => (
 									<AddableChip
