@@ -37,17 +37,20 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String?       @unique
-  emailVerified DateTime?     @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  roles         users_roles[]
-  recipes       recipes[]
-  comments      comments[]
-  articles      articles[]
+  id               String             @id @default(cuid())
+  name             String?
+  email            String?            @unique
+  emailVerified    DateTime?          @map("email_verified")
+  image            String?
+  accounts         Account[]
+  sessions         Session[]
+  roles            users_roles[]
+  recipes          recipes[]
+  comments         comments[]
+  articles         articles[]
+  pantry_inventory pantry_inventory[]
+  meal_plans       meal_plans[]
+  shopping_lists   shopping_lists[]
 
   @@map("users")
 }
@@ -97,6 +100,7 @@ model recipes {
   comments            comments[]
   users               User                  @relation(fields: [user_id], references: [id])
   articles            articles[]            @relation("ArticleToRecipe")
+  meal_plan_items     meal_plan_items[]
 }
 
 model ingredients {
@@ -109,6 +113,7 @@ model ingredients {
   articles                articles[]                 @relation("ArticleToIngredient")
   substituted_ingredient  ingredient_substitutions[] @relation("SubstitutedIngredient")
   substituting_ingredient ingredient_substitutions[] @relation("SubstitutingIngredient")
+  pantry_inventory        pantry_inventory[]
 }
 
 model recipes_ingredients {
@@ -183,11 +188,31 @@ model pages {
   is_published       Boolean @default(false)
 }
 
+model entities {
+  entity_id        String             @id @db.Uuid
+  entity_name      String             @db.VarChar(150)
+  entity_image     String?            @db.VarChar(150)
+  entity_slug      String             @db.VarChar(150)
+  modules_entities modules_entities[]
+}
+
+model modules_entities {
+  modules_entities_id String   @db.Uuid
+  module_id           String   @db.Uuid
+  entity_id           String   @db.Uuid
+  modules             modules  @relation(fields: [module_id], references: [module_id])
+  entities            entities @relation(fields: [entity_id], references: [entity_id])
+
+  @@id([module_id, entity_id])
+  @@unique([module_id, entity_id])
+}
+
 model modules {
-  module_id    String  @id @db.Uuid
-  module_name  String  @db.VarChar(150)
-  module_image String? @db.VarChar(150)
-  module_slug  String  @db.VarChar(150)
+  module_id        String             @id @db.Uuid
+  module_name      String             @db.VarChar(150)
+  module_image     String?            @db.VarChar(150)
+  module_slug      String             @db.VarChar(150)
+  modules_entities modules_entities[]
 }
 
 model ingredient_substitutions {
@@ -202,4 +227,50 @@ model ingredient_substitutions {
   substituted_ingredient     ingredients @relation("SubstitutedIngredient", fields: [substituted_ingredient_id], references: [ingredient_id])
 
   @@id([substituting_ingredient_id, substituted_ingredient_id])
+}
+
+model pantry_inventory {
+  pantry_item_id  String      @id @db.Uuid
+  user_id         String
+  ingredient_id   String      @db.Uuid
+  quantity        Float
+  expiration_date DateTime?
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+  users           User        @relation(fields: [user_id], references: [id])
+  ingredients     ingredients @relation(fields: [ingredient_id], references: [ingredient_id])
+}
+
+model meal_plans {
+  meal_plan_id    String            @id @db.Uuid
+  user_id         String
+  start_date      DateTime
+  end_date        DateTime
+  meals           Json              @default("[]") // Array of meal objects (recipe_id, date, time)
+  notes           String?
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  users           User              @relation(fields: [user_id], references: [id])
+  meal_plan_items meal_plan_items[]
+}
+
+model meal_plan_items {
+  meal_plan_item_id String     @id @db.Uuid
+  meal_plan_id      String     @db.Uuid
+  recipe_id         String     @db.Uuid
+  quantity          Int
+  unit              String?
+  created_at        DateTime   @default(now())
+  updated_at        DateTime   @updatedAt
+  meal_plans        meal_plans @relation(fields: [meal_plan_id], references: [meal_plan_id])
+  recipes           recipes    @relation(fields: [recipe_id], references: [recipe_id])
+}
+
+model shopping_lists {
+  shopping_list_id String   @id @db.Uuid
+  user_id          String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  items            Json     @default("[]") // Array of items (ingredient_id, quantity, unit)
+  users            User     @relation(fields: [user_id], references: [id])
 }
