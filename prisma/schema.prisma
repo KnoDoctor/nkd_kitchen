@@ -212,6 +212,7 @@ model modules {
   module_name      String             @db.VarChar(150)
   module_image     String?            @db.VarChar(150)
   module_slug      String             @db.VarChar(150)
+  module_icon      String?            @db.VarChar(150)
   modules_entities modules_entities[]
 }
 
