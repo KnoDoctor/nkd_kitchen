@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
 const cloudinary = require("cloudinary");
 
@@ -9,11 +10,10 @@ cloudinary.config({
 	api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
 });
 
-const configuration = new Configuration({
-	apiKey: process.env.NEXT_PUBLIC_DALLE_SK,
+// Create an OpenAI API client (that's edge friendly!)
+const openai = new OpenAI({
+	apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
 	const { method } = req;
@@ -55,20 +55,16 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				});
 			}
 
-			const result = await openai.createCompletion({
+			const response = await openai.completions.create({
 				model: "text-davinci-003",
 				prompt,
 				max_tokens: 1000,
 			});
 
-			console.log("ARTICLE: ", result.data.choices[0].text);
-
-			res.status(201).json({
-				success: true,
-				data: {
-					article: result.data.choices[0].text,
-				},
-			});
+			// Convert the response into a friendly text-stream
+			const stream = OpenAIStream(response as any);
+			// Respond with the stream
+			return new StreamingTextResponse(stream);
 
 			// await cloudinary.v2.uploader.upload(
 			// 	result?.data?.data?.[0]?.url,
