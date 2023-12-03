@@ -10,28 +10,20 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
 	switch (method) {
 		case "GET":
-			return getModules();
+			return getEntities();
 		case "POST":
-			return createModule();
+			return createEntity();
 		default:
 			return res.status(405).end(`Method ${req.method} Not Allowed`);
 	}
 
-	async function getModules() {
+	async function getEntities() {
 		try {
-			const allModules = await prisma.modules.findMany({
-				include: {
-					modules_entities: {
-						select: {
-							entities: true,
-						},
-					},
-				},
-			});
+			const allEntities = await prisma.entities.findMany();
 
 			res.status(200).json({
 				success: true,
-				data: allModules,
+				data: allEntities,
 			});
 		} catch (error) {
 			console.log(error);
@@ -42,34 +34,34 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 		}
 	}
 
-	async function createModule() {
+	async function createEntity() {
 		try {
-			const { module_name, module_slug } = req.body;
+			const { entity_name, entity_slug } = req.body;
 
-			if (!module_name) {
+			if (!entity_name) {
 				return res.status(400).json({
 					success: false,
-					error: "Could not create module, name parameter is missing.",
+					error: "Could not create entity, name parameter is missing.",
 				});
 			}
-			if (!module_slug) {
+			if (!entity_slug) {
 				return res.status(400).json({
 					success: false,
-					error: "Could not create module, slug parameter is missing.",
+					error: "Could not create entity, name parameter is missing.",
 				});
 			}
 
-			const createdModule = await prisma.modules.create({
+			const createdEntity = await prisma.entities.create({
 				data: {
-					module_id: generateGuid(),
-					module_name,
-					module_slug,
+					entity_id: generateGuid(),
+					entity_name,
+					entity_slug,
 				},
 			});
 
 			res.status(201).json({
 				success: true,
-				data: createdModule,
+				data: createdEntity,
 			});
 		} catch (error) {
 			console.log(error);

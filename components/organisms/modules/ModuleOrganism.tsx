@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
+
 import { useRouter } from "next/router";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Card";
+
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -18,14 +20,25 @@ import ModuleDeletionOrganism from "./ModuleDeletionOrganism";
 import AlertSnackbar from "../../_atoms/AlertSnackbar";
 import UploadButton from "../../_atoms/UploadButton";
 
+import Relator from "../../__cms/____wip/inputs/Relator";
+
 import useModule from "../../../hooks/modules/useModule";
 
 import { returnCurrentModule } from "../../../utils/helperFunctions";
 
+import PersonCreationOrganism from "../people/PersonCreationOrganism";
+import ActionsModal from "../../_atoms/ActionsModal";
+// import useProcesses from "../../../hooks/processes/useProcesses";
+// import ProcessCreationOrganism from "../processes/ProcessCreationOrganism";
+import useEntities from "../../../hooks/entities/useEntities";
+import useModules from "../../../hooks/modules/useModules";
+
 interface handleSaveModuleInputs {
 	updatedModule: any;
 	module: any;
+	modules: any;
 	setHasContentBeenEdited(value: boolean): void;
+	setHasBlurredInput(value: boolean): void;
 	setIsModuleSaving(value: boolean): void;
 	setModuleSaveError(value: string | undefined | null): void;
 }
@@ -33,7 +46,9 @@ interface handleSaveModuleInputs {
 const handleSaveModule = async ({
 	updatedModule,
 	module,
+	modules,
 	setHasContentBeenEdited,
+	setHasBlurredInput,
 	setIsModuleSaving,
 	setModuleSaveError,
 }: handleSaveModuleInputs) => {
@@ -54,18 +69,22 @@ const handleSaveModule = async ({
 
 		if (updateModuleData.success) {
 			module.mutate();
+			modules.mutate();
 			setIsModuleSaving(false);
 			setModuleSaveError(null);
 			setHasContentBeenEdited(false);
+			setHasBlurredInput(false);
 		} else {
 			setIsModuleSaving(false);
 			setModuleSaveError(`${updateModuleData.error.name}: ${updateModuleData.error.message}`);
+			setHasBlurredInput(false);
 			console.log("ERROR: ", updateModuleData);
 		}
 	} catch (error: any) {
 		console.log(`${error.name}: ${error.message}`);
 		setIsModuleSaving(false);
 		setModuleSaveError(`${error.name}: ${error.message}`);
+		setHasBlurredInput(false);
 	}
 };
 
@@ -75,58 +94,37 @@ const ModuleOrganism = () => {
 	let id = router.query.identifier;
 
 	const module = useModule(id);
-
-	const [updatedModuleName, setUpdatedModuleName] = useState<string | null>(null);
-	const [updatedModuleSlug, setUpdatedModuleSlug] = useState<string | null>(null);
-	const [updatedModuleImage, setUpdatedModuleImage] = useState<string | null>(null);
-	// const [updatedModuleCmsData, setUpdatedModuleCmsData] = useState<[] | null>(null);
+	const modules = useModules();
 
 	const [isModuleSaving, setIsModuleSaving] = useState(false);
 	const [moduleSaveError, setModuleSaveError] = useState<string | undefined | null>(null);
 	const [hasContentBeenEdited, setHasContentBeenEdited] = useState(false);
+	const [hasBlurredInput, setHasBlurredInput] = useState(false);
 	const [isAlertSnackbarOpen, setIsAlertSnackbarOpen] = useState(false);
 	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-	const [updatedModule, setUpdatedModule] = useState<{
-		module_name: string | null;
-		module_slug: string | null;
-		module_image: string | null;
-		// cms_data: [] | null;
-	} | null>(null);
-
-	const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setUpdatedModuleName(event.target.value);
-		setHasContentBeenEdited(true);
-	};
-	const handleSlugChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setUpdatedModuleSlug(event.target.value);
-		setHasContentBeenEdited(true);
-	};
-	// const handleCmsDataChange = (updatedCmsData: any) => {
-	// 	setUpdatedModuleCmsData(updatedCmsData.cms_data);
-	// 	setHasContentBeenEdited(true);
-	// };
+	console.log(hasBlurredInput);
 
 	useEffect(() => {
-		setUpdatedModuleName(module?.data?.data?.module_name);
-		setUpdatedModuleSlug(module?.data?.data?.module_slug);
-		setUpdatedModuleImage(module?.data?.data?.module_image);
-		// setUpdatedModuleCmsData(module?.data?.data?.cms_data);
-	}, [module.data]);
-
-	useEffect(() => {
-		setUpdatedModule({
-			module_name: updatedModuleName,
-			module_slug: updatedModuleSlug,
-			module_image: updatedModuleImage,
-			// cms_data: updatedModuleCmsData,
-		});
-	}, [
-		updatedModuleName,
-		updatedModuleSlug,
-		updatedModuleImage,
-		// updatedModuleCmsData,
-	]);
+		if (hasContentBeenEdited) {
+			handleSaveModule({
+				updatedModule: {
+					module_name: module?.data?.data?.module_name,
+					module_slug: module?.data?.data?.module_slug,
+					module_icon: module?.data?.data?.module_icon,
+					module_image: module?.data?.data?.module_image,
+					cms_data: module?.data?.data?.cms_data,
+				},
+				module,
+				modules,
+				setHasContentBeenEdited,
+				setHasBlurredInput,
+				setIsModuleSaving,
+				setModuleSaveError,
+			});
+			setIsAlertSnackbarOpen(true);
+		}
+	}, [hasBlurredInput]);
 
 	if (module.isLoading || !isReady) {
 		return <div>Loading</div>;
@@ -162,7 +160,23 @@ const ModuleOrganism = () => {
 			<Card sx={{ height: "100%", p: 2, mt: 2, overflow: "visible" }}>
 				<Grid container spacing={3}>
 					<Grid item xs={12} md={8}>
-						{/* <RenderCms cmsData={module} updateCmsData={handleCmsDataChange} /> */}
+						<RenderCms
+							cmsData={module}
+							updateCmsData={(updatedCmsData: any) => {
+								module.mutate(
+									{
+										...module.data,
+										data: {
+											...module.data.data,
+											cms_data: updatedCmsData?.cms_data,
+										},
+									},
+									{ revalidate: false }
+								);
+								setHasContentBeenEdited(true);
+								setHasBlurredInput(true);
+							}}
+						/>
 					</Grid>
 					<Grid
 						item
@@ -181,6 +195,43 @@ const ModuleOrganism = () => {
 						}}
 					>
 						<Grid container>
+							<Grid item xs={12} lg={6} mt={2} mb={4}>
+								<Button
+									variant="contained"
+									sx={{ width: "100%" }}
+									disabled={!hasContentBeenEdited}
+									onClick={() => {
+										handleSaveModule({
+											updatedModule: {
+												module_name: module?.data?.data?.module_name,
+												module_slug: module?.data?.data?.module_slug,
+												module_icon: module?.data?.data?.module_icon,
+												module_image: module?.data?.data?.module_image,
+												cms_data: module?.data?.data?.cms_data,
+											},
+											module,
+											modules,
+											setHasContentBeenEdited,
+											setHasBlurredInput,
+											setIsModuleSaving,
+											setModuleSaveError,
+										});
+										setIsAlertSnackbarOpen(true);
+										setHasBlurredInput(false);
+									}}
+								>
+									{!hasContentBeenEdited ? "Up to Date" : "Content has Changed"}
+								</Button>
+							</Grid>
+							<Grid item xs={12} lg={6} mt={2} mb={4}>
+								<Button
+									variant="contained"
+									sx={{ width: "100%", ml: { xs: 0, lg: 2 } }}
+									onClick={() => setIsDeleteDialogOpen(true)}
+								>
+									Delete
+								</Button>
+							</Grid>
 							<Grid item xs={12}>
 								<Box
 									sx={{
@@ -192,7 +243,7 @@ const ModuleOrganism = () => {
 								>
 									<Image
 										src={
-											updatedModuleImage ||
+											module?.data?.data?.module_image ||
 											"https://images.unsplash.com/photo-1596887245124-5150ad2491e7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
 										}
 										fill={true}
@@ -205,27 +256,80 @@ const ModuleOrganism = () => {
 									multiline
 									id="outlined-name"
 									label="Image"
-									value={updatedModuleImage}
-									onChange={(e) => {
-										setUpdatedModuleImage(e.target.value);
+									value={module?.data?.data?.module_image}
+									onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+										module.mutate(
+											{
+												...module.data,
+												data: {
+													...module.data.data,
+													module_image: event.target.value,
+												},
+											},
+											{ revalidate: false }
+										);
 										setHasContentBeenEdited(true);
+									}}
+									onBlur={() => {
+										setHasBlurredInput(true);
 									}}
 									variant="standard"
 								/>
 							</Grid>
 							<Grid item xs={6}>
 								<UploadButton
-									setUpdatedHeroImage={setUpdatedModuleImage}
+									setUpdatedHeroImage={(url: string) => {
+										module.mutate(
+											{
+												...module.data,
+												data: {
+													...module.data.data,
+													module_image: url,
+												},
+											},
+											{ revalidate: false }
+										);
+										setHasContentBeenEdited(true);
+										setHasBlurredInput(true);
+									}}
 									setHasContentBeenEdited={setHasContentBeenEdited}
 								/>
 							</Grid>
+							<Relator
+								title="Entities"
+								relationName="modules_entities"
+								relatingEntityId={id}
+								relatingEntityName="modules"
+								relatingEntityFieldPrefix="module"
+								useRelatingEntityHook={useModule}
+								relatableEntityName="entities"
+								relatableEntityFieldPrefix="entity"
+								useRelatableEntityHook={useEntities}
+								isSidebar
+							/>
+
 							<TextField
 								sx={{ width: "100%", mb: 2 }}
 								multiline
 								id="outlined-name"
 								label="Module Name"
-								value={updatedModuleName}
-								onChange={handleNameChange}
+								value={module?.data?.data?.module_name}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+									module.mutate(
+										{
+											...module.data,
+											data: {
+												...module.data.data,
+												module_name: event.target.value,
+											},
+										},
+										{ revalidate: false }
+									);
+									setHasContentBeenEdited(true);
+								}}
+								onBlur={() => {
+									setHasBlurredInput(true);
+								}}
 								variant="standard"
 							/>
 							<TextField
@@ -233,39 +337,49 @@ const ModuleOrganism = () => {
 								multiline
 								id="outlined-slug"
 								label="Module Slug"
-								value={updatedModuleSlug}
-								onChange={handleSlugChange}
+								value={module?.data?.data?.module_slug}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+									module.mutate(
+										{
+											...module.data,
+											data: {
+												...module.data.data,
+												module_slug: event.target.value,
+											},
+										},
+										{ revalidate: false }
+									);
+									setHasContentBeenEdited(true);
+								}}
+								onBlur={() => {
+									setHasBlurredInput(true);
+								}}
 								variant="standard"
 							/>
-
-							<Grid item xs={12} lg={6}>
-								<Button
-									variant="contained"
-									sx={{ width: "100%" }}
-									disabled={!hasContentBeenEdited}
-									onClick={() => {
-										handleSaveModule({
-											updatedModule,
-											module,
-											setHasContentBeenEdited,
-											setIsModuleSaving,
-											setModuleSaveError,
-										});
-										setIsAlertSnackbarOpen(true);
-									}}
-								>
-									{!hasContentBeenEdited ? "Up to Date" : "Save"}
-								</Button>
-							</Grid>
-							<Grid item xs={12} lg={6}>
-								<Button
-									variant="contained"
-									sx={{ width: "100%", ml: 2 }}
-									onClick={() => setIsDeleteDialogOpen(true)}
-								>
-									Delete
-								</Button>
-							</Grid>
+							<TextField
+								sx={{ width: "100%", mb: 2 }}
+								multiline
+								id="outlined-icon"
+								label="Module Icon"
+								value={module?.data?.data?.module_icon}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+									module.mutate(
+										{
+											...module.data,
+											data: {
+												...module.data.data,
+												module_icon: event.target.value,
+											},
+										},
+										{ revalidate: false }
+									);
+									setHasContentBeenEdited(true);
+								}}
+								onBlur={() => {
+									setHasBlurredInput(true);
+								}}
+								variant="standard"
+							/>
 
 							<AlertSnackbar
 								isSaving={isModuleSaving}
@@ -279,7 +393,7 @@ const ModuleOrganism = () => {
 			</Card>
 			<ModuleDeletionOrganism
 				moduleId={id}
-				moduleName={updatedModuleName}
+				moduleName={module?.data?.data?.module_name}
 				open={isDeleteDialogOpen}
 				handleClose={() => setIsDeleteDialogOpen(false)}
 			/>
