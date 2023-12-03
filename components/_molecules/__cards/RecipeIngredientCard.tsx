@@ -84,6 +84,60 @@ const measurementUnits: string[] = [
 	"Dozen",
 	"Clove(s)",
 	"Sprig(s)",
+	"Splash(es)",
+];
+
+const preparationMethods: string[] = [
+	"Shredded",
+	"Chopped",
+	"Minced",
+	"Mashed",
+	"Julienned",
+	"Sliced",
+	"Diced",
+	"Grated",
+	"Ground",
+	"Pureed",
+	"Whisked",
+	"Beaten",
+	"Stirred",
+	"Mixed",
+	"Folded",
+	"Kneaded",
+	"Marinated",
+	"Seasoned",
+	"Basted",
+	"Blanched",
+	"Roasted",
+	"Baked",
+	"Boiled",
+	"Steamed",
+	"Fried",
+	"Sautéed",
+	"Grilled",
+	"Broiled",
+	"Poached",
+	"Braised",
+	"Glazed",
+	"Caramelized",
+	"Infused",
+	"Zested",
+	"Peeled",
+	"Crushed",
+	"Flambéed",
+	"Chilled",
+	"Frozen",
+	"Thawed",
+	"Simmered",
+	"Seared",
+	"Scorched",
+	"Toasted",
+	"Soaked",
+	"Garnished",
+	"Emulsified",
+	"Whipped",
+	"Filleted",
+	"Butterflied",
 ];
 
 const handleRecipeIngredientRelationUpdate = async (
@@ -145,6 +199,9 @@ const RecipeIngredientCard = ({
 							?.quantity,
 					unit: recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship
 						?.unit,
+					preparation_method:
+						recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship
+							?.preparation_method,
 				},
 				recipeIngredientRelationship,
 				setIsSaving
@@ -177,7 +234,7 @@ const RecipeIngredientCard = ({
 
 	return (
 		<Grid container>
-			<Grid item xs={5}>
+			<Grid item xs={3}>
 				<TextField
 					sx={{ width: "100%" }}
 					id="standard-controlled"
@@ -268,6 +325,62 @@ const RecipeIngredientCard = ({
 					}}
 					id="controllable-states-demo"
 					options={sortArrayOfStringsAlphabetically(measurementUnits)}
+					sx={{ width: "100%" }}
+					renderInput={(params) => (
+						<TextField {...params} variant="standard" placeholder="Unit" />
+					)}
+				/>
+			</Grid>
+			<Grid item xs={2}>
+				<Autocomplete
+					freeSolo
+					value={
+						recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship
+							?.preparation_method || ""
+					}
+					onChange={(event: any, newValue: string | null) => {
+						recipeIngredientRelationship.mutate(
+							{
+								...recipeIngredientRelationship.data,
+								data: {
+									...recipeIngredientRelationship.data.data,
+									recipeIngredientRelationship: {
+										...recipeIngredientRelationship.data.data
+											.recipeIngredientRelationship,
+										preparation_method: newValue,
+									},
+								},
+							},
+							{ revalidate: false }
+						);
+						setHasContentBeenUpdated(true);
+					}}
+					onBlur={() => {
+						setHasBlurredInput(true);
+					}}
+					inputValue={
+						recipeIngredientRelationship?.data?.data?.recipeIngredientRelationship
+							?.preparation_method || ""
+					}
+					onInputChange={(event, newInputValue) => {
+						recipeIngredientRelationship.mutate(
+							{
+								...recipeIngredientRelationship.data,
+								data: {
+									...recipeIngredientRelationship.data.data,
+									recipeIngredientRelationship: {
+										...recipeIngredientRelationship.data.data
+											.recipeIngredientRelationship,
+										preparation_method: newInputValue,
+									},
+								},
+							},
+							{ revalidate: false }
+						);
+						setHasContentBeenUpdated(true);
+					}}
+					id="controllable-states-demo"
+					options={sortArrayOfStringsAlphabetically(preparationMethods)}
 					sx={{ width: "100%" }}
 					renderInput={(params) => (
 						<TextField {...params} variant="standard" placeholder="Unit" />

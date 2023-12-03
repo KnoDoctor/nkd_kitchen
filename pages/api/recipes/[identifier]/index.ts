@@ -47,6 +47,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 							},
 							quantity: true,
 							unit: true,
+							preparation_method: true,
 							created_at: true,
 						},
 					},

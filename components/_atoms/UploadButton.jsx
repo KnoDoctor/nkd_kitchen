@@ -1,9 +1,12 @@
+"use client";
+
 import { CldUploadButton } from "next-cloudinary";
+import { CldUploadWidget } from "next-cloudinary";
 
 const UploadButton = ({ setHasContentBeenEdited, setUpdatedHeroImage }) => {
 	return (
 		<CldUploadButton
-			onUpload={function (error, result, widget) {
+			onUpload={function (result) {
 				console.log(result);
 				console.log("HERE!!!!");
 

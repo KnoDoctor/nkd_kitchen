@@ -125,7 +125,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				throw new Error("user_id was not valid, please login and try again.");
 			}
 
-			const { quantity, unit } = req.body;
+			const { quantity, unit, preparation_method } = req.body;
 
 			const patchedPost = await prisma.recipes_ingredients.update({
 				where: {
@@ -137,6 +137,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 				data: {
 					quantity,
 					unit,
+					preparation_method,
 				},
 			});
 

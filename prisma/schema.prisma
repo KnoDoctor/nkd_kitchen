@@ -117,14 +117,15 @@ model ingredients {
 }
 
 model recipes_ingredients {
-  recipe_id     String      @db.Uuid
-  ingredient_id String      @db.Uuid
-  quantity      Float?
-  unit          String?
-  created_at    DateTime    @default(now())
-  updated_at    DateTime    @updatedAt
-  recipes       recipes     @relation(fields: [recipe_id], references: [recipe_id])
-  ingredients   ingredients @relation(fields: [ingredient_id], references: [ingredient_id])
+  recipe_id          String      @db.Uuid
+  ingredient_id      String      @db.Uuid
+  quantity           Float?
+  unit               String?
+  preparation_method String?
+  created_at         DateTime    @default(now())
+  updated_at         DateTime    @updatedAt
+  recipes            recipes     @relation(fields: [recipe_id], references: [recipe_id])
+  ingredients        ingredients @relation(fields: [ingredient_id], references: [ingredient_id])
 
   @@id([recipe_id, ingredient_id])
   @@unique([recipe_id, ingredient_id])

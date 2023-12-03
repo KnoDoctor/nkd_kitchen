@@ -99,6 +99,22 @@ const Recipe = ({ recipeData }: any) => {
 															</Box>
 														</Grid> */}
 													<Grid item xs={1}></Grid>
+													<Grid item xs={1}>
+														<Typography
+															variant="body1"
+															textAlign={"left"}
+														>
+															{ingredient.quantity}
+														</Typography>
+													</Grid>
+													<Grid item xs={3}>
+														<Typography
+															variant="body1"
+															textAlign={"left"}
+														>
+															{ingredient.unit}
+														</Typography>
+													</Grid>
 													<Grid item xs={4}>
 														<Typography
 															variant="body1"
@@ -110,17 +126,9 @@ const Recipe = ({ recipeData }: any) => {
 													<Grid item xs={2}>
 														<Typography
 															variant="body1"
-															textAlign={"center"}
+															textAlign={"left"}
 														>
-															{ingredient.quantity}
-														</Typography>
-													</Grid>
-													<Grid item xs={3}>
-														<Typography
-															variant="body1"
-															textAlign={"center"}
-														>
-															{ingredient.unit}
+															{ingredient.preparation_method}
 														</Typography>
 													</Grid>
 												</Grid>
