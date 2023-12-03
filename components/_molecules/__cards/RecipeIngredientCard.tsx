@@ -383,7 +383,7 @@ const RecipeIngredientCard = ({
 					options={sortArrayOfStringsAlphabetically(preparationMethods)}
 					sx={{ width: "100%" }}
 					renderInput={(params) => (
-						<TextField {...params} variant="standard" placeholder="Unit" />
+						<TextField {...params} variant="standard" placeholder="Prepared..." />
 					)}
 				/>
 			</Grid>

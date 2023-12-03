@@ -3,6 +3,8 @@ export default function getMissingEntities(
 	referenceableEntities: any,
 	entityFieldPrefix: string
 ): any {
+	if (!referenceableEntities) return [];
+
 	if (referenceableEntities.length === 0) {
 		return []; // Return an empty array if referenceableEntities input array is empty
 	}
