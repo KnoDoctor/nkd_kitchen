@@ -4,7 +4,8 @@ export default function getMissingEntitiesRelator(
 	entityFieldPrefix: string,
 	relatableEntityName: string
 ): any {
-	if (relatableEntities.length === 0) {
+	if (!relatableEntities) return [];
+	if (relatableEntities?.length === 0) {
 		return []; // Return an empty array if relatableEntities input array is empty
 	}
 

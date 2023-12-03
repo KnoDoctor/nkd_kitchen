@@ -2,8 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { getToken } from "next-auth/jwt";
 
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "../../../../prisma/prismaClientInstance";
 
 import sendError from "../../../../utils/helperFunctions/sendError";
 
