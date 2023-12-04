@@ -7,6 +7,7 @@ import RenderComponents from "../../components/__cms/RenderComponents";
 import Button from "@mui/material/Button";
 import { Box, Container, Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
+import IngredientRecipeCard from "../../components/_molecules/ingredients/IngredientRecipeCard";
 
 const Recipe = ({ recipeData }: any) => {
 	const router = useRouter();
@@ -57,8 +58,8 @@ const Recipe = ({ recipeData }: any) => {
 				>
 					<Grid container>
 						<Grid item xs={12}>
-							<Box p={2} mt={4}>
-								<Typography variant="h3" textAlign={"center"}>
+							<Box p={2} m="auto" mt={4} maxWidth={"90%"}>
+								<Typography variant="h3" textAlign={"left"}>
 									{recipe.recipe_name}
 								</Typography>
 							</Box>
@@ -81,9 +82,12 @@ const Recipe = ({ recipeData }: any) => {
 											return dateA.getTime() - dateB.getTime(); // For ascending order
 										})
 										.map((ingredient: any) => (
-											<Grid item xs={12}>
-												<Grid container spacing={4}>
-													{/* <Grid item xs={2}>
+											<>
+												<IngredientRecipeCard ingredient={ingredient} />
+
+												{/* <Grid item xs={12}>
+													<Grid container spacing={4}>
+														<Grid item xs={2}>
 													<Box
 													width={"100%"}
 													height={"50px"}
@@ -100,43 +104,47 @@ const Recipe = ({ recipeData }: any) => {
 															style={{ objectFit: "cover" }}
 															/>
 															</Box>
-														</Grid> */}
-													<Grid item xs={1}></Grid>
-													<Grid item xs={1}>
-														<Typography
-															variant="body1"
-															textAlign={"left"}
-														>
-															{ingredient.quantity}
-														</Typography>
+														</Grid>
+														<Grid item xs={1}></Grid>
+														<Grid item xs={1}>
+															<Typography
+																variant="body1"
+																textAlign={"left"}
+															>
+																{ingredient.quantity}
+															</Typography>
+														</Grid>
+														<Grid item xs={3}>
+															<Typography
+																variant="body1"
+																textAlign={"left"}
+															>
+																{ingredient.unit}
+															</Typography>
+														</Grid>
+														<Grid item xs={4}>
+															<Typography
+																variant="body1"
+																textAlign={"left"}
+															>
+																{
+																	ingredient.ingredients
+																		.ingredient_name
+																}
+															</Typography>
+														</Grid>
+														<Grid item xs={2}>
+															<Typography
+																variant="body1"
+																textAlign={"left"}
+															>
+																{ingredient.preparation_method}
+															</Typography>
+														</Grid>
 													</Grid>
-													<Grid item xs={3}>
-														<Typography
-															variant="body1"
-															textAlign={"left"}
-														>
-															{ingredient.unit}
-														</Typography>
-													</Grid>
-													<Grid item xs={4}>
-														<Typography
-															variant="body1"
-															textAlign={"left"}
-														>
-															{ingredient.ingredients.ingredient_name}
-														</Typography>
-													</Grid>
-													<Grid item xs={2}>
-														<Typography
-															variant="body1"
-															textAlign={"left"}
-														>
-															{ingredient.preparation_method}
-														</Typography>
-													</Grid>
-												</Grid>
-												<Divider sx={{ mt: 2 }} />
-											</Grid>
+													<Divider sx={{ mt: 2 }} />
+												</Grid> */}
+											</>
 										))}
 								</Grid>
 							</Box>
@@ -149,10 +157,11 @@ const Recipe = ({ recipeData }: any) => {
 								<Grid container spacing={2}>
 									{recipe.instructions.map((instruction: any, i: number) => (
 										<>
+											<Grid item xs={1}></Grid>
 											<Grid item xs={1}>
 												{`${i + 1}. `}
 											</Grid>
-											<Grid item xs={11}>
+											<Grid item xs={10}>
 												<Typography variant="body1" textAlign={"justify"}>
 													{instruction.instruction}
 												</Typography>
